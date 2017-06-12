@@ -34,7 +34,7 @@ public class Rule {
 	/**
 	 * @return the active, determines if the current object rule is active for the script
 	 */
-	public boolean isActive() {
+	public boolean getActive() {
 		return active;
 	}
 

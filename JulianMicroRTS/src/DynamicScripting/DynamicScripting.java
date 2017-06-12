@@ -76,7 +76,7 @@ public class DynamicScripting extends AIWithComputationBudget {
     	
     	//code for print the actual arraylist of objects
         for(Rule rule : rulesSpaceList) {
-            System.out.println(rule.getRule_condition()+" "+rule.getRule_action()+" "+rule.getRule_paramether());
+            System.out.println(rule.getWeight()+" "+rule.getActive()+" "+rule.getRule_condition()+" "+rule.getRule_action()+" "+rule.getRule_paramether());
         }
     	
     }
