@@ -1,6 +1,7 @@
 package DynamicScripting;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import ai.core.AI;
@@ -13,11 +14,15 @@ import rts.units.UnitTypeTable;
 
 public class DynamicScripting extends AIWithComputationBudget {
     UnitTypeTable m_utt = null;
+    ArrayList <Rule> rulesSpaceList=new ArrayList <Rule> ();
+    RulesSpace objRulesSpace= new RulesSpace();
 
     // This is the default constructor that microRTS will call:
     public DynamicScripting(UnitTypeTable utt) {
         super(-1,-1);
+        rulesGeneration();
         m_utt = utt;
+        
     }
 
     // This will be called by microRTS when it wants to create new instances of this bot (e.g., to play multiple games).
@@ -50,5 +55,29 @@ public class DynamicScripting extends AIWithComputationBudget {
     public List<ParameterSpecification> getParameters()
     {
         return new ArrayList<>();
+    }
+    
+    //This method will create the space of rules
+    public void rulesGeneration()
+    {
+    	
+    	int totalRules=objRulesSpace.getNumberConditions()*objRulesSpace.getNumberParamethers()*objRulesSpace.getNumberActions();
+    	for(int i=0;i<objRulesSpace.getNumberConditions();i++)
+    	{
+    		for(int j=0;j<objRulesSpace.getNumberActions();j++)
+    		{
+    			for(int k=0;k<objRulesSpace.getNumberParamethers();k++)
+    			{
+    				Rule rule=new Rule(0, false, i,j,k);
+    				rulesSpaceList.add(rule);
+    			}
+    		}
+    	}
+    	
+    	//code for print the actual arraylist of objects
+        for(Rule rule : rulesSpaceList) {
+            System.out.println(rule.getRule_condition()+" "+rule.getRule_action()+" "+rule.getRule_paramether());
+        }
+    	
     }
 }
