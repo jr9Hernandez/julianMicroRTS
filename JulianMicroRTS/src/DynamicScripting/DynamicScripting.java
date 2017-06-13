@@ -16,6 +16,7 @@ public class DynamicScripting extends AIWithComputationBudget {
     UnitTypeTable m_utt = null;
     ArrayList <Rule> rulesSpaceList=new ArrayList <Rule> ();
     RulesSpace objRulesSpace= new RulesSpace();
+    private int totalRules;
 
     // This is the default constructor that microRTS will call:
     public DynamicScripting(UnitTypeTable utt) {
@@ -61,23 +62,28 @@ public class DynamicScripting extends AIWithComputationBudget {
     public void rulesGeneration()
     {
     	
-    	int totalRules=objRulesSpace.getNumberConditions()*objRulesSpace.getNumberParamethers()*objRulesSpace.getNumberActions();
+    	totalRules=objRulesSpace.getNumberConditions()*objRulesSpace.getNumberParamethers()*objRulesSpace.getNumberActions();
+    	int counterId=0;
     	for(int i=0;i<objRulesSpace.getNumberConditions();i++)
     	{
     		for(int j=0;j<objRulesSpace.getNumberActions();j++)
     		{
     			for(int k=0;k<objRulesSpace.getNumberParamethers();k++)
     			{
-    				Rule rule=new Rule(0, false, i,j,k);
+    				Rule rule=new Rule(counterId,100, false, i,j,k);
+    				counterId++;
     				rulesSpaceList.add(rule);
+    				
     			}
     		}
     	}
     	
     	//code for print the actual arraylist of objects
         for(Rule rule : rulesSpaceList) {
-            System.out.println(rule.getWeight()+" "+rule.getActive()+" "+rule.getRule_condition()+" "+rule.getRule_action()+" "+rule.getRule_paramether());
+            System.out.println(rule.getRule_id()+" "+rule.getWeight()+" "+rule.getActive()+" "+rule.getRule_condition()+" "+rule.getRule_action()+" "+rule.getRule_paramether());
         }
     	
     }
+
+
 }

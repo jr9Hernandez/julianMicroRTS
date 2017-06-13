@@ -2,32 +2,36 @@ package DynamicScripting;
 
 public class Rule {
 	
-	private double weight;
+	private int rule_id;
+	private int weight;
 	private boolean active;
 	private int rule_condition;
 	private int rule_action;
 	private int rule_paramether;
+	
 
-	public Rule(double weight, boolean active, int rule_condition, int rule_action, int rule_paramether){
+	public Rule(int rule_id,int weight, boolean active, int rule_condition, int rule_action, int rule_paramether){
+		
+		this.rule_id=rule_id;		
 		this.weight=weight;
 		this.active=active;
 		this.rule_condition=rule_condition;
 		this.rule_action=rule_action;
 		this.rule_paramether=rule_paramether;
-		
+
 	}
 
 	/**
 	 * @return the weight of the rule, is fixed during all the encounter
 	 */
-	public double getWeight() {
+	public int getWeight() {
 		return weight;
 	}
 
 	/**
 	 * @param weight the weight to set
 	 */
-	public void setWeight(double weight) {
+	public void setWeight(int weight) {
 		this.weight = weight;
 	}
 
@@ -85,6 +89,20 @@ public class Rule {
 	 */
 	public void setRule_paramether(int rule_paramether) {
 		this.rule_paramether = rule_paramether;
+	}
+
+	/**
+	 * @return the rule_id
+	 */
+	public int getRule_id() {
+		return rule_id;
+	}
+
+	/**
+	 * @param rule_id the rule_id to set
+	 */
+	public void setRule_id(int rule_id) {
+		this.rule_id = rule_id;
 	}
 	
 }
