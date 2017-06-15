@@ -14,14 +14,19 @@ import rts.units.UnitTypeTable;
 
 public class DynamicScripting extends AIWithComputationBudget {
     UnitTypeTable m_utt = null;
-    ArrayList <Rule> rulesSpaceList=new ArrayList <Rule> ();
+    ArrayList <Rule> rulesSpaceList;
+    private ArrayList<Rule> rulesSelectedList;
     RulesSpace objRulesSpace= new RulesSpace();
     private int totalRules;
+    private ScriptGeneration actualScript; 
 
     // This is the default constructor that microRTS will call:
     public DynamicScripting(UnitTypeTable utt) {
         super(-1,-1);
-        rulesGeneration();
+        rulesSpaceList=new ArrayList <Rule> ();
+        rulesGeneration();        
+        actualScript=new ScriptGeneration(totalRules,rulesSpaceList);
+        rulesSelectedList=actualScript.selectionRules();
         m_utt = utt;
         
     }

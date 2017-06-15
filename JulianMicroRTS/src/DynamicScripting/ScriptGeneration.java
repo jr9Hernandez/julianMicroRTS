@@ -20,22 +20,23 @@ public class ScriptGeneration {
 		
 		this.totalRules=totalRules;
 		lineAdded=false;
-		this.ruleSpaceList=ruleSpaceList;
-		rulesSelectedList=new ArrayList <Rule> ();
+		this.ruleSpaceList=rulesSpaceList;
+		rulesSelectedList=new ArrayList<Rule>();
 		objAuxMethods=new AuxMethods();
 	}
 	/**
 	 * SelectionRules() is based in the algorithm for script generation presented in Adaptive game AI with dynamic scripting
 	 * from Pieter Spronck · Marc Ponsen ·Ida Sprinkhuizen-Kuyper · Eric Postma 
 	 */
-	public void selectionRules()
+	public ArrayList<Rule> selectionRules()
 	{
+		
 		int sumWeights=0;
 		for(int i=0;i<totalRules;i++)
 		{
 			sumWeights=sumWeights+ruleSpaceList.get(i).getWeight();
 		}
-		for(int i=0; i<scriptSize-1;i++)
+		for(int i=0; i<scriptSize;i++)
 		{
 			int trySelection=0;
 			boolean lineAdded=false;
@@ -44,10 +45,10 @@ public class ScriptGeneration {
 				int sum=0;
 				int j=0;
 				int selected=-1;
-				int fraction=objAuxMethods.randomNumberInRange(1, sumWeights);
+				int fraction=objAuxMethods.randomNumberInRange(0, sumWeights);
 				while(selected<0)
 				{
-					sum=sum+ruleSpaceList.get(i).getWeight();
+					sum=sum+(ruleSpaceList.get(j).getWeight());
 					if(sum>fraction)
 					{
 						selected=j;
@@ -57,7 +58,7 @@ public class ScriptGeneration {
 						j=j+1;
 					}
 				}
-				lineAdded=insertInScript(selected);
+				lineAdded=insertInScript(ruleSpaceList.get(selected));
 				if(lineAdded==true)
 				{
 					rulesSelectedList.add(ruleSpaceList.get(selected));
@@ -65,12 +66,13 @@ public class ScriptGeneration {
 				trySelection++;
 			}
 		}
+		return rulesSelectedList;
 	}
 	
-	public boolean insertInScript(int selectedRule)
+	public boolean insertInScript(Rule selectedRule)
 	{
 	    for (Rule rule : ruleSpaceList) {
-	        if (rule.getRule_id() == selectedRule) {
+	        if (rule.getRule_id() == selectedRule.getRule_id()) {
 	            return false;
 	        }
 	    }
