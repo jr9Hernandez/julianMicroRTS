@@ -90,5 +90,20 @@ public class DynamicScripting extends AIWithComputationBudget {
     	
     }
 
-
+    public void ScriptRun()
+    {
+    	while(rulesSelectedList.size()>0)
+    	{
+    		Rule rule=rulesSelectedList.get(0);
+    		if(rule.getActive()==true 
+    				&& rule.getRule_condition()==objRulesSpace.getCondition_enemyInsideRange()
+    				&& rule.getRule_action()==objRulesSpace.getAction_attack()
+    				&& rule.getRule_paramether()== objRulesSpace.getParamether_closestEnemy())
+    		{
+    			
+    		}
+    	}
+    	
+    }
+    
 }
