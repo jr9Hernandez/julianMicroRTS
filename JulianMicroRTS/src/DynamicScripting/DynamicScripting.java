@@ -43,16 +43,9 @@ public class DynamicScripting extends AIWithComputationBudget {
     // Called by microRTS at each game cycle.
     // Returns the action the bot wants to execute.
     public PlayerAction getAction(int player, GameState gs) {
-        try {
-            if (!gs.canExecuteAnyAction(player)) return new PlayerAction();
-            PlayerActionGenerator pag = new PlayerActionGenerator(gs, player);
-            return pag.getRandom();
-        }catch(Exception e) {
-            // The only way the player action generator returns an exception is if there are no units that
-            // can execute actions, in this case, just return an empty action:
-            // However, this should never happen, since we are checking for this at the beginning
-            return new PlayerAction();
-        }
+        PlayerAction pa = new PlayerAction();
+        pa.fillWithNones(gs, player, 10);
+        return pa;
     }   
     
     // This will be called by the microRTS GUI to get the
