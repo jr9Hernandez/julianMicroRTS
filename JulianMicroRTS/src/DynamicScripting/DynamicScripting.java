@@ -13,7 +13,9 @@ import rts.PlayerActionGenerator;
 import rts.units.UnitTypeTable;
 
 public class DynamicScripting extends AIWithComputationBudget {
+	
     UnitTypeTable m_utt = null;
+    
     ArrayList <Rule> rulesSpaceList;
     private ArrayList<Rule> rulesSelectedList;
     RulesSpace objRulesSpace= new RulesSpace();
@@ -23,11 +25,13 @@ public class DynamicScripting extends AIWithComputationBudget {
     // This is the default constructor that microRTS will call:
     public DynamicScripting(UnitTypeTable utt) {
         super(-1,-1);
+        m_utt = utt;
+        
         rulesSpaceList=new ArrayList <Rule> ();
         rulesGeneration();        
         actualScript=new ScriptGeneration(totalRules,rulesSpaceList);
         rulesSelectedList=actualScript.selectionRules();
-        m_utt = utt;
+        
         
     }
 
@@ -83,20 +87,5 @@ public class DynamicScripting extends AIWithComputationBudget {
     	
     }
 
-    public void ScriptRun()
-    {
-    	while(rulesSelectedList.size()>0)
-    	{
-    		Rule rule=rulesSelectedList.get(0);
-    		if(rule.getActive()==true 
-    				&& rule.getRule_condition()==objRulesSpace.getCondition_enemyInsideRange()
-    				&& rule.getRule_action()==objRulesSpace.getAction_attack()
-    				&& rule.getRule_paramether()== objRulesSpace.getParamether_closestEnemy())
-    		{
-    			
-    		}
-    	}
-    	
-    }
     
 }
