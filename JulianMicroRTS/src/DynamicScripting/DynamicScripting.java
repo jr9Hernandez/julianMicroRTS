@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import ai.abstraction.pathfinding.PathFinding;
 import ai.core.AI;
 import ai.core.AIWithComputationBudget;
 import ai.core.ParameterSpecification;
+import ai.evaluation.EvaluationFunction;
 import rts.GameState;
 import rts.PlayerAction;
 import rts.PlayerActionGenerator;
@@ -21,18 +23,21 @@ public class DynamicScripting extends AIWithComputationBudget {
     RulesSpace objRulesSpace= new RulesSpace();
     private int totalRules;
     private ScriptGeneration actualScript; 
+    private RulesScripts rulesScripts;
 
     // This is the default constructor that microRTS will call:
     public DynamicScripting(UnitTypeTable utt) {
-        super(-1,-1);
+        this(utt,-1,-1);       
+    }
+    
+    public DynamicScripting(UnitTypeTable utt, int time, int max_playouts) {
+        super(time,max_playouts);
         m_utt = utt;
         
         rulesSpaceList=new ArrayList <Rule> ();
         rulesGeneration();        
         actualScript=new ScriptGeneration(totalRules,rulesSpaceList);
         rulesSelectedList=actualScript.selectionRules();
-        
-        
     }
 
     // This will be called by microRTS when it wants to create new instances of this bot (e.g., to play multiple games).
@@ -87,5 +92,20 @@ public class DynamicScripting extends AIWithComputationBudget {
     	
     }
 
+    public void ScriptRun()
+    {
+    	while(rulesSelectedList.size()>0)
+    	{
+    		Rule rule=rulesSelectedList.get(0);
+    		if(rule.getActive()==true 
+    				&& rule.getRule_condition()==objRulesSpace.getCondition_enemyInsideRange()
+    				&& rule.getRule_action()==objRulesSpace.getAction_attack()
+    				&& rule.getRule_paramether()== objRulesSpace.getParamether_closestEnemy())
+    		{
+    			//rulesScripts.Attack(rulesSelectedList, objRulesSpace);
+    		}
+    	}
+    	
+    }
     
 }
