@@ -71,7 +71,7 @@ public class ScriptGeneration {
 	
 	public boolean insertInScript(Rule selectedRule)
 	{
-	    for (Rule rule : ruleSpaceList) {
+	    for (Rule rule : rulesSelectedList) {
 	        if (rule.getRule_id() == selectedRule.getRule_id()) {
 	            return false;
 	        }
