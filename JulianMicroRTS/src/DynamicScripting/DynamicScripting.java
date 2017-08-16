@@ -2,42 +2,95 @@ package DynamicScripting;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
+import ai.abstraction.pathfinding.AStarPathFinding;
 import ai.abstraction.pathfinding.PathFinding;
 import ai.core.AI;
 import ai.core.AIWithComputationBudget;
 import ai.core.ParameterSpecification;
 import ai.evaluation.EvaluationFunction;
+import ai.portfolio.portfoliogreedysearch.UnitScript;
+import ai.portfolio.portfoliogreedysearch.UnitScriptAttack;
 import rts.GameState;
 import rts.PlayerAction;
 import rts.PlayerActionGenerator;
+import rts.units.UnitType;
 import rts.units.UnitTypeTable;
 
 public class DynamicScripting extends AIWithComputationBudget {
 	
     UnitTypeTable m_utt = null;
+    PathFinding pf;
+    HashMap<UnitType, List<UnitScript>> scripts = null;
     
     private ArrayList <Rule> rulesSpaceList=new ArrayList <Rule> ();;
     private ArrayList<Rule> rulesSelectedList;
     private RulesSpace objRulesSpace= new RulesSpace();
     private int totalRules;
     private ScriptGeneration actualScript; 
-    private RulesScripts rulesScripts=new RulesScripts();
+    private ActionScripts rulesScripts;
 
 
     // This is the default constructor that microRTS will call:
     public DynamicScripting(UnitTypeTable utt) {
-        this(utt,-1,-1);       
+        this(utt,-1,-1,new AStarPathFinding());       
     }
     
-    public DynamicScripting(UnitTypeTable utt, int time, int max_playouts) {
+    public DynamicScripting(UnitTypeTable utt, int time, int max_playouts, PathFinding a_pf) {
         super(time,max_playouts);
         m_utt = utt;
-
+        pf=a_pf;
+        
         rulesGeneration();        
         actualScript=new ScriptGeneration(totalRules,rulesSpaceList);
         rulesSelectedList=actualScript.selectionRules();
+        
+        UnitScript attack = new UnitScriptAttack(pf);
+        
+        scripts = new HashMap<>();
+        {
+            List<UnitScript> l = new ArrayList<>();
+            //l.add(harvest);
+            //l.add(buildBarracks);
+            //l.add(buildBase);
+            l.add(attack);
+            //l.add(idle);
+            scripts.put(utt.getUnitType("Worker"),l);
+        }
+//        {
+//            List<UnitScript> l = new ArrayList<>();
+//            scripts.put(utt.getUnitType("Base"),l);
+//            l.add(trainWorker);
+//            l.add(idle);
+//        }
+//        {
+//            List<UnitScript> l = new ArrayList<>();
+//            scripts.put(utt.getUnitType("Barracks"),l);
+//            l.add(trainLight);
+//            l.add(trainHeavy);
+//            l.add(trainRanged);
+//            l.add(idle);
+//        }
+//        {
+//            List<UnitScript> l = new ArrayList<>();
+//            scripts.put(utt.getUnitType("Light"),l);
+//            l.add(attack);
+//            l.add(idle);
+//        }
+//        {
+//            List<UnitScript> l = new ArrayList<>();
+//            scripts.put(utt.getUnitType("Heavy"),l);
+//            l.add(attack);
+//            l.add(idle);
+//        }
+//        {
+//            List<UnitScript> l = new ArrayList<>();
+//            scripts.put(utt.getUnitType("Ranged"),l);
+//            l.add(attack);
+//            l.add(idle);
+//        }
     }
 
     // This will be called by microRTS when it wants to create new instances of this bot (e.g., to play multiple games).
@@ -55,6 +108,7 @@ public class DynamicScripting extends AIWithComputationBudget {
         PlayerAction pa = new PlayerAction();
         pa.fillWithNones(gs, player, 10);
         //Here I have to assig an action for each unit!, calling the scriptRun Metthod
+        
         return pa;
     }   
     
@@ -95,11 +149,14 @@ public class DynamicScripting extends AIWithComputationBudget {
 
     public void ScriptRun()
     {
+    	rulesScripts=new ActionScripts(objRulesSpace);
+    	
     	for(int i=0;i<rulesSelectedList.size();i++)
     	{    		
     		Rule rule=rulesSelectedList.get(i);
     		if(rule.getRule_action()==objRulesSpace.getAction_attack())
     		{
+    			
     			rulesScripts.attack(rule.getRule_condition(), rule.getRule_paramether());
     		}
     		else if(rule.getRule_action()==objRulesSpace.getAction_moveawayof())
