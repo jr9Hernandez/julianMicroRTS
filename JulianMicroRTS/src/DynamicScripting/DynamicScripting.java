@@ -30,7 +30,6 @@ public class DynamicScripting extends AIWithComputationBudget {
     private RulesSpace objRulesSpace= new RulesSpace();
     private int totalRules;
     private ScriptGeneration actualScript; 
-    private ActionScripts rulesScripts;
 
 
     // This is the default constructor that microRTS will call:
@@ -149,15 +148,13 @@ public class DynamicScripting extends AIWithComputationBudget {
 
     public void ScriptRun()
     {
-    	rulesScripts=new ActionScripts(objRulesSpace);
     	
     	for(int i=0;i<rulesSelectedList.size();i++)
     	{    		
     		Rule rule=rulesSelectedList.get(i);
     		if(rule.getRule_action()==objRulesSpace.getAction_attack())
     		{
-    			
-    			rulesScripts.attack(rule.getRule_condition(), rule.getRule_paramether());
+       			//rulesScripts.attack(rule.getRule_condition(), rule.getRule_paramether());
     		}
     		else if(rule.getRule_action()==objRulesSpace.getAction_moveawayof())
     		{
