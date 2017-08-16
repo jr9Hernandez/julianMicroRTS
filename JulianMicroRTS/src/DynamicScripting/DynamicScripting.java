@@ -18,12 +18,13 @@ public class DynamicScripting extends AIWithComputationBudget {
 	
     UnitTypeTable m_utt = null;
     
-    ArrayList <Rule> rulesSpaceList;
+    private ArrayList <Rule> rulesSpaceList=new ArrayList <Rule> ();;
     private ArrayList<Rule> rulesSelectedList;
-    RulesSpace objRulesSpace= new RulesSpace();
+    private RulesSpace objRulesSpace= new RulesSpace();
     private int totalRules;
     private ScriptGeneration actualScript; 
-    private RulesScripts rulesScripts;
+    private RulesScripts rulesScripts=new RulesScripts();
+
 
     // This is the default constructor that microRTS will call:
     public DynamicScripting(UnitTypeTable utt) {
@@ -33,8 +34,7 @@ public class DynamicScripting extends AIWithComputationBudget {
     public DynamicScripting(UnitTypeTable utt, int time, int max_playouts) {
         super(time,max_playouts);
         m_utt = utt;
-        
-        rulesSpaceList=new ArrayList <Rule> ();
+
         rulesGeneration();        
         actualScript=new ScriptGeneration(totalRules,rulesSpaceList);
         rulesSelectedList=actualScript.selectionRules();
@@ -54,6 +54,7 @@ public class DynamicScripting extends AIWithComputationBudget {
     public PlayerAction getAction(int player, GameState gs) {
         PlayerAction pa = new PlayerAction();
         pa.fillWithNones(gs, player, 10);
+        //Here I have to assig an action for each unit!, calling the scriptRun Metthod
         return pa;
     }   
     
@@ -94,16 +95,25 @@ public class DynamicScripting extends AIWithComputationBudget {
 
     public void ScriptRun()
     {
-    	while(rulesSelectedList.size()>0)
-    	{
-    		Rule rule=rulesSelectedList.get(0);
-    		if(rule.getActive()==true 
-    				&& rule.getRule_condition()==objRulesSpace.getCondition_enemyInsideRange()
-    				&& rule.getRule_action()==objRulesSpace.getAction_attack()
-    				&& rule.getRule_paramether()== objRulesSpace.getParamether_closestEnemy())
+    	for(int i=0;i<rulesSelectedList.size();i++)
+    	{    		
+    		Rule rule=rulesSelectedList.get(i);
+    		if(rule.getRule_action()==objRulesSpace.getAction_attack())
     		{
-    			//rulesScripts.Attack(rulesSelectedList, objRulesSpace);
+    			rulesScripts.attack(rule.getRule_condition(), rule.getRule_paramether());
     		}
+    		else if(rule.getRule_action()==objRulesSpace.getAction_moveawayof())
+    		{
+    			
+    		}
+//    		else if(rule.getRule_action()==objRulesSpace.getAction_moveawayof())
+//    		{
+//    				//rulesScripts.action	
+//    		}
+//    		else if(rule.getRule_action()==objRulesSpace.getAction_cluster())
+//    		{
+//    			//rulesScripts.action
+//    		}
     	}
     	
     }

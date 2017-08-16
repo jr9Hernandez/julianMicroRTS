@@ -4,8 +4,8 @@ public class RulesSpace {
 	
 	//number of conditions, actions, paramethers
 	private int numberConditions=2;
-	private int numberActions=4;
-	private int numberParamethers=4;
+	private int numberActions=3;
+	private int numberParamethers=3;
 
 	//These variables identify the possible conditions in a rule
 	
@@ -23,18 +23,20 @@ public class RulesSpace {
 	//MoveAwayOf
 	private final int action_moveawayof=2;
 	//wait
-	private final int action_wait=3;
+//	private final int action_wait=3;
+	//cluster
+//	private final int action_cluster=4;
 	
 	//These variables identify the possible actions of a rule
 	
 	//Weakest_EnemyUnit
 	private final int paramether_weakestEnemy=0;
 	//Strongest_EnemyUnit
-	private final int paramether_strongestEnemy=1;
+//	private final int paramether_strongestEnemy=1;
 	//Closest_EnemyUnit
-	private final int paramether_closestEnemy=2;
+	private final int paramether_closestEnemy=1;
 	//Fartest_EnemyUnit
-	private final int paramether_fartestEnemy=3;
+	private final int paramether_fartestEnemy=2;
 	
 	
 	public RulesSpace(){
@@ -106,12 +108,19 @@ public class RulesSpace {
 	}
 
 
-	/**
-	 * @return the action_wait
-	 */
-	public int getAction_wait() {
-		return action_wait;
-	}
+//	/**
+//	 * @return the action_wait
+//	 */
+//	public int getAction_wait() {
+//		return action_wait;
+//	}
+//
+//	/**
+//	 * @return the action_cluster
+//	 */
+//	public int getAction_cluster() {
+//		return action_cluster;
+//	}
 
 
 	/**
@@ -125,9 +134,9 @@ public class RulesSpace {
 	/**
 	 * @return the paramether_strongestEnemy
 	 */
-	public int getParamether_strongestEnemy() {
-		return paramether_strongestEnemy;
-	}
+//	public int getParamether_strongestEnemy() {
+//		return paramether_strongestEnemy;
+//	}
 
 
 	/**
