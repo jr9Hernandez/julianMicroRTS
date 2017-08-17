@@ -5,17 +5,17 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import ai.abstraction.Attack;
 import ai.abstraction.pathfinding.AStarPathFinding;
 import ai.abstraction.pathfinding.PathFinding;
 import ai.core.AI;
 import ai.core.AIWithComputationBudget;
 import ai.core.ParameterSpecification;
 import ai.evaluation.EvaluationFunction;
-import ai.portfolio.portfoliogreedysearch.UnitScript;
-import ai.portfolio.portfoliogreedysearch.UnitScriptAttack;
 import rts.GameState;
 import rts.PlayerAction;
 import rts.PlayerActionGenerator;
+import rts.UnitAction;
 import rts.units.Unit;
 import rts.units.UnitType;
 import rts.units.UnitTypeTable;
@@ -33,6 +33,7 @@ public class DynamicScripting extends AIWithComputationBudget {
     private ScriptGeneration actualScript; 
     private ConditionsScripts conditionsScripts;
     private ParametersScripts parametersScripts;
+    UnitScript attack;
 
 
     // This is the default constructor that microRTS will call:
@@ -49,18 +50,18 @@ public class DynamicScripting extends AIWithComputationBudget {
         actualScript=new ScriptGeneration(totalRules,rulesSpaceList);
         rulesSelectedList=actualScript.selectionRules();
         
-        UnitScript attack = new UnitScriptAttack(pf);
+        attack = new UnitScriptAttack(pf);
         
-        scripts = new HashMap<>();
-        {
-            List<UnitScript> l = new ArrayList<>();
-            //l.add(harvest);
-            //l.add(buildBarracks);
-            //l.add(buildBase);
-            l.add(attack);
-            //l.add(idle);
-            scripts.put(utt.getUnitType("Worker"),l);
-        }
+//        scripts = new HashMap<>();
+//        {
+//            List<UnitScript> l = new ArrayList<>();
+//            //l.add(harvest);
+//            //l.add(buildBarracks);
+//            //l.add(buildBase);
+//            l.add(attack);
+//            //l.add(idle);
+//            scripts.put(utt.getUnitType("Worker"),l);
+//        }
 //        {
 //            List<UnitScript> l = new ArrayList<>();
 //            scripts.put(utt.getUnitType("Base"),l);
@@ -109,7 +110,8 @@ public class DynamicScripting extends AIWithComputationBudget {
     public PlayerAction getAction(int player, GameState gs) {
         PlayerAction pa = new PlayerAction();
         pa.fillWithNones(gs, player, 10);
-        //Here I have to assig an action for each unit!, calling the scriptRun Metthod
+        
+        //Here I have to assig an action for each unit!
         
         List<Unit> playerUnits = new ArrayList<>();
 
@@ -123,13 +125,18 @@ public class DynamicScripting extends AIWithComputationBudget {
         
         for(int i = 0;i<n1;i++) {
             Unit u = playerUnits.get(i);
-            for(int j=0;i<rulesSelectedList.size();j++)
+//          List<UnitScript> candidates = scripts.get(u.getType());
+            for(int j=0;j<rulesSelectedList.size();j++)
             {    		
             	Rule rule=rulesSelectedList.get(j);
 
             	if(conditionsScripts.validationCondition(rulesSelectedList.get(j).getRule_condition(), rulesSelectedList.get(j).getRule_paramether(),u))
             	{
-            		//voy implementando la parte de atacar
+            		Unit u2 = parametersScripts.validationParameter(u, gs, rulesSelectedList.get(j).getRule_paramether());
+            		attack.instantiate(u, gs, u2);
+            		UnitAction ua = attack.getAction(u, gs);
+            		pa.addUnitAction(u, new UnitAction(UnitAction.TYPE_NONE));
+            		
             	}
 
             } 
