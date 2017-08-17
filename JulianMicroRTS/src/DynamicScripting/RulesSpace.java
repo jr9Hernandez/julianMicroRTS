@@ -3,16 +3,18 @@ package DynamicScripting;
 public class RulesSpace {
 	
 	//number of conditions, actions, paramethers
-	private int numberConditions=2;
-	private int numberActions=3;
-	private int numberParamethers=3;
+	private int numberConditions=3;
+	private int numberActions=2;
+	private int numberParamethers=2;
 
 	//These variables identify the possible conditions in a rule
 	
+	//No condition
+	private final int condition_no=0;
 	//If (enemy is inside ourUnit unit fire range)
-	private final int condition_enemyInsideRange = 0;
+	private final int condition_enemyInsideRange = 1;
 	//If (enemy is not inside ourUnit fire range)
-	private final int condition_enemyInsideRange_not = 1;
+	private final int condition_enemyInsideRange_not = 2;
 
 	//These variables identify the possible actions of a rule
 	
@@ -21,22 +23,23 @@ public class RulesSpace {
 	//Move_To
 	private final int action_moveto=1;
 	//MoveAwayOf
-	private final int action_moveawayof=2;
+//	private final int action_moveawayof=2;
 	//wait
 //	private final int action_wait=3;
 	//cluster
 //	private final int action_cluster=4;
 	
 	//These variables identify the possible actions of a rule
-	
+
+	//Closest_EnemyUnit
+	private final int paramether_closestEnemy=0;
+	//Fartest_EnemyUnit
+	private final int paramether_fartestEnemy=1;
 	//Weakest_EnemyUnit
-	private final int paramether_weakestEnemy=0;
+//	private final int paramether_weakestEnemy=0;
 	//Strongest_EnemyUnit
 //	private final int paramether_strongestEnemy=1;
-	//Closest_EnemyUnit
-	private final int paramether_closestEnemy=1;
-	//Fartest_EnemyUnit
-	private final int paramether_fartestEnemy=2;
+
 	
 	
 	public RulesSpace(){
@@ -65,6 +68,14 @@ public class RulesSpace {
 	 */
 	public int getNumberParamethers() {
 		return numberParamethers;
+	}
+
+
+	/**
+	 * @return the condition_no
+	 */
+	public int getCondition_no() {
+		return condition_no;
 	}
 
 
@@ -100,12 +111,12 @@ public class RulesSpace {
 	}
 
 
-	/**
-	 * @return the action_moveawayof
-	 */
-	public int getAction_moveawayof() {
-		return action_moveawayof;
-	}
+//	/**
+//	 * @return the action_moveawayof
+//	 */
+//	public int getAction_moveawayof() {
+//		return action_moveawayof;
+//	}
 
 
 //	/**
@@ -114,7 +125,7 @@ public class RulesSpace {
 //	public int getAction_wait() {
 //		return action_wait;
 //	}
-//
+
 //	/**
 //	 * @return the action_cluster
 //	 */
@@ -123,12 +134,12 @@ public class RulesSpace {
 //	}
 
 
-	/**
-	 * @return the paramether_weakestEnemy
-	 */
-	public int getParamether_weakestEnemy() {
-		return paramether_weakestEnemy;
-	}
+//	/**
+//	 * @return the paramether_weakestEnemy
+//	 */
+//	public int getParamether_weakestEnemy() {
+//		return paramether_weakestEnemy;
+//	}
 
 
 	/**

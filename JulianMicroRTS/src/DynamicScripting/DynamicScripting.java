@@ -16,6 +16,7 @@ import ai.portfolio.portfoliogreedysearch.UnitScriptAttack;
 import rts.GameState;
 import rts.PlayerAction;
 import rts.PlayerActionGenerator;
+import rts.units.Unit;
 import rts.units.UnitType;
 import rts.units.UnitTypeTable;
 
@@ -27,9 +28,11 @@ public class DynamicScripting extends AIWithComputationBudget {
     
     private ArrayList <Rule> rulesSpaceList=new ArrayList <Rule> ();;
     private ArrayList<Rule> rulesSelectedList;
-    private RulesSpace objRulesSpace= new RulesSpace();
+    private RulesSpace rulesSpace= new RulesSpace();
     private int totalRules;
     private ScriptGeneration actualScript; 
+    private ConditionsScripts conditionsScripts;
+    private ParametersScripts parametersScripts;
 
 
     // This is the default constructor that microRTS will call:
@@ -108,7 +111,30 @@ public class DynamicScripting extends AIWithComputationBudget {
         pa.fillWithNones(gs, player, 10);
         //Here I have to assig an action for each unit!, calling the scriptRun Metthod
         
-        return pa;
+        List<Unit> playerUnits = new ArrayList<>();
+
+        for(Unit u:gs.getUnits()) {
+            if (u.getPlayer()==player) playerUnits.add(u);           
+        }
+        int n1 = playerUnits.size();
+        
+        parametersScripts=new ParametersScripts(rulesSpace);
+        conditionsScripts=new ConditionsScripts(rulesSpace,parametersScripts,gs);
+        
+        for(int i = 0;i<n1;i++) {
+            Unit u = playerUnits.get(i);
+            for(int j=0;i<rulesSelectedList.size();j++)
+            {    		
+            	Rule rule=rulesSelectedList.get(j);
+
+            	if(conditionsScripts.validationCondition(rulesSelectedList.get(j).getRule_condition(), rulesSelectedList.get(j).getRule_paramether(),u))
+            	{
+            		//voy implementando la parte de atacar
+            	}
+
+            } 
+        }
+          return pa;
     }   
     
     // This will be called by the microRTS GUI to get the
@@ -123,13 +149,13 @@ public class DynamicScripting extends AIWithComputationBudget {
     public void rulesGeneration()
     {
     	
-    	totalRules=objRulesSpace.getNumberConditions()*objRulesSpace.getNumberParamethers()*objRulesSpace.getNumberActions();
+    	totalRules=rulesSpace.getNumberConditions()*rulesSpace.getNumberParamethers()*rulesSpace.getNumberActions();
     	int counterId=0;
-    	for(int i=0;i<objRulesSpace.getNumberConditions();i++)
+    	for(int i=0;i<rulesSpace.getNumberConditions();i++)
     	{
-    		for(int j=0;j<objRulesSpace.getNumberActions();j++)
+    		for(int j=0;j<rulesSpace.getNumberActions();j++)
     		{
-    			for(int k=0;k<objRulesSpace.getNumberParamethers();k++)
+    			for(int k=0;k<rulesSpace.getNumberParamethers();k++)
     			{
     				Rule rule=new Rule(counterId,100, false, i,j,k);
     				counterId++;
@@ -143,32 +169,6 @@ public class DynamicScripting extends AIWithComputationBudget {
         for(Rule rule : rulesSpaceList) {
             System.out.println(rule.getRule_id()+" "+rule.getWeight()+" "+rule.getActive()+" "+rule.getRule_condition()+" "+rule.getRule_action()+" "+rule.getRule_paramether());
         }
-    	
-    }
-
-    public void ScriptRun()
-    {
-    	
-    	for(int i=0;i<rulesSelectedList.size();i++)
-    	{    		
-    		Rule rule=rulesSelectedList.get(i);
-    		if(rule.getRule_action()==objRulesSpace.getAction_attack())
-    		{
-       			//rulesScripts.attack(rule.getRule_condition(), rule.getRule_paramether());
-    		}
-    		else if(rule.getRule_action()==objRulesSpace.getAction_moveawayof())
-    		{
-    			
-    		}
-//    		else if(rule.getRule_action()==objRulesSpace.getAction_moveawayof())
-//    		{
-//    				//rulesScripts.action	
-//    		}
-//    		else if(rule.getRule_action()==objRulesSpace.getAction_cluster())
-//    		{
-//    			//rulesScripts.action
-//    		}
-    	}
     	
     }
     
