@@ -9,6 +9,8 @@ import ai.*;
 import ai.abstraction.WorkerRush;
 import ai.abstraction.pathfinding.BFSPathFinding;
 import ai.mcts.naivemcts.NaiveMCTS;
+import ai.portfolio.PortfolioAI;
+import ai.puppet.PuppetSearchMCTS;
 import gui.PhysicalGameStatePanel;
 import java.io.OutputStreamWriter;
 import javax.swing.JFrame;
@@ -38,6 +40,8 @@ public class GameVisualSimulationTest {
         AI ai1 = new WorkerRush(utt, new BFSPathFinding());        
         //AI ai2 = new RandomBiasedAI();
         AI ai2 = new DynamicScripting(utt);
+        //AI ai2= new PortfolioAI(utt);
+        //AI ai2=new PuppetSearchMCTS(utt);
 
         JFrame w = PhysicalGameStatePanel.newVisualizer(gs,640,640,false,PhysicalGameStatePanel.COLORSCHEME_BLACK);
  //       JFrame w = PhysicalGameStatePanel.newVisualizer(gs,640,640,false,PhysicalGameStatePanel.COLORSCHEME_WHITE);

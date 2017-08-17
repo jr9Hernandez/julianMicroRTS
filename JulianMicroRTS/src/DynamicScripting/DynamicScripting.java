@@ -133,7 +133,7 @@ public class DynamicScripting extends AIWithComputationBudget {
             	if(conditionsScripts.validationCondition(rulesSelectedList.get(j).getRule_condition(), rulesSelectedList.get(j).getRule_paramether(),u))
             	{
             		Unit u2 = parametersScripts.validationParameter(u, gs, rulesSelectedList.get(j).getRule_paramether());
-            		attack.instantiate(u, gs, u2);
+            		attack=attack.instantiate(u, gs, u2);
             		UnitAction ua = attack.getAction(u, gs);
             		pa.addUnitAction(u, new UnitAction(UnitAction.TYPE_NONE));
             		
