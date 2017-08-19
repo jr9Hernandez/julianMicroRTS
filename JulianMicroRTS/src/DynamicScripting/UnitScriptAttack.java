@@ -37,10 +37,10 @@ public class UnitScriptAttack extends UnitScript {
     }
     
     public UnitScript instantiate(Unit u, GameState gs, Unit u2) {
-        Unit closestEnemy = closestEnemyUnit(u, gs);
-        if (closestEnemy != null) {
+        Unit targetParameterRule = u2;
+        if (u2 != null) {
             UnitScriptAttack script = new UnitScriptAttack(pf);
-            script.action = new Attack(u, closestEnemy, pf);
+            script.action = new Attack(u, u2, pf);
             return script;
         } else {
             return null;
@@ -48,19 +48,19 @@ public class UnitScriptAttack extends UnitScript {
     }
     
     
-    public Unit closestEnemyUnit(Unit u, GameState gs) {
-        Unit closest = null;
-        int closestDistance = 0;
-        for (Unit u2 : gs.getPhysicalGameState().getUnits()) {
-            if (u2.getPlayer()>=0 && u2.getPlayer() != u.getPlayer()) {
-                int d = Math.abs(u2.getX() - u.getX()) + Math.abs(u2.getY() - u.getY());
-                if (closest == null || d < closestDistance) {
-                    closest = u2;
-                    closestDistance = d;
-                }
-            }
-        }
-        return closest;
-    }
+//    public Unit closestEnemyUnit(Unit u, GameState gs) {
+//        Unit closest = null;
+//        int closestDistance = 0;
+//        for (Unit u2 : gs.getPhysicalGameState().getUnits()) {
+//            if (u2.getPlayer()>=0 && u2.getPlayer() != u.getPlayer()) {
+//                int d = Math.abs(u2.getX() - u.getX()) + Math.abs(u2.getY() - u.getY());
+//                if (closest == null || d < closestDistance) {
+//                    closest = u2;
+//                    closestDistance = d;
+//                }
+//            }
+//        }
+//        return closest;
+//    }
     
 }
