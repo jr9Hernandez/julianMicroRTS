@@ -126,6 +126,7 @@ public class DynamicScripting extends AIWithComputationBudget {
         for(int i = 0;i<n1;i++) {
             Unit u = playerUnits.get(i);
 //          List<UnitScript> candidates = scripts.get(u.getType());
+            if (gs.getUnitAction(u)==null) {
             for(int j=0;j<rulesSelectedList.size();j++)
             {    		
             	Rule rule=rulesSelectedList.get(j);
@@ -140,6 +141,7 @@ public class DynamicScripting extends AIWithComputationBudget {
             	}
 
             } 
+            }
         }
           return pa;
     }   
