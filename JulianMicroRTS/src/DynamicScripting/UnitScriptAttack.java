@@ -29,7 +29,6 @@ public class UnitScriptAttack extends UnitScript {
     
     public UnitAction getAction(Unit u, GameState gs) {
         if (action.completed(gs)) {
-        	System.out.println("someddsdsdd"); 
             return null;
         } else {
             return action.execute(gs);
