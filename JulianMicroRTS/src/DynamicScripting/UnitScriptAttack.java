@@ -37,9 +37,9 @@ public class UnitScriptAttack extends UnitScript {
     
     public UnitScript instantiate(Unit u, GameState gs, Unit u2) {
         Unit targetParameterRule = u2;
-        if (u2 != null) {
+        if (targetParameterRule != null) {
             UnitScriptAttack script = new UnitScriptAttack(pf);
-            script.action = new Attack(u, u2, pf);
+            script.action = new Attack(u, targetParameterRule, pf);
             return script;
         } else {
             return null;
