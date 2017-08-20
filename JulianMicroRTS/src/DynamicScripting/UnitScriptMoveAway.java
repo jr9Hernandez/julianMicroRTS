@@ -47,20 +47,20 @@ public class UnitScriptMoveAway extends UnitScript {
         
         if(dx>0)
         {
-        	newX=u.getX()+1;
+        	newX=u.getX()-1;
         }
-        else if(dx>0) 
+        else if(dx<0) 
         {
-        	newX=u.getX()-1;     	
+        	newX=u.getX()+1;     	
         }
         
         if(dy>0)
         {
-        	newY=u.getY()+1;
+        	newY=u.getY()-1;
         }
-        else if(dx>0) 
+        else if(dy>0) 
         {
-        	newY=u.getY()-1;        	
+        	newY=u.getY()+1;        	
         }
 
         if (targetParameterRule != null) {

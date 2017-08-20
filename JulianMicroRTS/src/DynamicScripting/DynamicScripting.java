@@ -34,6 +34,7 @@ public class DynamicScripting extends AIWithComputationBudget {
     private ConditionsScripts conditionsScripts;
     private ParametersScripts parametersScripts;
     UnitScript attack;
+    UnitScript moveAway;
 
 
     // This is the default constructor that microRTS will call:
@@ -51,6 +52,7 @@ public class DynamicScripting extends AIWithComputationBudget {
         rulesSelectedList=actualScript.selectionRules();
         
         attack = new UnitScriptAttack(pf);
+        moveAway=new UnitScriptMoveAway(pf);
         
 //        scripts = new HashMap<>();
 //        {
@@ -136,13 +138,15 @@ public class DynamicScripting extends AIWithComputationBudget {
             		Unit u2 = parametersScripts.validationParameter(u, gs, rulesSelectedList.get(j).getRule_paramether());
             		if(rulesSelectedList.get(j).getRule_action()==rulesSpace.getAction_attack())
             		{
-            			attack=attack.instantiate(u, gs, u2);
-            			UnitAction ua = attack.getAction(u, gs);
+            			UnitScript s=attack.instantiate(u, gs, u2);
+            			UnitAction ua = s.getAction(u, gs);
             			pa.addUnitAction(u, ua);
             		}
             		else if(rulesSelectedList.get(j).getRule_action()==rulesSpace.getAction_moveawayof())
             		{
-            			
+            			UnitScript s=moveAway.instantiate(u, gs, u2);
+            			UnitAction ua = s.getAction(u, gs);
+            			pa.addUnitAction(u, ua);
             		}
             		
             	}
