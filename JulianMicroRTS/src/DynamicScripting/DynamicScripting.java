@@ -133,6 +133,7 @@ public class DynamicScripting extends AIWithComputationBudget {
             {    		
             	Rule rule=rulesSelectedList.get(j);
 
+            	System.out.println("sana "+rule.getRule_action());
             	if(conditionsScripts.validationCondition(rulesSelectedList.get(j).getRule_condition(), rulesSelectedList.get(j).getRule_paramether(),u))
             	{
             		Unit u2 = parametersScripts.validationParameter(u, gs, rulesSelectedList.get(j).getRule_paramether());

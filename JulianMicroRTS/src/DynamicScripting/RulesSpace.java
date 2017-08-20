@@ -23,7 +23,7 @@ public class RulesSpace {
 	//Move_To
 //	private final int action_moveto=1;
 	//MoveAwayOf
-	private final int action_moveawayof=2;
+	private final int action_moveawayof=1;
 	//wait
 //	private final int action_wait=3;
 	//cluster
