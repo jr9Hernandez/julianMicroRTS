@@ -21,9 +21,9 @@ public class RulesSpace {
 	//Attack
 	private final int action_attack=0;	
 	//Move_To
-	private final int action_moveto=1;
+//	private final int action_moveto=1;
 	//MoveAwayOf
-//	private final int action_moveawayof=2;
+	private final int action_moveawayof=2;
 	//wait
 //	private final int action_wait=3;
 	//cluster
@@ -103,20 +103,20 @@ public class RulesSpace {
 	}
 
 
-	/**
-	 * @return the action_moveto
-	 */
-	public int getAction_moveto() {
-		return action_moveto;
-	}
-
-
 //	/**
-//	 * @return the action_moveawayof
+//	 * @return the action_moveto
 //	 */
-//	public int getAction_moveawayof() {
-//		return action_moveawayof;
+//	public int getAction_moveto() {
+//		return action_moveto;
 //	}
+
+
+	/**
+	 * @return the action_moveawayof
+	 */
+	public int getAction_moveawayof() {
+		return action_moveawayof;
+	}
 
 
 //	/**
