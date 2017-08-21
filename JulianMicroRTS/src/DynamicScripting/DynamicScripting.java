@@ -51,8 +51,8 @@ public class DynamicScripting extends AIWithComputationBudget {
         actualScript=new ScriptGeneration(totalRules,rulesSpaceList);
         rulesSelectedList=actualScript.selectionRules();
         
-        attack = new UnitScriptAttack(pf);
-        moveAway=new UnitScriptMoveAway(pf);
+        attack = new UnitScriptAttackTo(pf);
+        moveAway=new UnitScriptMoveAwayTo(pf);
         
 //        scripts = new HashMap<>();
 //        {

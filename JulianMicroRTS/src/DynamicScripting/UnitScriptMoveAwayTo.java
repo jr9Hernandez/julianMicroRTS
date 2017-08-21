@@ -7,6 +7,7 @@ package DynamicScripting;
 
 import ai.abstraction.AbstractAction;
 import ai.abstraction.Attack;
+import ai.abstraction.Move;
 import ai.abstraction.pathfinding.PathFinding;
 import rts.GameState;
 import rts.UnitAction;
@@ -18,12 +19,12 @@ import rts.units.UnitTypeTable;
  *
  * @author This class is based in the original class with the same name for portafolio greedy search, by Santi Ontañon
  */
-public class UnitScriptAttack extends UnitScript {
+public class UnitScriptMoveAwayTo extends UnitScript {
     
     AbstractAction action = null;
     PathFinding pf = null;
     
-    public UnitScriptAttack(PathFinding a_pf) {
+    public UnitScriptMoveAwayTo(PathFinding a_pf) {
         pf = a_pf;
     }
     
@@ -37,9 +38,34 @@ public class UnitScriptAttack extends UnitScript {
     
     public UnitScript instantiate(Unit u, GameState gs, Unit u2) {
         Unit targetParameterRule = u2;
+        
+        int dx = u2.getX()-u.getX();
+        int dy = u2.getY()-u.getY();
+        
+        int newX=u.getX();
+        int newY=u.getY();
+        
+        if(dx>0 && (u.getX()-1)>0)
+        {
+        	newX=u.getX()-1;
+        }
+        else if(dx<0 && (u.getX()+1)<gs.getPhysicalGameState().getWidth()) 
+        {
+        	newX=u.getX()+1;     	
+        }
+        
+        if(dy>0 && (u.getY()-1)>0)
+        {
+        	newY=u.getY()-1;
+        }
+        else if(dy<0 && (u.getY()+1)<gs.getPhysicalGameState().getHeight()) 
+        {
+        	newY=u.getY()+1;        	
+        }
+
         if (targetParameterRule != null) {
-            UnitScriptAttack script = new UnitScriptAttack(pf);
-            script.action = new Attack(u, targetParameterRule, pf);
+            UnitScriptMoveAwayTo script = new UnitScriptMoveAwayTo(pf);
+            script.action = new Move(u, newX, newY, pf);
             return script;
         } else {
             return null;
