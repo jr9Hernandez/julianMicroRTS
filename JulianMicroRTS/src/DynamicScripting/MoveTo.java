@@ -16,31 +16,36 @@ import rts.units.Unit;
  *
  * @author santi
  */
-public class MoveTo extends AbstractAction {
-
-    int x,y;
+public class MoveTo extends AbstractAction  {
+    Unit target;
     PathFinding pf;
     Unit u;
-
     
-    public MoveTo(Unit u, int a_x, int a_y, PathFinding a_pf) {
+    public MoveTo(Unit u, Unit a_target, PathFinding a_pf) {
         super(u);
-        x = a_x;
-        y = a_y;
+        target = a_target;
         pf = a_pf;
         this.u=u;
     }
     
     public boolean completed(GameState gs) {
-        if (u.getX()==x && u.getY()==y) return true;
+        PhysicalGameState pgs = gs.getPhysicalGameState();
+        if (!pgs.getUnits().contains(target)) return true;
         return false;
     }
 
     public UnitAction execute(GameState gs, ResourceUsage ru) {
-        PhysicalGameState pgs = gs.getPhysicalGameState();
-        UnitAction move = pf.findPathToAdjacentPosition(u, x+y*pgs.getWidth(), gs, ru);
-//        System.out.println("AStarAttak returns: " + move);
-        if (move!=null && gs.isUnitActionAllowed(u, move)) return move;
-        return null;
-    }
+        
+        int dx = target.getX()-u.getX();
+        int dy = target.getY()-u.getY();
+        double d = Math.sqrt(dx*dx+dy*dy);
+        if (d<=target.getAttackRange()) {
+        	System.out.println("gol");
+            return new UnitAction(UnitAction.TYPE_ATTACK_LOCATION,target.getX(),target.getY());
+        } else {
+            // move towards the unit:
+    //        System.out.println("AStarAttak returns: " + move);
+        	return new UnitAction(UnitAction.TYPE_NONE);
+        }        
+    }    
 }

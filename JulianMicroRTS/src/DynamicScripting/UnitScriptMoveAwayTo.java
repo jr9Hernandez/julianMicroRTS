@@ -38,33 +38,33 @@ public class UnitScriptMoveAwayTo extends UnitScript {
     public UnitScript instantiate(Unit u, GameState gs, Unit u2) {
         Unit targetParameterRule = u2;
         
-        int dx = u2.getX()-u.getX();
-        int dy = u2.getY()-u.getY();
-        
-        int newX=u.getX();
-        int newY=u.getY();
-        
-        if(dx>0)
-        {
-        	newX=0;
-        }
-        else if(dx<0) 
-        {
-        	newX=gs.getPhysicalGameState().getWidth()-1;     	
-        }
-        
-        if(dy>0)
-        {
-        	newY=0;
-        }
-        else if(dy<0 ) 
-        {
-        	newY=gs.getPhysicalGameState().getHeight()-1;        	
-        }
+//        int dx = u2.getX()-u.getX();
+//        int dy = u2.getY()-u.getY();
+//        
+//        int newX=u.getX();
+//        int newY=u.getY();
+//        
+//        if(dx>0)
+//        {
+//        	newX=0;
+//        }
+//        else if(dx<0) 
+//        {
+//        	newX=gs.getPhysicalGameState().getWidth()-1;     	
+//        }
+//        
+//        if(dy>0)
+//        {
+//        	newY=0;
+//        }
+//        else if(dy<0 ) 
+//        {
+//        	newY=gs.getPhysicalGameState().getHeight()-1;        	
+//        }
 
         if (targetParameterRule != null) {
             UnitScriptMoveAwayTo script = new UnitScriptMoveAwayTo(pf);
-            script.action = new MoveTo(u, newX, newY, pf);
+            script.action = new MoveTo(u, targetParameterRule, pf);
             return script;
         } else {
             return null;
