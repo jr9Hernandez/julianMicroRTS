@@ -42,23 +42,23 @@ public class UnitScriptMoveAway extends UnitScript {
         int dx = u2.getX()-u.getX();
         int dy = u2.getY()-u.getY();
         
-        int newX=0;
-        int newY=0;
+        int newX=u.getX();
+        int newY=u.getY();
         
-        if(dx>0)
+        if(dx>0 && (u.getX()-1)>0)
         {
         	newX=u.getX()-1;
         }
-        else if(dx<0) 
+        else if(dx<0 && (u.getX()+1)<gs.getPhysicalGameState().getWidth()) 
         {
         	newX=u.getX()+1;     	
         }
         
-        if(dy>0)
+        if(dy>0 && (u.getY()-1)>0)
         {
         	newY=u.getY()-1;
         }
-        else if(dy>0) 
+        else if(dy<0 && (u.getY()+1)<gs.getPhysicalGameState().getHeight()) 
         {
         	newY=u.getY()+1;        	
         }
