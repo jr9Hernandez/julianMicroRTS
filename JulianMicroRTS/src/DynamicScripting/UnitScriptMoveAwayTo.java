@@ -7,7 +7,6 @@ package DynamicScripting;
 
 import ai.abstraction.AbstractAction;
 import ai.abstraction.Attack;
-import ai.abstraction.Move;
 import ai.abstraction.pathfinding.PathFinding;
 import rts.GameState;
 import rts.UnitAction;
@@ -65,7 +64,7 @@ public class UnitScriptMoveAwayTo extends UnitScript {
 
         if (targetParameterRule != null) {
             UnitScriptMoveAwayTo script = new UnitScriptMoveAwayTo(pf);
-            script.action = new Move(u, newX, newY, pf);
+            script.action = new MoveTo(u, newX, newY, pf);
             return script;
         } else {
             return null;
