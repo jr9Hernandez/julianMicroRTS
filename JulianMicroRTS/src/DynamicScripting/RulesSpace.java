@@ -5,7 +5,7 @@ public class RulesSpace {
 	//number of conditions, actions, paramethers
 	private int numberConditions=3;
 	private int numberActions=2;
-	private int numberParamethers=2;
+	private int numberParamethers=1;
 
 	//These variables identify the possible conditions in a rule
 	
@@ -34,7 +34,7 @@ public class RulesSpace {
 	//Closest_EnemyUnit
 	private final int paramether_closestEnemy=0;
 	//Fartest_EnemyUnit
-	private final int paramether_fartestEnemy=1;
+//	private final int paramether_fartestEnemy=1;
 	//Weakest_EnemyUnit
 //	private final int paramether_weakestEnemy=0;
 	//Strongest_EnemyUnit
@@ -158,11 +158,11 @@ public class RulesSpace {
 	}
 
 
-	/**
-	 * @return the paramether_fartestEnemy
-	 */
-	public int getParamether_fartestEnemy() {
-		return paramether_fartestEnemy;
-	}
+//	/**
+//	 * @return the paramether_fartestEnemy
+//	 */
+//	public int getParamether_fartestEnemy() {
+//		return paramether_fartestEnemy;
+//	}
 	
 }

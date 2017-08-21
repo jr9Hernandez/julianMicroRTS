@@ -18,10 +18,10 @@ public class ParametersScripts {
 		{
 			return closestEnemyUnit(u, gs);
 		}
-		else if(idParameter==rulesSpace.getParamether_fartestEnemy())
-		{
-			return fartestEnemyUnit(u, gs);
-		}
+//		else if(idParameter==rulesSpace.getParamether_fartestEnemy())
+//		{
+//			return fartestEnemyUnit(u, gs);
+//		}
 		return null;
 	}
 	
