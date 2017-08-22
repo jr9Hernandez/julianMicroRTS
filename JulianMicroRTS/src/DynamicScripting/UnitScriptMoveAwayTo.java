@@ -71,8 +71,6 @@ public class UnitScriptMoveAwayTo extends UnitScript {
 					newY = newY - 1;
 				}
 			}
-			// int
-			// m=r.nextInt(UnitAction.DIRECTION_LEFT-UnitAction.DIRECTION_UP)+UnitAction.DIRECTION_UP;
 
 		} else if (dx >= 0 && dy <= 0) {
 			direction = aux.randomNumberInRange(UnitAction.DIRECTION_DOWN, UnitAction.DIRECTION_LEFT);
@@ -137,8 +135,6 @@ public class UnitScriptMoveAwayTo extends UnitScript {
 			newY = u.getY();
 		}
 
-		System.out.print("oldies "+u.getX()+" "+u.getY());
-		System.out.print("nEWES "+newX+" "+newY);
 		if (targetParameterRule != null) {
 			UnitScriptMoveAwayTo script = new UnitScriptMoveAwayTo(pf);
 			if (d <= targetParameterRule.getAttackRange() + 1) {
