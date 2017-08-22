@@ -39,7 +39,14 @@ public class UnitScriptAttackTo extends UnitScript {
         Unit targetParameterRule = u2;
         if (targetParameterRule != null) {
             UnitScriptAttackTo script = new UnitScriptAttackTo(pf);
-            script.action = new Attack(u, targetParameterRule, pf);
+            if(pf.pathToPositionInRangeExists(u, targetParameterRule.getX()+targetParameterRule.getY()*gs.getPhysicalGameState().getWidth(),u.getAttackRange(), gs, gs.getResourceUsage()))
+            {
+            	script.action = new Attack(u, targetParameterRule, pf);
+            }
+            else
+            {
+            	script.action = new DoNothing(u);
+            }
             return script;
         } else {
             return null;
