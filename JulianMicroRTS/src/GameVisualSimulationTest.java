@@ -16,7 +16,7 @@ import gui.PhysicalGameStatePanel;
 import java.io.OutputStreamWriter;
 import javax.swing.JFrame;
 
-import DynamicScripting.DynamicScripting;
+import dynamicscripting.DynamicScripting;
 import rts.GameState;
 import rts.PhysicalGameState;
 import rts.PlayerAction;

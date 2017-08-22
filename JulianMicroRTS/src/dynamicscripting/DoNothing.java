@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package DynamicScripting;
+package dynamicscripting;
 
 import ai.abstraction.AbstractAction;
 import ai.abstraction.pathfinding.PathFinding;

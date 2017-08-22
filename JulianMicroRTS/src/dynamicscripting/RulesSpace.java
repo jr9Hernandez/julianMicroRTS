@@ -1,4 +1,4 @@
-package DynamicScripting;
+package dynamicscripting;
 
 public class RulesSpace {
 	
