@@ -47,9 +47,5 @@ public class ConditionsScripts {
         }
         return false;
 	}
-	public boolean condition_enemyInsideRange_not() {
-		
-		return false;
-	}
 
 }
