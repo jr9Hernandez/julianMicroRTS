@@ -49,6 +49,7 @@ public class UnitScriptMoveAwayTo extends UnitScript {
         
         
         int direction=-1;
+        boolean[][] free=gs.getAllFree();
         
         if(dx>=0 && dy>=0)
         {
@@ -56,17 +57,21 @@ public class UnitScriptMoveAwayTo extends UnitScript {
         	if(direction==UnitAction.DIRECTION_UP)
         	{
         		newY=newY-1;
-        		if(newY<0 || newY>gs.getPhysicalGameState().getHeight()-1)
+        		if(newY<0 || newY>gs.getPhysicalGameState().getHeight()-1 || free[newX][newY]==false)
         		{
         			direction=UnitAction.DIRECTION_LEFT;
+        			newY=newY+1;
+        			newX=newX-1;
         		}
         	}
         	else if(direction==UnitAction.DIRECTION_LEFT)
         	{
         		newX=newX-1;
-        		if(newX<0 || newX>gs.getPhysicalGameState().getWidth()-1)
+        		if(newX<0 || newX>gs.getPhysicalGameState().getWidth()-1 || free[newX][newY]==false)
         		{
         			direction=UnitAction.DIRECTION_UP;
+        			newX=newX+1;
+        			newY=newY-1;
         		}
         	}        		
         	//int m=r.nextInt(UnitAction.DIRECTION_LEFT-UnitAction.DIRECTION_UP)+UnitAction.DIRECTION_UP;
@@ -78,17 +83,21 @@ public class UnitScriptMoveAwayTo extends UnitScript {
         	if(direction==UnitAction.DIRECTION_DOWN)
         	{
         		newY=newY+1;
-        		if(newY<0 || newY>gs.getPhysicalGameState().getHeight()-1)
+        		if(newY<0 || newY>gs.getPhysicalGameState().getHeight()-1 || free[newX][newY]==false)
         		{
         			direction=UnitAction.DIRECTION_LEFT;
+        			newY=newY-1;
+        			newX=newX-1;
         		}
         	}
         	else if(direction==UnitAction.DIRECTION_LEFT)
         	{
         		newX=newX-1;
-        		if(newX<0 || newX>gs.getPhysicalGameState().getWidth()-1)
+        		if(newX<0 || newX>gs.getPhysicalGameState().getWidth()-1 || free[newX][newY]==false)
         		{
         			direction=UnitAction.DIRECTION_DOWN;
+        			newX=newX+1;
+        			newY=newY+1;
         		}
         	}     	
         }
@@ -98,17 +107,21 @@ public class UnitScriptMoveAwayTo extends UnitScript {
         	if(direction==UnitAction.DIRECTION_UP)
         	{
         		newY=newY-1;
-        		if(newY<0 || newY>gs.getPhysicalGameState().getHeight()-1)
+        		if(newY<0 || newY>gs.getPhysicalGameState().getHeight()-1 || free[newX][newY]==false)
         		{
         			direction=UnitAction.DIRECTION_RIGHT;
+        			newY=newY+1;
+        			newX=newX+1;
         		}
         	}
         	else if(direction==UnitAction.DIRECTION_RIGHT)
         	{
         		newX=newX+1;
-        		if(newX<0 || newX>gs.getPhysicalGameState().getWidth()-1)
+        		if(newX<0 || newX>gs.getPhysicalGameState().getWidth()-1 || free[newX][newY]==false)
         		{
         			direction=UnitAction.DIRECTION_UP;
+        			newX=newX-1;
+        			newY=newY-1;
         		}
         	}  
 
@@ -121,26 +134,32 @@ public class UnitScriptMoveAwayTo extends UnitScript {
         	if(direction==UnitAction.DIRECTION_DOWN)
         	{
         		newY=newY+1;
-        		if(newY<0 || newY>gs.getPhysicalGameState().getHeight()-1)
+        		if(newY<0 || newY>gs.getPhysicalGameState().getHeight()-1 || free[newX][newY]==false)
         		{
         			direction=UnitAction.DIRECTION_RIGHT;
+        			newY=newY-1;
+        			newX=newX+1;
         		}
         	}
         	else if(direction==UnitAction.DIRECTION_RIGHT)
         	{
         		newX=newX+1;
-        		if(newX<0 || newX>gs.getPhysicalGameState().getWidth()-1)
+        		if(newX<0 || newX>gs.getPhysicalGameState().getWidth()-1 || free[newX][newY]==false)
         		{
         			direction=UnitAction.DIRECTION_DOWN;
+        			newX=newX-1;
+        			newY=newY+1;
         		}
         	} 
         }
-        if((newX<0 || newX>gs.getPhysicalGameState().getWidth()-1) || (newY<0 || newY>gs.getPhysicalGameState().getHeight()-1))
+        
+        System.out.println("endereco "+direction);
+        if((newX<0 || newX>gs.getPhysicalGameState().getWidth()-1) || (newY<0 || newY>gs.getPhysicalGameState().getHeight()-1) || free[newX][newY]==false)
         {
         	direction=-1;
         }
 
-        System.out.println("endereco "+direction);
+        System.out.println("endereco2 "+direction);
         if (targetParameterRule != null) {
             UnitScriptMoveAwayTo script = new UnitScriptMoveAwayTo(pf);
             script.action = new MoveTo(u, targetParameterRule, pf, direction);
