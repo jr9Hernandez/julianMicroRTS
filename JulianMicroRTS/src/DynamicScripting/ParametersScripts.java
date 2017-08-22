@@ -22,6 +22,14 @@ public class ParametersScripts {
 		{
 			return fartestEnemyUnit(u, gs);
 		}
+		else if(idParameter==rulesSpace.getParamether_weakestEnemy())
+		{
+			return weakestEnemyUnit(u, gs);
+		}
+		else if(idParameter==rulesSpace.getParamether_strongestEnemy())
+		{
+			return strongestEnemyUnit(u, gs);
+		}
 		return null;
 	}
 	
@@ -54,5 +62,37 @@ public class ParametersScripts {
             }
         }
         return farthest;
+    }
+    
+    public Unit weakestEnemyUnit(Unit u, GameState gs) 
+    {
+        Unit weakest = null;
+        int weakesthp = 0;
+        for (Unit u2 : gs.getPhysicalGameState().getUnits()) {
+            if (u2.getPlayer()>=0 && u2.getPlayer() != u.getPlayer()) {
+            	int hp=u2.getHitPoints();
+                if (weakest == null || hp < weakesthp) {
+                	weakest = u2;
+                	weakesthp = hp;
+                }
+            }
+        }
+        return weakest;
+    }
+
+    public Unit strongestEnemyUnit(Unit u, GameState gs) 
+    {
+        Unit strongest = null;
+        int strongesthp = 0;
+        for (Unit u2 : gs.getPhysicalGameState().getUnits()) {
+            if (u2.getPlayer()>=0 && u2.getPlayer() != u.getPlayer()) {
+            	int hp=u2.getHitPoints();
+                if (strongest == null || hp < strongesthp) {
+                	strongest = u2;
+                	strongesthp = hp;
+                }
+            }
+        }
+        return strongest;
     }
 }

@@ -36,9 +36,9 @@ public class RulesSpace {
 	//Fartest_EnemyUnit
 	private final int paramether_fartestEnemy=1;
 	//Weakest_EnemyUnit
-//	private final int paramether_weakestEnemy=0;
+	private final int paramether_weakestEnemy=0;
 	//Strongest_EnemyUnit
-//	private final int paramether_strongestEnemy=1;
+	private final int paramether_strongestEnemy=1;
 
 	
 	
@@ -134,20 +134,20 @@ public class RulesSpace {
 //	}
 
 
-//	/**
-//	 * @return the paramether_weakestEnemy
-//	 */
-//	public int getParamether_weakestEnemy() {
-//		return paramether_weakestEnemy;
-//	}
+	/**
+	 * @return the paramether_weakestEnemy
+	 */
+	public int getParamether_weakestEnemy() {
+		return paramether_weakestEnemy;
+	}
 
 
 	/**
 	 * @return the paramether_strongestEnemy
 	 */
-//	public int getParamether_strongestEnemy() {
-//		return paramether_strongestEnemy;
-//	}
+	public int getParamether_strongestEnemy() {
+		return paramether_strongestEnemy;
+	}
 
 
 	/**
