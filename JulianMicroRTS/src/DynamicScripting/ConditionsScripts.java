@@ -12,7 +12,7 @@ public class ConditionsScripts {
 	
 	public ConditionsScripts(RulesSpace rulesSpace, ParametersScripts parametersScripts, GameState gs)
 	{
-		this.rulesSpace=rulesSpace;
+		this.rulesSpace=rulesSpace; 
 		this.parametersScripts=parametersScripts;
 		this.gs=gs;
 	}
