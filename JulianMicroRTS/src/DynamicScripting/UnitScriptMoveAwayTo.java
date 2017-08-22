@@ -5,6 +5,8 @@
  */
 package DynamicScripting;
 
+import java.util.Random;
+
 import ai.abstraction.AbstractAction;
 import ai.abstraction.Attack;
 import ai.abstraction.pathfinding.PathFinding;
@@ -22,6 +24,7 @@ public class UnitScriptMoveAwayTo extends UnitScript {
     
     AbstractAction action = null;
     PathFinding pf = null;
+    AuxMethods aux=new AuxMethods();
     
     public UnitScriptMoveAwayTo(PathFinding a_pf) {
         pf = a_pf;
@@ -38,33 +41,109 @@ public class UnitScriptMoveAwayTo extends UnitScript {
     public UnitScript instantiate(Unit u, GameState gs, Unit u2) {
         Unit targetParameterRule = u2;
         
-//        int dx = u2.getX()-u.getX();
-//        int dy = u2.getY()-u.getY();
-//        
-//        int newX=u.getX();
-//        int newY=u.getY();
-//        
-//        if(dx>0)
-//        {
-//        	newX=0;
-//        }
-//        else if(dx<0) 
-//        {
-//        	newX=gs.getPhysicalGameState().getWidth()-1;     	
-//        }
-//        
-//        if(dy>0)
-//        {
-//        	newY=0;
-//        }
-//        else if(dy<0 ) 
-//        {
-//        	newY=gs.getPhysicalGameState().getHeight()-1;        	
-//        }
+        int dx = u2.getX()-u.getX();
+        int dy = u2.getY()-u.getY();
+        
+        int newX=u.getX();
+        int newY=u.getY();
+        
+        
+        int direction=-1;
+        
+        if(dx>=0 && dy>=0)
+        {
+        	direction=aux.randomNumberInRange(UnitAction.DIRECTION_UP,UnitAction.DIRECTION_LEFT);
+        	if(direction==UnitAction.DIRECTION_UP)
+        	{
+        		newY=newY-1;
+        		if(newY<0 || newY>gs.getPhysicalGameState().getHeight()-1)
+        		{
+        			direction=UnitAction.DIRECTION_LEFT;
+        		}
+        	}
+        	else if(direction==UnitAction.DIRECTION_LEFT)
+        	{
+        		newX=newX-1;
+        		if(newX<0 || newX>gs.getPhysicalGameState().getWidth()-1)
+        		{
+        			direction=UnitAction.DIRECTION_UP;
+        		}
+        	}        		
+        	//int m=r.nextInt(UnitAction.DIRECTION_LEFT-UnitAction.DIRECTION_UP)+UnitAction.DIRECTION_UP;
+        	
+        }
+        else if(dx>=0 && dy<=0) 
+        {
+        	direction=aux.randomNumberInRange(UnitAction.DIRECTION_DOWN,UnitAction.DIRECTION_LEFT);
+        	if(direction==UnitAction.DIRECTION_DOWN)
+        	{
+        		newY=newY+1;
+        		if(newY<0 || newY>gs.getPhysicalGameState().getHeight()-1)
+        		{
+        			direction=UnitAction.DIRECTION_LEFT;
+        		}
+        	}
+        	else if(direction==UnitAction.DIRECTION_LEFT)
+        	{
+        		newX=newX-1;
+        		if(newX<0 || newX>gs.getPhysicalGameState().getWidth()-1)
+        		{
+        			direction=UnitAction.DIRECTION_DOWN;
+        		}
+        	}     	
+        }
+        else if(dx<=0 && dy>=0)
+        {
+        	direction=aux.randomNumberInRange(UnitAction.DIRECTION_UP,UnitAction.DIRECTION_RIGHT);
+        	if(direction==UnitAction.DIRECTION_UP)
+        	{
+        		newY=newY-1;
+        		if(newY<0 || newY>gs.getPhysicalGameState().getHeight()-1)
+        		{
+        			direction=UnitAction.DIRECTION_RIGHT;
+        		}
+        	}
+        	else if(direction==UnitAction.DIRECTION_RIGHT)
+        	{
+        		newX=newX+1;
+        		if(newX<0 || newX>gs.getPhysicalGameState().getWidth()-1)
+        		{
+        			direction=UnitAction.DIRECTION_UP;
+        		}
+        	}  
 
+        }
+        
+        else if(dx<=0 && dy<=0)
+        {
+        	
+        	direction=aux.randomNumberInRange(UnitAction.DIRECTION_RIGHT,UnitAction.DIRECTION_DOWN);
+        	if(direction==UnitAction.DIRECTION_DOWN)
+        	{
+        		newY=newY+1;
+        		if(newY<0 || newY>gs.getPhysicalGameState().getHeight()-1)
+        		{
+        			direction=UnitAction.DIRECTION_RIGHT;
+        		}
+        	}
+        	else if(direction==UnitAction.DIRECTION_RIGHT)
+        	{
+        		newX=newX+1;
+        		if(newX<0 || newX>gs.getPhysicalGameState().getWidth()-1)
+        		{
+        			direction=UnitAction.DIRECTION_DOWN;
+        		}
+        	} 
+        }
+        if((newX<0 || newX>gs.getPhysicalGameState().getWidth()-1) || (newY<0 || newY>gs.getPhysicalGameState().getHeight()-1))
+        {
+        	direction=-1;
+        }
+
+        System.out.println("endereco "+direction);
         if (targetParameterRule != null) {
             UnitScriptMoveAwayTo script = new UnitScriptMoveAwayTo(pf);
-            script.action = new MoveTo(u, targetParameterRule, pf);
+            script.action = new MoveTo(u, targetParameterRule, pf, direction);
             return script;
         } else {
             return null;

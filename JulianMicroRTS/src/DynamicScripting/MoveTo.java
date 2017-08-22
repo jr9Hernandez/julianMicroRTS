@@ -20,12 +20,14 @@ public class MoveTo extends AbstractAction  {
     Unit target;
     PathFinding pf;
     Unit u;
+    int direction;
     
-    public MoveTo(Unit u, Unit a_target, PathFinding a_pf) {
+    public MoveTo(Unit u, Unit a_target, PathFinding a_pf, int direction) {
         super(u);
         target = a_target;
         pf = a_pf;
         this.u=u;
+        this.direction=direction;
     }
     
     public boolean completed(GameState gs) {
@@ -41,7 +43,7 @@ public class MoveTo extends AbstractAction  {
         double d = Math.sqrt(dx*dx+dy*dy);
         if (d<=target.getAttackRange()) {
         	System.out.println("gol");
-            return new UnitAction(UnitAction.TYPE_MOVE,UnitAction.DIRECTION_RIGHT);
+            return new UnitAction(UnitAction.TYPE_MOVE,direction);
         } else {
             // move towards the unit:
     //        System.out.println("AStarAttak returns: " + move);
