@@ -1,0 +1,35 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package DynamicScripting;
+
+import ai.abstraction.AbstractAction;
+import ai.abstraction.pathfinding.PathFinding;
+import rts.GameState;
+import rts.PhysicalGameState;
+import rts.ResourceUsage;
+import rts.UnitAction;
+import rts.units.Unit;
+
+/**
+ *
+ * @author santi
+ */
+public class DoNothing extends AbstractAction  {
+
+    
+    public DoNothing(Unit u) {
+        super(u);
+    }
+    
+    public boolean completed(GameState gs) {
+        return false;
+    }
+
+    public UnitAction execute(GameState gs, ResourceUsage ru) {
+        
+        return new UnitAction(UnitAction.TYPE_NONE);
+        
+    }    
+}
