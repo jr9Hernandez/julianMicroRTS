@@ -41,7 +41,7 @@ public class MoveTo extends AbstractAction  {
         double d = Math.sqrt(dx*dx+dy*dy);
         if (d<=target.getAttackRange()) {
         	System.out.println("gol");
-            return new UnitAction(UnitAction.TYPE_ATTACK_LOCATION,target.getX(),target.getY());
+            return new UnitAction(UnitAction.TYPE_MOVE,UnitAction.DIRECTION_RIGHT);
         } else {
             // move towards the unit:
     //        System.out.println("AStarAttak returns: " + move);
