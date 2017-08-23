@@ -6,12 +6,15 @@ import java.util.HashMap;
 import java.util.List;
 
 import ai.abstraction.Attack;
+import ai.abstraction.WorkerRush;
 import ai.abstraction.pathfinding.AStarPathFinding;
+import ai.abstraction.pathfinding.BFSPathFinding;
 import ai.abstraction.pathfinding.PathFinding;
 import ai.core.AI;
 import ai.core.AIWithComputationBudget;
 import ai.core.ParameterSpecification;
 import ai.evaluation.EvaluationFunction;
+import ai.portfolio.PortfolioAI;
 import rts.GameState;
 import rts.PlayerAction;
 import rts.PlayerActionGenerator;
@@ -36,7 +39,11 @@ public class DynamicScripting extends AIWithComputationBudget {
 	UnitScript moveAwayTo;
 	UnitScript moveTo;
 	boolean firstExecution=true;
+	boolean isPlayout=true;
 	AuxMethods aux=new AuxMethods();
+	int nplayouts = 0;
+	int LOOKAHEAD = 500;
+	EvaluationFunction evaluation = null;
 
 	// This is the default constructor that microRTS will call:
 	public DynamicScripting(UnitTypeTable utt) {
@@ -71,11 +78,77 @@ public class DynamicScripting extends AIWithComputationBudget {
 		pa.fillWithNones(gs, player, 10);
 
 		// Here I have to assig an action for each unit!
+		if(isPlayout)
+		{
+			try {
+				playout(player, gs);
+				isPlayout=false;
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		pa = ActionsAssignments(player, gs);
+		return pa;
+	}
 
+	// This will be called by the microRTS GUI to get the
+	// list of parameters that this bot wants exposed
+	// in the GUI.
+	public List<ParameterSpecification> getParameters() {
+		return new ArrayList<>();
+	}
+
+	// This method will create the space of rules
+	public ArrayList<Rule> rulesGeneration() {
+		ArrayList<Rule> rulesSpaceList = new ArrayList<Rule>();
+		totalRules = rulesSpace.getNumberConditions() * rulesSpace.getNumberParamethers()
+				* rulesSpace.getNumberActions();
+		int counterId = 0;
+		for (int i = 0; i < rulesSpace.getNumberConditions(); i++) {
+			for (int j = 0; j < rulesSpace.getNumberActions(); j++) {
+				for (int k = 0; k < rulesSpace.getNumberParamethers(); k++) {
+					Rule rule = new Rule(counterId, 100, false, i, j, k);
+					counterId++;
+					rulesSpaceList.add(rule);
+
+				}
+			}
+		}
+
+		// code for print the actual arraylist of objects
+		for (Rule rule : rulesSpaceList) {
+			System.out.println(rule.getRule_id() + " " + rule.getWeight() + " " + rule.getActive() + " "
+					+ rule.getRule_condition() + " " + rule.getRule_action() + " " + rule.getRule_paramether());
+		}
+		return rulesSpaceList;
+	}
+
+	private void generationRulesSpaces(List<Unit> playerUnits, int n1) {
+		for (int i = 0; i < n1; i++) {
+			Unit u = playerUnits.get(i);
+			ArrayList<Rule> rulesSpaceList = rulesGeneration();
+			RulesSpaceUnit.put(u, rulesSpaceList);
+		}
+	}
+
+	public void selectionRulesForUnits(List<Unit> playerUnits, int n1) {
+		for (int i = 0; i < n1; i++) {
+			Unit u = playerUnits.get(i);
+			ScriptGeneration actualScript = new ScriptGeneration(totalRules, RulesSpaceUnit.get(u));
+			ArrayList<Rule> rulesSelectedList = actualScript.selectionRules();
+			RulesSelectedUnit.put(u, rulesSelectedList);
+
+		}
+	}
+	
+	public PlayerAction ActionsAssignments(int player, GameState gs)
+	{
+		PlayerAction pa = new PlayerAction();
+		pa.fillWithNones(gs, player, 10);
+		
 		List<Unit> playerUnits = aux.units1(player,gs);
 		int n1=playerUnits.size();
-
-
 		
 		if(firstExecution)
 		{
@@ -130,55 +203,32 @@ public class DynamicScripting extends AIWithComputationBudget {
 		}
 		return pa;
 	}
+	
+	public void playout(int player, GameState gs) throws Exception {
+		// if (DEBUG>=1) System.out.println(" playout... " + LOOKAHEAD);
+		nplayouts++;
 
-	// This will be called by the microRTS GUI to get the
-	// list of parameters that this bot wants exposed
-	// in the GUI.
-	public List<ParameterSpecification> getParameters() {
-		return new ArrayList<>();
-	}
 
-	// This method will create the space of rules
-	public ArrayList<Rule> rulesGeneration() {
-		ArrayList<Rule> rulesSpaceList = new ArrayList<Rule>();
-		totalRules = rulesSpace.getNumberConditions() * rulesSpace.getNumberParamethers()
-				* rulesSpace.getNumberActions();
-		int counterId = 0;
-		for (int i = 0; i < rulesSpace.getNumberConditions(); i++) {
-			for (int j = 0; j < rulesSpace.getNumberActions(); j++) {
-				for (int k = 0; k < rulesSpace.getNumberParamethers(); k++) {
-					Rule rule = new Rule(counterId, 100, false, i, j, k);
-					counterId++;
-					rulesSpaceList.add(rule);
-
-				}
+		GameState gs2 = gs.clone();
+		int timeLimit = gs2.getTime() + LOOKAHEAD;
+		boolean gameover = false;
+		while (!gameover ) {
+			if (gs2.isComplete()) {
+				gameover = gs2.cycle();
+				System.out.println("proculo");
+			} else {
+				System.out.println("chorrillano");
+				PlayerAction pa = ActionsAssignments(player, gs2);
+				gs2.issue(pa);
+				
+				AI ai2 = new WorkerRush(m_utt, new BFSPathFinding()); 
+				PlayerAction pa2 = ai2.getAction(player-1, gs);
+				gs2.issue(pa2);
 			}
 		}
+		double e = evaluation.evaluate(player, 1 - player, gs2);
+		// if (DEBUG>=1) System.out.println(" done: " + e);
 
-		// code for print the actual arraylist of objects
-		for (Rule rule : rulesSpaceList) {
-			System.out.println(rule.getRule_id() + " " + rule.getWeight() + " " + rule.getActive() + " "
-					+ rule.getRule_condition() + " " + rule.getRule_action() + " " + rule.getRule_paramether());
-		}
-		return rulesSpaceList;
-	}
-
-	private void generationRulesSpaces(List<Unit> playerUnits, int n1) {
-		for (int i = 0; i < n1; i++) {
-			Unit u = playerUnits.get(i);
-			ArrayList<Rule> rulesSpaceList = rulesGeneration();
-			RulesSpaceUnit.put(u, rulesSpaceList);
-		}
-	}
-
-	public void selectionRulesForUnits(List<Unit> playerUnits, int n1) {
-		for (int i = 0; i < n1; i++) {
-			Unit u = playerUnits.get(i);
-			ScriptGeneration actualScript = new ScriptGeneration(totalRules, RulesSpaceUnit.get(u));
-			ArrayList<Rule> rulesSelectedList = actualScript.selectionRules();
-			RulesSelectedUnit.put(u, rulesSelectedList);
-
-		}
 	}
 
 }
