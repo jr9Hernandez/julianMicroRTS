@@ -5,7 +5,7 @@ import java.util.List;
 
 public class ScriptGeneration {
 
-	private final int scriptSize=1;
+	private final int scriptSize=2;
 	private final int maxTries=5;
 	
 	
