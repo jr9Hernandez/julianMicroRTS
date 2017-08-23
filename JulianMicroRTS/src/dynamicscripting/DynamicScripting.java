@@ -222,7 +222,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 				gs2.issue(pa);
 				
 				AI ai2 = new WorkerRush(m_utt, new BFSPathFinding()); 
-				PlayerAction pa2 = ai2.getAction(player-1, gs);
+				PlayerAction pa2 = ai2.getAction(player-1, gs2);
 				gs2.issue(pa2);
 			}
 		}
