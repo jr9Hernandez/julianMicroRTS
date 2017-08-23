@@ -89,15 +89,10 @@ public class DynamicScripting extends AIWithComputationBudget {
 
 		for (int i = 0; i < n1; i++) {
 			Unit u = playerUnits.get(i);
-			System.out.println("dif unidade");
 			if (gs.getUnitAction(u) == null) {
 
 				ArrayList<Rule> rulesSelected = RulesSelectedUnit.get(u);
-				if(rulesSelected==null)
-				{
-					System.out.println("caramba");
-				}
-				else {System.out.println("no caramba "+rulesSelected.size());}
+
 				for (int j = 0; j < rulesSelected.size(); j++) {
 					Rule rule = rulesSelected.get(j);
 
