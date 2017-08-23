@@ -34,6 +34,7 @@ public class DynamicScripting extends AIWithComputationBudget {
     private ConditionsScripts conditionsScripts;
     private ParametersScripts parametersScripts;
     UnitScript attackTo;
+    UnitScript moveAwayTo;
     UnitScript moveTo;
 
 
@@ -52,7 +53,8 @@ public class DynamicScripting extends AIWithComputationBudget {
         rulesSelectedList=actualScript.selectionRules();
         
         attackTo = new UnitScriptAttackTo(pf);
-        moveTo=new UnitScriptMoveAwayTo(pf);
+        moveAwayTo=new UnitScriptMoveAwayTo(pf);
+        moveTo=new UnitScriptMoveTo(pf);
         
 //        scripts = new HashMap<>();
 //        {
@@ -139,14 +141,21 @@ public class DynamicScripting extends AIWithComputationBudget {
             		Unit u2 = parametersScripts.validationParameter(u, gs, rulesSelectedList.get(j).getRule_paramether());
             		if(rulesSelectedList.get(j).getRule_action()==rulesSpace.getAction_attack())
             		{
-            			System.out.println("action Attack");
+            			System.out.println("action Attack "+rulesSelectedList.get(j).getRule_paramether());
             			UnitScript s=attackTo.instantiate(u, gs, u2);
             			UnitAction ua = s.getAction(u, gs);
             			pa.addUnitAction(u, ua);
             		}
             		else if(rulesSelectedList.get(j).getRule_action()==rulesSpace.getAction_moveawayof())
             		{
-            			System.out.println("action move");
+            			System.out.println("action move Away "+rulesSelectedList.get(j).getRule_paramether());
+            			UnitScript s=moveAwayTo.instantiate(u, gs, u2);
+            			UnitAction ua = s.getAction(u, gs);
+            			pa.addUnitAction(u, ua);
+            		}
+            		else if(rulesSelectedList.get(j).getRule_action()==rulesSpace.getAction_moveto())
+            		{
+            			System.out.println("action move "+rulesSelectedList.get(j).getRule_paramether());
             			UnitScript s=moveTo.instantiate(u, gs, u2);
             			UnitAction ua = s.getAction(u, gs);
             			pa.addUnitAction(u, ua);
