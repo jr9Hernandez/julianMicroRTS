@@ -25,12 +25,10 @@ public class DynamicScripting extends AIWithComputationBudget {
     UnitTypeTable m_utt = null;
     PathFinding pf;
     HashMap<UnitType, List<UnitScript>> scripts = null;
-    
-    private ArrayList <Rule> rulesSpaceList=new ArrayList <Rule> ();;
-    private ArrayList<Rule> rulesSelectedList;
+    HashMap<Unit, ArrayList<Rule>> RulesSpaceUnit = null;
+    HashMap<Unit, ArrayList<Rule>> RulesSelectedUnit = null;        
     private RulesSpace rulesSpace= new RulesSpace();
     private int totalRules;
-    private ScriptGeneration actualScript; 
     private ConditionsScripts conditionsScripts;
     private ParametersScripts parametersScripts;
     UnitScript attackTo;
@@ -46,11 +44,7 @@ public class DynamicScripting extends AIWithComputationBudget {
     public DynamicScripting(UnitTypeTable utt, int time, int max_playouts, PathFinding a_pf) {
         super(time,max_playouts);
         m_utt = utt;
-        pf=a_pf;
-        
-        rulesGeneration();        
-        actualScript=new ScriptGeneration(totalRules,rulesSpaceList);
-        rulesSelectedList=actualScript.selectionRules();
+        pf=a_pf;                
         
         attackTo = new UnitScriptAttackTo(pf);
         moveAwayTo=new UnitScriptMoveAwayTo(pf);
@@ -118,47 +112,59 @@ public class DynamicScripting extends AIWithComputationBudget {
         //Here I have to assig an action for each unit!
         
         List<Unit> playerUnits = new ArrayList<>();
+        List<Unit> enemyUnits = new ArrayList<>();
 
         for(Unit u:gs.getUnits()) {
-            if (u.getPlayer()==player) playerUnits.add(u);           
+            if (u.getPlayer()==player) playerUnits.add(u);
+            else if (u.getPlayer()>=0) enemyUnits.add(u);
         }
         int n1 = playerUnits.size();
+        int n2 = enemyUnits.size();
+        
+        RulesSpaceUnit=new HashMap<>();
+        RulesSelectedUnit=new HashMap<>();
+        generationRulesSpaces(playerUnits, n1);
+        selectionRulesForUnits(playerUnits,n1);
         
         parametersScripts=new ParametersScripts(rulesSpace);
         conditionsScripts=new ConditionsScripts(rulesSpace,parametersScripts,gs);
         
         for(int i = 0;i<n1;i++) {
             Unit u = playerUnits.get(i);
-//          List<UnitScript> candidates = scripts.get(u.getType());
             if (gs.getUnitAction(u)==null) {
-            for(int j=0;j<rulesSelectedList.size();j++)
+            	
+            ArrayList<Rule> rulesSelected=RulesSelectedUnit.get(u);
+            for(int j=0;j<rulesSelected.size();j++)
             {    		
-            	Rule rule=rulesSelectedList.get(j);
+            	Rule rule=rulesSelected.get(j);
 
-            	if(conditionsScripts.validationCondition(rulesSelectedList.get(j).getRule_condition(), rulesSelectedList.get(j).getRule_paramether(),u))
+            	if(conditionsScripts.validationCondition(rulesSelected.get(j).getRule_condition(), rulesSelected.get(j).getRule_paramether(),u))
             	{
             		
-            		Unit u2 = parametersScripts.validationParameter(u, gs, rulesSelectedList.get(j).getRule_paramether());
-            		if(rulesSelectedList.get(j).getRule_action()==rulesSpace.getAction_attack())
+            		Unit u2 = parametersScripts.validationParameter(u, gs, rulesSelected.get(j).getRule_paramether());
+            		if(rulesSelected.get(j).getRule_action()==rulesSpace.getAction_attack())
             		{
-            			System.out.println("action Attack "+rulesSelectedList.get(j).getRule_paramether());
+            			System.out.println("action Attack "+rulesSelected.get(j).getRule_paramether());
             			UnitScript s=attackTo.instantiate(u, gs, u2);
             			UnitAction ua = s.getAction(u, gs);
             			pa.addUnitAction(u, ua);
+            			break;
             		}
-            		else if(rulesSelectedList.get(j).getRule_action()==rulesSpace.getAction_moveawayof())
+            		else if(rulesSelected.get(j).getRule_action()==rulesSpace.getAction_moveawayof())
             		{
-            			System.out.println("action move Away "+rulesSelectedList.get(j).getRule_paramether());
+            			System.out.println("action move Away "+rulesSelected.get(j).getRule_paramether());
             			UnitScript s=moveAwayTo.instantiate(u, gs, u2);
             			UnitAction ua = s.getAction(u, gs);
             			pa.addUnitAction(u, ua);
+            			break;
             		}
-            		else if(rulesSelectedList.get(j).getRule_action()==rulesSpace.getAction_moveto())
+            		else if(rulesSelected.get(j).getRule_action()==rulesSpace.getAction_moveto())
             		{
-            			System.out.println("action move "+rulesSelectedList.get(j).getRule_paramether());
+            			System.out.println("action move "+rulesSelected.get(j).getRule_paramether());
             			UnitScript s=moveTo.instantiate(u, gs, u2);
             			UnitAction ua = s.getAction(u, gs);
             			pa.addUnitAction(u, ua);
+            			break;
             		}
             		
             		
@@ -179,9 +185,9 @@ public class DynamicScripting extends AIWithComputationBudget {
     }
     
     //This method will create the space of rules
-    public void rulesGeneration()
+    public ArrayList <Rule> rulesGeneration()
     {
-    	
+    	ArrayList <Rule> rulesSpaceList=new ArrayList <Rule> ();
     	totalRules=rulesSpace.getNumberConditions()*rulesSpace.getNumberParamethers()*rulesSpace.getNumberActions();
     	int counterId=0;
     	for(int i=0;i<rulesSpace.getNumberConditions();i++)
@@ -202,7 +208,27 @@ public class DynamicScripting extends AIWithComputationBudget {
         for(Rule rule : rulesSpaceList) {
             System.out.println(rule.getRule_id()+" "+rule.getWeight()+" "+rule.getActive()+" "+rule.getRule_condition()+" "+rule.getRule_action()+" "+rule.getRule_paramether());
         }
-    	
+    	return rulesSpaceList;
+    }
+    
+    private void generationRulesSpaces(List<Unit> playerUnits, int n1)
+    {
+    	for(int i = 0;i<n1;i++) {
+            Unit u = playerUnits.get(i);
+            ArrayList <Rule> rulesSpaceList=rulesGeneration();
+            RulesSpaceUnit.put(u, rulesSpaceList);
+    	}    	
+    }
+    
+    public void selectionRulesForUnits(List<Unit> playerUnits, int n1)
+    {
+    	for(int i = 0;i<n1;i++) {
+            Unit u = playerUnits.get(i);
+            ScriptGeneration actualScript=new ScriptGeneration(totalRules,RulesSpaceUnit.get(u));
+            ArrayList<Rule> rulesSelectedList=actualScript.selectionRules();
+            RulesSelectedUnit.put(u, rulesSelectedList);
+            
+    	}
     }
     
 }
