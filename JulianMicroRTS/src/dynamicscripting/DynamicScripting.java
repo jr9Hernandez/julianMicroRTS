@@ -21,11 +21,11 @@ import rts.units.UnitType;
 import rts.units.UnitTypeTable;
 
 public class DynamicScripting extends AIWithComputationBudget {
-
-	AuxMethods aux=new AuxMethods();
+	
 	UnitTypeTable m_utt = null;
 	PathFinding pf;
 	HashMap<UnitType, List<UnitScript>> scripts = null;
+	
 	HashMap<Unit, ArrayList<Rule>> RulesSpaceUnit = new HashMap<>();;
 	HashMap<Unit, ArrayList<Rule>> RulesSelectedUnit = new HashMap<>();;
 	private RulesSpace rulesSpace = new RulesSpace();
@@ -36,6 +36,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 	UnitScript moveAwayTo;
 	UnitScript moveTo;
 	boolean firstExecution=true;
+	AuxMethods aux=new AuxMethods();
 
 	// This is the default constructor that microRTS will call:
 	public DynamicScripting(UnitTypeTable utt) {
