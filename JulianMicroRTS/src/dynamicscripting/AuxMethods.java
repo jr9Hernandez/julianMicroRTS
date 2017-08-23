@@ -1,6 +1,11 @@
 package dynamicscripting;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+
+import rts.GameState;
+import rts.units.Unit;
 
 public class AuxMethods {
 
@@ -12,5 +17,14 @@ public class AuxMethods {
         Random random = new Random();
         return random.nextInt((max - min) + 1) + min;
     }
+	
+	public List<Unit> units1(int player, GameState gs){
+		List<Unit> playerUnits = new ArrayList<>();
+		for (Unit u : gs.getUnits()) {
+			if (u.getPlayer() == player)
+				playerUnits.add(u);
+		}
+		return playerUnits;
+	}
 
 }

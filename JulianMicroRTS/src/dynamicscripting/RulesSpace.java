@@ -4,7 +4,7 @@ public class RulesSpace {
 	
 	//number of conditions, actions, paramethers
 	private int numberConditions=3;
-	private int numberActions=3;
+	private int numberActions=2;
 	private int numberParamethers=4;
 
 	//These variables identify the possible conditions in a rule
@@ -21,9 +21,9 @@ public class RulesSpace {
 	//Attack
 	private final int action_attack=0;	
 	//Move_To
-	private final int action_moveto=1;
+//	private final int action_moveto=1;
 	//MoveAwayOf
-	private final int action_moveawayof=2;
+	private final int action_moveawayof=1;
 	//wait
 //	private final int action_wait=3;
 	//cluster
@@ -103,12 +103,12 @@ public class RulesSpace {
 	}
 
 
-	/**
-	 * @return the action_moveto
-	 */
-	public int getAction_moveto() {
-		return action_moveto;
-	}
+//	/**
+//	 * @return the action_moveto
+//	 */
+//	public int getAction_moveto() {
+//		return action_moveto;
+//	}
 
 
 	/**
