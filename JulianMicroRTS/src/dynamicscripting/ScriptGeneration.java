@@ -14,6 +14,7 @@ public class ScriptGeneration {
 	private ArrayList<Rule> ruleSpaceList;
 	private ArrayList<Rule> rulesSelectedList;
 	private AuxMethods objAuxMethods;
+	private boolean atLeastOneAdded=false;
 	
 	public ScriptGeneration(int totalRules, ArrayList<Rule> rulesSpaceList)
 	{
@@ -61,6 +62,7 @@ public class ScriptGeneration {
 				if(selected!=-1)
 				{
 					lineAdded=insertInScript(ruleSpaceList.get(selected));
+					atLeastOneAdded=true;
 				}
 				if(lineAdded==true)
 				{
@@ -68,6 +70,10 @@ public class ScriptGeneration {
 				}
 				trySelection++;
 			}
+		}
+		if(!atLeastOneAdded)
+		{
+			insertInScript(ruleSpaceList.get(0));
 		}
 		return rulesSelectedList;
 	}
