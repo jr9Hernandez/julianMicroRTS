@@ -68,7 +68,6 @@ public class ScriptGeneration {
 				}
 				trySelection++;
 			}
-			maxTries=5;
 		}
 		return rulesSelectedList;
 	}
