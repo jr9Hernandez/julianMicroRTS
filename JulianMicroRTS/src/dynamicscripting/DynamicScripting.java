@@ -41,6 +41,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 	UnitScript moveTo;
 	boolean firstExecution=true;
 	boolean isPlayout=true;
+	boolean firstAll=true;
 	AuxMethods aux=new AuxMethods();
 	int nplayouts = 0;
 	int LOOKAHEAD = 500;
@@ -160,9 +161,15 @@ public class DynamicScripting extends AIWithComputationBudget {
 		List<Unit> playerUnits = aux.units1(player,gs);
 		int n1=playerUnits.size();
 		
-		if(isPlayout && firstExecution)
+		if(firstAll)
 		{
 			generationRulesSpaces(playerUnits, n1);
+			firstAll=false;
+		}
+		
+		if(isPlayout && firstExecution)
+		{
+			
 			selectionRulesForUnits(playerUnits, n1);
 			firstExecution=false;
 		}
@@ -190,14 +197,14 @@ public class DynamicScripting extends AIWithComputationBudget {
 
 						Unit u2 = parametersScripts.validationParameter(u, gs,rulesSelected.get(j).getRule_paramether());
 						if (rulesSelected.get(j).getRule_action() == rulesSpace.getAction_attack()) {
-							System.out.println("action Attack " + rulesSelected.get(j).getRule_paramether());
+							//System.out.println("action Attack " + rulesSelected.get(j).getRule_paramether());
 							UnitScript s = attackTo.instantiate(u, gs, u2);
 							UnitAction ua = s.getAction(u, gs);
 							pa.addUnitAction(u, ua);
 							break;
 							
 						} else if (rulesSelected.get(j).getRule_action() == rulesSpace.getAction_moveawayof()) {
-							System.out.println("action move Away " + rulesSelected.get(j).getRule_paramether());
+							//System.out.println("action move Away " + rulesSelected.get(j).getRule_paramether());
 							UnitScript s = moveAwayTo.instantiate(u, gs, u2);
 							UnitAction ua = s.getAction(u, gs);
 							pa.addUnitAction(u, ua);
@@ -217,13 +224,14 @@ public class DynamicScripting extends AIWithComputationBudget {
 				}
 			}
 		}
+		
 		return pa;
 	}
 	
 	public void playout(int player, GameState gs) throws Exception {
 		// if (DEBUG>=1) System.out.println(" playout... " + LOOKAHEAD);
 		nplayouts++;
-
+		firstExecution=true;
 		GameState gs2 = gs.clone();
 		int timeLimit = gs2.getTime() + LOOKAHEAD;
 		boolean gameover = false;
