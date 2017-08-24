@@ -74,7 +74,7 @@ public class ScriptGeneration {
 		}
 		if(!atLeastOneAdded)
 		{
-			insertInScript(ruleSpaceList.get(0));
+			rulesSelectedList.add(ruleSpaceList.get(0));
 		}
 		return rulesSelectedList;
 	}
