@@ -59,7 +59,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 
 		attackTo = new UnitScriptAttackTo(pf);
 		moveAwayTo = new UnitScriptMoveAwayTo(pf);
-		moveTo = new UnitScriptMoveTo(pf);
+		//moveTo = new UnitScriptMoveTo(pf);
 
 	}
 
