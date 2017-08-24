@@ -6,7 +6,7 @@ import java.util.List;
 public class ScriptGeneration {
 
 	private final int scriptSize=1;
-	private final int maxTries=5;
+	private int maxTries=5;
 	
 	
 	private int totalRules;
@@ -58,13 +58,17 @@ public class ScriptGeneration {
 						j=j+1;
 					}
 				}
-				lineAdded=insertInScript(ruleSpaceList.get(selected));
+				if(selected!=-1)
+				{
+					lineAdded=insertInScript(ruleSpaceList.get(selected));
+				}
 				if(lineAdded==true)
 				{
 					rulesSelectedList.add(ruleSpaceList.get(selected));
 				}
 				trySelection++;
 			}
+			maxTries=5;
 		}
 		return rulesSelectedList;
 	}
