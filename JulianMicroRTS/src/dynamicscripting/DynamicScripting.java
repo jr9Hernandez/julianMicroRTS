@@ -90,7 +90,8 @@ public class DynamicScripting extends AIWithComputationBudget {
 				e.printStackTrace();
 			}
 		}
-		pa = ActionsAssignments(player, gs);
+		firstExecution=true;
+		pa = ActionsAssignments(player, gs,1);
 		return pa;
 	}
 
@@ -144,7 +145,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 		}
 	}
 	
-	public PlayerAction ActionsAssignments(int player, GameState gs)
+	public PlayerAction ActionsAssignments(int player, GameState gs, int typeCall)
 	{
 		PlayerAction pa = new PlayerAction();
 		pa.fillWithNones(gs, player, 10);
@@ -152,10 +153,15 @@ public class DynamicScripting extends AIWithComputationBudget {
 		List<Unit> playerUnits = aux.units1(player,gs);
 		int n1=playerUnits.size();
 		
-		if(firstExecution)
+		if(typeCall==0 && firstExecution)
 		{
-		generationRulesSpaces(playerUnits, n1);
-		selectionRulesForUnits(playerUnits, n1);
+			generationRulesSpaces(playerUnits, n1);			
+		}
+		
+		if(firstExecution)
+		{		
+			//System.out.println(playerUnits.size()+" "+n);
+		selectionRulesForUnits(playerUnits, n1);	
 		firstExecution=false;
 		}
 		
@@ -220,7 +226,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 				System.out.println("proculo");
 			} else {
 				System.out.println("chorrillano");
-				PlayerAction pa = ActionsAssignments(player, gs2);
+				PlayerAction pa = ActionsAssignments(player, gs2,0);
 				gs2.issue(pa);
 				
 				AI ai2 = new WorkerRush(m_utt, new BFSPathFinding()); 
