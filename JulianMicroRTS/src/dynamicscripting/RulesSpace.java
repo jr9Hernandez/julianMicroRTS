@@ -3,7 +3,7 @@ package dynamicscripting;
 public class RulesSpace {
 	
 	//number of conditions, actions, paramethers
-	private int numberConditions=3;
+	private int numberConditions=2;
 	private int numberActions=2;
 	private int numberParamethers=4;
 
