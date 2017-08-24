@@ -83,8 +83,10 @@ public class DynamicScripting extends AIWithComputationBudget {
 		if(isPlayout)
 		{
 			try {
-				playout(player, gs);
-				
+				for(int i=0;i<10;i++)
+				{
+					playout(player, gs);
+				}				
 				
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -92,8 +94,11 @@ public class DynamicScripting extends AIWithComputationBudget {
 			}
 			firstExecution=true;
 			isPlayout=false;
-		}		
-		pa = ActionsAssignments(player, gs);
+		}
+		else
+		{
+			pa = ActionsAssignments(player, gs);
+		}
 		return pa;
 	}
 
