@@ -27,10 +27,10 @@ public class ConditionsScripts {
 		{
 			return true;
 		}
-	    else if(idCondition==rulesSpace.getCondition_enemyInsideRange_not() && !validationConditionEnemyInsideRange(idParamether,u))
-		{
-			return true;
-		}
+//	    else if(idCondition==rulesSpace.getCondition_enemyInsideRange_not() && !validationConditionEnemyInsideRange(idParamether,u))
+//		{
+//			return true;
+//		}
 		return false;
 	}
 	
@@ -41,7 +41,7 @@ public class ConditionsScripts {
 		int dx = u2.getX()-u.getX();
         int dy = u2.getY()-u.getY();
         double d = Math.sqrt(dx*dx+dy*dy);
-        if (d<=u.getAttackRange()) 
+        if (d<=u.getAttackRange()+1) 
         {
             return true;
         }
