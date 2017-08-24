@@ -46,7 +46,7 @@ public class ScriptGeneration {
 				int j=0;
 				int selected=-1;
 				int fraction=objAuxMethods.randomNumberInRange(0, sumWeights);
-				while(selected<0 && j<totalRules-1)
+				while(selected<0 && j<totalRules)
 				{
 					sum=sum+(ruleSpaceList.get(j).getWeight());
 					if(sum>fraction)
