@@ -30,8 +30,8 @@ public class DynamicScripting extends AIWithComputationBudget {
 	PathFinding pf;
 	HashMap<UnitType, List<UnitScript>> scripts = null;
 	
-	HashMap<Unit, ArrayList<Rule>> RulesSpaceUnit = new HashMap<>();;
-	HashMap<Unit, ArrayList<Rule>> RulesSelectedUnit = new HashMap<>();;
+	HashMap<Integer, ArrayList<Rule>> RulesSpaceUnit = new HashMap<>();;
+	HashMap<Integer, ArrayList<Rule>> RulesSelectedUnit = new HashMap<>();;
 	private RulesSpace rulesSpace = new RulesSpace();
 	private int totalRules;
 	private ConditionsScripts conditionsScripts;
@@ -84,14 +84,16 @@ public class DynamicScripting extends AIWithComputationBudget {
 		{
 			try {
 				playout(player, gs);
-				isPlayout=false;
+				
+				
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
-		firstExecution=true;
-		pa = ActionsAssignments(player, gs,1);
+			firstExecution=true;
+			isPlayout=false;
+		}		
+		pa = ActionsAssignments(player, gs);
 		return pa;
 	}
 
@@ -129,23 +131,23 @@ public class DynamicScripting extends AIWithComputationBudget {
 
 	private void generationRulesSpaces(List<Unit> playerUnits, int n1) {
 		for (int i = 0; i < n1; i++) {
-			Unit u = playerUnits.get(i);
+			//Unit u = playerUnits.get(i);
 			ArrayList<Rule> rulesSpaceList = rulesGeneration();
-			RulesSpaceUnit.put(u, rulesSpaceList);
+			RulesSpaceUnit.put(i, rulesSpaceList);
 		}
 	}
 
 	public void selectionRulesForUnits(List<Unit> playerUnits, int n1) {
 		for (int i = 0; i < n1; i++) {
-			Unit u = playerUnits.get(i);
-			ScriptGeneration actualScript = new ScriptGeneration(totalRules, RulesSpaceUnit.get(u));
+			//Unit u = playerUnits.get(i);
+			ScriptGeneration actualScript = new ScriptGeneration(totalRules, RulesSpaceUnit.get(i));
 			ArrayList<Rule> rulesSelectedList = actualScript.selectionRules();
-			RulesSelectedUnit.put(u, rulesSelectedList);
+			RulesSelectedUnit.put(i, rulesSelectedList);
 
 		}
 	}
 	
-	public PlayerAction ActionsAssignments(int player, GameState gs, int typeCall)
+	public PlayerAction ActionsAssignments(int player, GameState gs)
 	{
 		PlayerAction pa = new PlayerAction();
 		pa.fillWithNones(gs, player, 10);
@@ -153,16 +155,17 @@ public class DynamicScripting extends AIWithComputationBudget {
 		List<Unit> playerUnits = aux.units1(player,gs);
 		int n1=playerUnits.size();
 		
-		if(typeCall==0 && firstExecution)
+		if(isPlayout && firstExecution)
 		{
-			generationRulesSpaces(playerUnits, n1);			
+			generationRulesSpaces(playerUnits, n1);
+			selectionRulesForUnits(playerUnits, n1);
+			firstExecution=false;
 		}
 		
-		if(firstExecution)
+		else if(!isPlayout && firstExecution)
 		{		
-			//System.out.println(playerUnits.size()+" "+n);
-		selectionRulesForUnits(playerUnits, n1);	
-		firstExecution=false;
+			selectionRulesForUnits(playerUnits, n1);
+			firstExecution=false;
 		}
 		
 		parametersScripts = new ParametersScripts(rulesSpace);
@@ -216,7 +219,6 @@ public class DynamicScripting extends AIWithComputationBudget {
 		// if (DEBUG>=1) System.out.println(" playout... " + LOOKAHEAD);
 		nplayouts++;
 
-
 		GameState gs2 = gs.clone();
 		int timeLimit = gs2.getTime() + LOOKAHEAD;
 		boolean gameover = false;
@@ -226,7 +228,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 				System.out.println("proculo");
 			} else {
 				System.out.println("chorrillano");
-				PlayerAction pa = ActionsAssignments(player, gs2,0);
+				PlayerAction pa = ActionsAssignments(player, gs2);
 				gs2.issue(pa);
 				
 				AI ai2 = new WorkerRush(m_utt, new BFSPathFinding()); 
@@ -237,6 +239,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 		double e = evaluation.evaluate(player, 1 - player, gs2);
 		System.out.println(" done: " + e);
 		// if (DEBUG>=1) System.out.println(" done: " + e);
+		
 
 	}
 
