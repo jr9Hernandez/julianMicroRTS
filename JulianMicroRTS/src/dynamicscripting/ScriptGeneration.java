@@ -62,11 +62,12 @@ public class ScriptGeneration {
 				if(selected!=-1)
 				{
 					lineAdded=insertInScript(ruleSpaceList.get(selected));
-					atLeastOneAdded=true;
+					
 				}
 				if(lineAdded==true)
 				{
 					rulesSelectedList.add(ruleSpaceList.get(selected));
+					atLeastOneAdded=true;
 				}
 				trySelection++;
 			}
