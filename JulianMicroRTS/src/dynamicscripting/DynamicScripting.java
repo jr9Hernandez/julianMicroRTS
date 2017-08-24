@@ -226,10 +226,6 @@ public class DynamicScripting extends AIWithComputationBudget {
 					}
 
 				}
-				if(ruleApplied==false)
-				{
-					pa.addUnitAction(u, new UnitAction(0));
-				}
 			}
 		}
 		
