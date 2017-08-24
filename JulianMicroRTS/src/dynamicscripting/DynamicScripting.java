@@ -46,6 +46,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 	int nplayouts = 0;
 	int LOOKAHEAD = 500;
 	EvaluationFunction evaluation = null;
+	
 
 	// This is the default constructor that microRTS will call:
 	public DynamicScripting(UnitTypeTable utt) {
@@ -185,6 +186,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 
 		for (int i = 0; i < n1; i++) {
 			Unit u = playerUnits.get(i);
+			boolean ruleApplied=false;
 			if (gs.getUnitAction(u) == null) {
 
 				ArrayList<Rule> rulesSelected = RulesSelectedUnit.get(i);
@@ -201,6 +203,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 							UnitScript s = attackTo.instantiate(u, gs, u2);
 							UnitAction ua = s.getAction(u, gs);
 							pa.addUnitAction(u, ua);
+							ruleApplied=true;
 							break;
 							
 						} else if (rulesSelected.get(j).getRule_action() == rulesSpace.getAction_moveawayof()) {
@@ -208,6 +211,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 							UnitScript s = moveAwayTo.instantiate(u, gs, u2);
 							UnitAction ua = s.getAction(u, gs);
 							pa.addUnitAction(u, ua);
+							ruleApplied=true;
 							break;
 						}	
 //						} else if (rulesSelected.get(j).getRule_action() == rulesSpace.getAction_moveto()) {
@@ -220,11 +224,11 @@ public class DynamicScripting extends AIWithComputationBudget {
 //						}
 
 					}
-					else
-					{
-						pa.addUnitAction(u, new UnitAction(0));
-					}
 
+				}
+				if(ruleApplied==false)
+				{
+					pa.addUnitAction(u, new UnitAction(0));
 				}
 			}
 		}
