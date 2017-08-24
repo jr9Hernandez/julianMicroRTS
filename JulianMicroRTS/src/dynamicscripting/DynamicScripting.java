@@ -230,14 +230,12 @@ public class DynamicScripting extends AIWithComputationBudget {
 		while (!gameover ) {
 			if (gs2.isComplete()) {
 				gameover = gs2.cycle();
-				System.out.println("proculo");
-			} else {
-				System.out.println("chorrillano");
-				PlayerAction pa = ActionsAssignments(player, gs2);
+			} else {				
+				AI ai1 = new WorkerRush(m_utt, new BFSPathFinding()); 
+				PlayerAction pa = ai1.getAction(player-1, gs2);
 				gs2.issue(pa);
 				
-				AI ai2 = new WorkerRush(m_utt, new BFSPathFinding()); 
-				PlayerAction pa2 = ai2.getAction(player-1, gs2);
+				PlayerAction pa2 = ActionsAssignments(player, gs2);
 				gs2.issue(pa2);
 			}
 		}
