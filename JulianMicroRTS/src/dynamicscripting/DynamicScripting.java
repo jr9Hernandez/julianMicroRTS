@@ -14,6 +14,7 @@ import ai.core.AI;
 import ai.core.AIWithComputationBudget;
 import ai.core.ParameterSpecification;
 import ai.evaluation.EvaluationFunction;
+import ai.evaluation.SimpleSqrtEvaluationFunction3;
 import ai.portfolio.PortfolioAI;
 import rts.GameState;
 import rts.PlayerAction;
@@ -47,13 +48,14 @@ public class DynamicScripting extends AIWithComputationBudget {
 
 	// This is the default constructor that microRTS will call:
 	public DynamicScripting(UnitTypeTable utt) {
-		this(utt, -1, -1, new AStarPathFinding());
+		this(utt, -1, -1, new AStarPathFinding(), new SimpleSqrtEvaluationFunction3());
 	}
 
-	public DynamicScripting(UnitTypeTable utt, int time, int max_playouts, PathFinding a_pf) {
+	public DynamicScripting(UnitTypeTable utt, int time, int max_playouts, PathFinding a_pf, EvaluationFunction e) {
 		super(time, max_playouts);
 		m_utt = utt;
 		pf = a_pf;
+		evaluation=e;
 
 		attackTo = new UnitScriptAttackTo(pf);
 		moveAwayTo = new UnitScriptMoveAwayTo(pf);
@@ -227,6 +229,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 			}
 		}
 		double e = evaluation.evaluate(player, 1 - player, gs2);
+		System.out.println(" done: " + e);
 		// if (DEBUG>=1) System.out.println(" done: " + e);
 
 	}
