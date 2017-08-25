@@ -61,7 +61,7 @@ public class ScriptGeneration {
 				}
 				if(selected!=-1)
 				{
-					lineAdded=insertInScript(ruleSpaceList.get(selected));
+					lineAdded=insertInScript(ruleSpaceList.get(selected),rulesSelectedList);
 					
 				}
 				if(lineAdded==true)
@@ -79,7 +79,7 @@ public class ScriptGeneration {
 		return rulesSelectedList;
 	}
 	
-	public boolean insertInScript(Rule selectedRule)
+	public boolean insertInScript(Rule selectedRule, ArrayList<Rule> rulesSelectedList)
 	{
 	    for (Rule rule : rulesSelectedList) {
 	        if (rule.getRule_id() == selectedRule.getRule_id()) {
@@ -87,5 +87,35 @@ public class ScriptGeneration {
 	        }
 	    }
 	    return true;
+	}
+	
+	public ArrayList<Rule> UpdateWeights(ArrayList<Rule> rulesSelectedList, ArrayList<Rule> ruleSpaceList, double fitness)
+	{
+		int active=0;
+		for(int i=0;i<totalRules;i++)
+		{
+			if(!insertInScript(ruleSpaceList.get(i),rulesSelectedList))
+			{
+				active=active+1;
+			}
+		}
+		if(active<=0 || active>=totalRules)
+		{
+			return rulesSelectedList;
+		}
+		double nonActive=totalRules-active;
+		double adjustment=fitness;
+		double compensation	= -active*adjustment/nonActive;
+		double remainder=0;
+		
+		for(int i=0;i<totalRules;i++)
+		{
+			if(!insertInScript(ruleSpaceList.get(i),rulesSelectedList))
+			{
+				ruleSpaceList.get(i);
+			}
+		}
+		
+		return rulesSelectedList;
 	}
 }
