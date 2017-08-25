@@ -237,13 +237,15 @@ public class DynamicScripting extends AIWithComputationBudget {
 		nplayouts++;
 		firstExecution=true;
 		GameState gs2 = gs.clone();
+		AI ai1 = new WorkerRush(m_utt, new BFSPathFinding());
 		int timeLimit = gs2.getTime() + LOOKAHEAD;
 		boolean gameover = false;
-		while (!gameover ) {
+		
+		while (!gameover && gs2.getTime()<timeLimit) {
 			if (gs2.isComplete()) {
 				gameover = gs2.cycle();
 			} else {				
-				AI ai1 = new WorkerRush(m_utt, new BFSPathFinding()); 
+				 
 				PlayerAction pa = ai1.getAction(player-1, gs2);
 				gs2.issue(pa);
 				
