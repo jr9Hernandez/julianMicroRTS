@@ -103,7 +103,7 @@ public class ScriptGeneration {
 	
 	public ArrayList<Rule> UpdateWeightsBeta(ArrayList<Rule> rulesSelectedList, ArrayList<Rule> ruleSpaceList, int fitness, int wInit)
 	{
-		int wMax=wInit;
+		int wMax=1000;
 		int wMin=0;
 		int active=0;
 		int totalWeights=0;
@@ -134,18 +134,18 @@ public class ScriptGeneration {
 			{
 				ruleSpaceList.get(i).setWeight((ruleSpaceList.get(i).getWeight()+compensation));
 			}
-//			if(ruleSpaceList.get(i).getWeight()<wMin)
-//			{
-//				remainder=remainder+(ruleSpaceList.get(i).getWeight()-wMin);
-//				ruleSpaceList.get(i).setWeight(wMin);	
-//			}
-//			else if(ruleSpaceList.get(i).getWeight()>wMax)
-//			{
-//				remainder=remainder+(ruleSpaceList.get(i).getWeight()-wMax);
-//				ruleSpaceList.get(i).setWeight(wMax);	
-//			}
+			if(ruleSpaceList.get(i).getWeight()<wMin)
+			{
+				remainder=remainder+(ruleSpaceList.get(i).getWeight()-wMin);
+				ruleSpaceList.get(i).setWeight(wMin);	
+			}
+			else if(ruleSpaceList.get(i).getWeight()>wMax)
+			{
+				remainder=remainder+(ruleSpaceList.get(i).getWeight()-wMax);
+				ruleSpaceList.get(i).setWeight(wMax);	
+			}
 		}
-		ruleSpaceList=distributeRemainder(wMax,ruleSpaceList);
+		//ruleSpaceList=distributeRemainder(100,ruleSpaceList);
 		return ruleSpaceList;
 	}
 	
