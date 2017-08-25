@@ -42,6 +42,7 @@ public class ScriptGeneration {
 		for(int i=0;i<totalRules;i++)
 		{
 			sumWeights=sumWeights+ruleSpaceList.get(i).getWeight();
+			
 //			if(sumWeights<0)
 //			{
 //				sumWeights=0;
@@ -104,10 +105,12 @@ public class ScriptGeneration {
 		int wMax=wInit;
 		int wMin=0;
 		int active=0;
+		int totalWeights=0;
 		for(int i=0;i<totalRules;i++)
-		{
+		{	
+			totalWeights=totalWeights+ruleSpaceList.get(i).getWeight();
 			if(!insertInScript(ruleSpaceList.get(i),rulesSelectedList))
-			{
+			{	
 				active=active+1;
 			}
 		}
@@ -132,11 +135,39 @@ public class ScriptGeneration {
 			}
 			if(ruleSpaceList.get(i).getWeight()<wMin)
 			{
+				remainder=remainder+(ruleSpaceList.get(i).getWeight()-wMin);
+				ruleSpaceList.get(i).setWeight(wMin);	
+			}
+			else if(ruleSpaceList.get(i).getWeight()>wMax)
+			{
 				remainder=remainder+(ruleSpaceList.get(i).getWeight()-wMax);
 				ruleSpaceList.get(i).setWeight(wMax);	
 			}
 		}
-		
+		ruleSpaceList=distributeRemainder(totalWeights,ruleSpaceList);
 		return rulesSelectedList;
+	}
+	
+	public ArrayList<Rule> distributeRemainder(int totalWeights,ArrayList<Rule> ruleSpaceList)
+	{
+		int totalWeightsCurrent=0;
+		for(int i=0;i<totalRules;i++)
+		{	
+			totalWeightsCurrent=totalWeightsCurrent+ruleSpaceList.get(i).getWeight();
+		}
+		double difference=Math.abs(totalWeights-totalWeightsCurrent);
+		double fractiontoDistribute=difference/(double)totalRules;
+		for(int i=0;i<totalRules;i++)
+		{	
+			if(totalWeightsCurrent<totalWeights)
+			{
+				ruleSpaceList.get(i).setWeight(ruleSpaceList.get(i).getWeight()+(int)(fractiontoDistribute+0.5));
+			}
+			else
+			{
+				ruleSpaceList.get(i).setWeight(ruleSpaceList.get(i).getWeight()-(int)(fractiontoDistribute+0.5));
+			}
+		}
+		return ruleSpaceList;
 	}
 }
