@@ -82,10 +82,10 @@ public class ScriptGeneration {
 				trySelection++;
 			}
 		}
-		if(!atLeastOneAdded)
-		{
-			rulesSelectedList.add(ruleSpaceList.get(0));
-		}
+//		if(!atLeastOneAdded)
+//		{
+//			rulesSelectedList.add(ruleSpaceList.get(0));
+//		}
 		return rulesSelectedList;
 	}
 	
