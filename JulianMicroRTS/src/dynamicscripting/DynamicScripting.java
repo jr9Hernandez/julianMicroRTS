@@ -46,7 +46,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 	int nplayouts = 0;
 	int LOOKAHEAD = 500;
 	EvaluationFunction evaluation = null;
-	int initialWeight=10;
+	int initialWeight=100;
 	
 
 	// This is the default constructor that microRTS will call:
@@ -86,7 +86,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 		if(isPlayout)
 		{
 			try {
-				for(int i=0;i<100;i++)
+				for(int i=0;i<1000;i++)
 				{
 					playout(player, gs);
 				}				
@@ -269,7 +269,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 		List<Unit> playerUnits = aux.units1(player,gs);
 		int n1=playerUnits.size();
 		for (int i = 0; i < n1; i++) {
-			actualScript.UpdateWeightsBeta(RulesSelectedUnit.get(i), RulesSpaceUnit.get(i), (int)((e*3) + 0.5d));
+			actualScript.UpdateWeightsBeta(RulesSelectedUnit.get(i), RulesSpaceUnit.get(i), (int)((e*40) + 0.5d),initialWeight);
 		}
 	}
 
