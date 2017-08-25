@@ -25,6 +25,12 @@ public class ScriptGeneration {
 		rulesSelectedList=new ArrayList<Rule>();
 		objAuxMethods=new AuxMethods();
 	}
+	
+	public ScriptGeneration(int totalRules)
+	{
+		
+		this.totalRules=totalRules;
+	}
 	/**
 	 * SelectionRules() is based in the algorithm for script generation presented in Adaptive game AI with dynamic scripting
 	 * from Pieter Spronck · Marc Ponsen ·Ida Sprinkhuizen-Kuyper · Eric Postma 

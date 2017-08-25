@@ -255,10 +255,18 @@ public class DynamicScripting extends AIWithComputationBudget {
 			}
 		}		
 		double e = evaluation.evaluate(player, 1 - player, gs2);
+		
 		System.out.println(" done: " + e);
 		// if (DEBUG>=1) System.out.println(" done: " + e);
+		ScriptGeneration actualScript = new ScriptGeneration(totalRules);
 		
-
+		
+		
+		List<Unit> playerUnits = aux.units1(player,gs);
+		int n1=playerUnits.size();
+		for (int i = 0; i < n1; i++) {
+			actualScript.UpdateWeightsBeta(RulesSelectedUnit.get(i), RulesSpaceUnit.get(i), (int)(e + 0.5d));
+		}
 	}
 
 }
