@@ -145,7 +145,7 @@ public class ScriptGeneration {
 				ruleSpaceList.get(i).setWeight(wMax);	
 			}
 		}
-		ruleSpaceList=distributeRemainder(1600,ruleSpaceList);
+		ruleSpaceList=distributeRemainder(wMax,ruleSpaceList);
 		return rulesSelectedList;
 	}
 	
