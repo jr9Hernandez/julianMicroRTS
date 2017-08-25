@@ -269,7 +269,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 		List<Unit> playerUnits = aux.units1(player,gs);
 		int n1=playerUnits.size();
 		for (int i = 0; i < n1; i++) {
-			actualScript.UpdateWeightsBeta(RulesSelectedUnit.get(i), RulesSpaceUnit.get(i), (int)((e*40) + 0.5d),initialWeight);
+			actualScript.UpdateWeightsBeta(RulesSelectedUnit.get(i), RulesSpaceUnit.get(i), (int)((e*6) + 0.5d),initialWeight);
 		}
 	}
 

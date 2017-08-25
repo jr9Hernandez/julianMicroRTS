@@ -5,7 +5,7 @@ import java.util.List;
 
 public class ScriptGeneration {
 
-	private final int scriptSize=2;
+	private final int scriptSize=1;
 	private int maxTries=5;
 	
 	
@@ -83,10 +83,11 @@ public class ScriptGeneration {
 				trySelection++;
 			}
 		}
-//		if(!atLeastOneAdded)
-//		{
-//			rulesSelectedList.add(ruleSpaceList.get(0));
-//		}
+		if(!atLeastOneAdded)
+		{
+			int r=objAuxMethods.randomNumberInRange(0, totalRules-1);
+			rulesSelectedList.add(ruleSpaceList.get(r));
+		}
 		return rulesSelectedList;
 	}
 	
@@ -144,17 +145,20 @@ public class ScriptGeneration {
 				ruleSpaceList.get(i).setWeight(wMax);	
 			}
 		}
-		ruleSpaceList=distributeRemainder(totalWeights,ruleSpaceList);
+		ruleSpaceList=distributeRemainder(1600,ruleSpaceList);
 		return rulesSelectedList;
 	}
 	
 	public ArrayList<Rule> distributeRemainder(int totalWeights,ArrayList<Rule> ruleSpaceList)
 	{
+		
+		
 		int totalWeightsCurrent=0;
 		for(int i=0;i<totalRules;i++)
 		{	
 			totalWeightsCurrent=totalWeightsCurrent+ruleSpaceList.get(i).getWeight();
 		}
+	
 		double difference=Math.abs(totalWeights-totalWeightsCurrent);
 		double fractiontoDistribute=difference/(double)totalRules;
 		for(int i=0;i<totalRules;i++)
