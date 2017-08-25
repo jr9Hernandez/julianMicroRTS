@@ -42,10 +42,10 @@ public class ScriptGeneration {
 		for(int i=0;i<totalRules;i++)
 		{
 			sumWeights=sumWeights+ruleSpaceList.get(i).getWeight();
-			if(sumWeights<0)
-			{
-				sumWeights=0;
-			}
+//			if(sumWeights<0)
+//			{
+//				sumWeights=0;
+//			}
 		}
 		for(int i=0; i<scriptSize;i++)
 		{
