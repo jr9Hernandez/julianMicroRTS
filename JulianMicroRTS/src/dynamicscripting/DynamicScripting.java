@@ -180,6 +180,10 @@ public class DynamicScripting extends AIWithComputationBudget {
 		{		
 			selectionRulesForUnits(playerUnits, n1);
 			firstExecution=false;
+			
+			for (int i = 0; i < n1; i++) {
+				System.out.println("Rule selected "+i+" "+RulesSelectedUnit.get(i).get(0).getRule_condition()+RulesSelectedUnit.get(i).get(1).getRule_action()+RulesSelectedUnit.get(i).get(0).getRule_paramether());
+			}
 		}
 		
 		parametersScripts = new ParametersScripts(rulesSpace);
