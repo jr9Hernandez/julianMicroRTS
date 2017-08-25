@@ -134,19 +134,19 @@ public class ScriptGeneration {
 			{
 				ruleSpaceList.get(i).setWeight((ruleSpaceList.get(i).getWeight()+compensation));
 			}
-			if(ruleSpaceList.get(i).getWeight()<wMin)
-			{
-				remainder=remainder+(ruleSpaceList.get(i).getWeight()-wMin);
-				ruleSpaceList.get(i).setWeight(wMin);	
-			}
-			else if(ruleSpaceList.get(i).getWeight()>wMax)
-			{
-				remainder=remainder+(ruleSpaceList.get(i).getWeight()-wMax);
-				ruleSpaceList.get(i).setWeight(wMax);	
-			}
+//			if(ruleSpaceList.get(i).getWeight()<wMin)
+//			{
+//				remainder=remainder+(ruleSpaceList.get(i).getWeight()-wMin);
+//				ruleSpaceList.get(i).setWeight(wMin);	
+//			}
+//			else if(ruleSpaceList.get(i).getWeight()>wMax)
+//			{
+//				remainder=remainder+(ruleSpaceList.get(i).getWeight()-wMax);
+//				ruleSpaceList.get(i).setWeight(wMax);	
+//			}
 		}
 		ruleSpaceList=distributeRemainder(wMax,ruleSpaceList);
-		return rulesSelectedList;
+		return ruleSpaceList;
 	}
 	
 	public ArrayList<Rule> distributeRemainder(int totalWeights,ArrayList<Rule> ruleSpaceList)
