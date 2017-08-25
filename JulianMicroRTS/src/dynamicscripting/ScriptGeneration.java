@@ -5,7 +5,7 @@ import java.util.List;
 
 public class ScriptGeneration {
 
-	private final int scriptSize=1;
+	private final int scriptSize=2;
 	private int maxTries=5;
 	
 	
@@ -42,6 +42,10 @@ public class ScriptGeneration {
 		for(int i=0;i<totalRules;i++)
 		{
 			sumWeights=sumWeights+ruleSpaceList.get(i).getWeight();
+			if(sumWeights<0)
+			{
+				sumWeights=0;
+			}
 		}
 		for(int i=0; i<scriptSize;i++)
 		{
