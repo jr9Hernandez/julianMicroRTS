@@ -89,7 +89,7 @@ public class ScriptGeneration {
 	    return true;
 	}
 	
-	public ArrayList<Rule> UpdateWeights(ArrayList<Rule> rulesSelectedList, ArrayList<Rule> ruleSpaceList, double fitness)
+	public ArrayList<Rule> UpdateWeightsBeta(ArrayList<Rule> rulesSelectedList, ArrayList<Rule> ruleSpaceList, int fitness)
 	{
 		int active=0;
 		for(int i=0;i<totalRules;i++)
@@ -103,16 +103,20 @@ public class ScriptGeneration {
 		{
 			return rulesSelectedList;
 		}
-		double nonActive=totalRules-active;
-		double adjustment=fitness;
-		double compensation	= -active*adjustment/nonActive;
-		double remainder=0;
+		int nonActive=totalRules-active;
+		int adjustment=fitness;
+		int compensation= -active*adjustment/nonActive;
+		int remainder=0;
 		
 		for(int i=0;i<totalRules;i++)
 		{
 			if(!insertInScript(ruleSpaceList.get(i),rulesSelectedList))
 			{
-				ruleSpaceList.get(i);
+				ruleSpaceList.get(i).setWeight(ruleSpaceList.get(i).getWeight()+adjustment);
+			}
+			else
+			{
+				ruleSpaceList.get(i).setWeight((ruleSpaceList.get(i).getWeight()+compensation));
 			}
 		}
 		

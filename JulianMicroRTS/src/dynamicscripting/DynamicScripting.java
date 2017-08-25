@@ -46,6 +46,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 	int nplayouts = 0;
 	int LOOKAHEAD = 500;
 	EvaluationFunction evaluation = null;
+	int initialWeight=10;
 	
 
 	// This is the default constructor that microRTS will call:
@@ -120,7 +121,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 		for (int i = 0; i < rulesSpace.getNumberConditions(); i++) {
 			for (int j = 0; j < rulesSpace.getNumberActions(); j++) {
 				for (int k = 0; k < rulesSpace.getNumberParamethers(); k++) {
-					Rule rule = new Rule(counterId, 100, false, i, j, k);
+					Rule rule = new Rule(counterId, initialWeight, false, i, j, k);
 					counterId++;
 					rulesSpaceList.add(rule);
 
@@ -252,7 +253,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 				PlayerAction pa2 = ActionsAssignments(player, gs2);
 				gs2.issue(pa2);
 			}
-		}
+		}		
 		double e = evaluation.evaluate(player, 1 - player, gs2);
 		System.out.println(" done: " + e);
 		// if (DEBUG>=1) System.out.println(" done: " + e);
