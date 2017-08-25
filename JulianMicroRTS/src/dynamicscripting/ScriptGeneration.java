@@ -103,7 +103,7 @@ public class ScriptGeneration {
 	
 	public ArrayList<Rule> UpdateWeightsBeta(ArrayList<Rule> rulesSelectedList, ArrayList<Rule> ruleSpaceList, int fitness, int wInit)
 	{
-		int wMax=1000;
+		int wMax=2000;
 		int wMin=0;
 		int active=0;
 		int totalWeights=0;
@@ -145,11 +145,11 @@ public class ScriptGeneration {
 				ruleSpaceList.get(i).setWeight(wMax);	
 			}
 		}
-		//ruleSpaceList=distributeRemainder(100,ruleSpaceList);
+		ruleSpaceList=distributeRemainder(1600,ruleSpaceList,wMax,wMin);
 		return ruleSpaceList;
 	}
 	
-	public ArrayList<Rule> distributeRemainder(int totalWeights,ArrayList<Rule> ruleSpaceList)
+	public ArrayList<Rule> distributeRemainder(int totalWeights,ArrayList<Rule> ruleSpaceList, int wMax, int wMin)
 	{
 		
 		
@@ -165,11 +165,25 @@ public class ScriptGeneration {
 		{	
 			if(totalWeightsCurrent<totalWeights)
 			{
-				ruleSpaceList.get(i).setWeight(ruleSpaceList.get(i).getWeight()+(int)(fractiontoDistribute+0.5));
+				if(ruleSpaceList.get(i).getWeight()+(int)(fractiontoDistribute+0.5)>wMax)
+				{
+					ruleSpaceList.get(i).setWeight(ruleSpaceList.get(i).getWeight()+((int)(fractiontoDistribute+0.5)-wMax));
+				}
+				else
+				{
+					ruleSpaceList.get(i).setWeight(ruleSpaceList.get(i).getWeight()+((int)(fractiontoDistribute+0.5)));
+				}
 			}
 			else
 			{
-				ruleSpaceList.get(i).setWeight(ruleSpaceList.get(i).getWeight()-(int)(fractiontoDistribute+0.5));
+				if(ruleSpaceList.get(i).getWeight()-(int)(fractiontoDistribute+0.5)<wMin)
+				{
+					ruleSpaceList.get(i).setWeight(ruleSpaceList.get(i).getWeight()-(wMin-(int)(fractiontoDistribute+0.5)));
+				}
+				else
+				{
+					ruleSpaceList.get(i).setWeight(ruleSpaceList.get(i).getWeight()-((int)(fractiontoDistribute+0.5)));
+				}
 			}
 		}
 		return ruleSpaceList;
