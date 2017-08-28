@@ -72,10 +72,10 @@ public class ScriptGeneration {
 				}
 				if(selected!=-1)
 				{
-					lineAdded=insertInScript(ruleSpaceList.get(selected),rulesSelectedList);
+					lineAdded=insertedInScript(ruleSpaceList.get(selected),rulesSelectedList);
 					
 				}
-				if(lineAdded==true)
+				if(!lineAdded)
 				{
 					rulesSelectedList.add(ruleSpaceList.get(selected));
 					atLeastOneAdded=true;
@@ -83,6 +83,7 @@ public class ScriptGeneration {
 				trySelection++;
 			}
 		}
+		//This represents the finish Script Function ()
 		if(!atLeastOneAdded)
 		{
 			int r=objAuxMethods.randomNumberInRange(0, totalRules-1);
@@ -91,17 +92,17 @@ public class ScriptGeneration {
 		return rulesSelectedList;
 	}
 	
-	public boolean insertInScript(Rule selectedRule, ArrayList<Rule> rulesSelectedList)
+	public boolean insertedInScript(Rule selectedRule, ArrayList<Rule> rulesSelectedList)
 	{
 	    for (Rule rule : rulesSelectedList) {
 	        if (rule.getRule_id() == selectedRule.getRule_id()) {
-	            return false;
+	            return true;
 	        }
 	    }
-	    return true;
+	    return false;
 	}
 	
-	public ArrayList<Rule> UpdateWeightsBeta(ArrayList<Rule> rulesSelectedList, ArrayList<Rule> ruleSpaceList, int fitness, int wInit)
+	public void UpdateWeightsBeta(ArrayList<Rule> rulesSelectedList, ArrayList<Rule> ruleSpaceList, int fitness, int wInit)
 	{
 		int wMax=2000;
 		int wMin=0;
@@ -110,14 +111,14 @@ public class ScriptGeneration {
 		for(int i=0;i<totalRules;i++)
 		{	
 			totalWeights=totalWeights+ruleSpaceList.get(i).getWeight();
-			if(!insertInScript(ruleSpaceList.get(i),rulesSelectedList))
+			if(insertedInScript(ruleSpaceList.get(i),rulesSelectedList))
 			{	
 				active=active+1;
 			}
 		}
 		if(active<=0 || active>=totalRules)
 		{
-			return rulesSelectedList;
+			return;
 		}
 		int nonActive=totalRules-active;
 		int adjustment=fitness;
@@ -126,66 +127,54 @@ public class ScriptGeneration {
 		
 		for(int i=0;i<totalRules;i++)
 		{
-			if(!insertInScript(ruleSpaceList.get(i),rulesSelectedList))
+			Rule currentRule=ruleSpaceList.get(i);
+			if(insertedInScript(currentRule,rulesSelectedList))
 			{
-				ruleSpaceList.get(i).setWeight(ruleSpaceList.get(i).getWeight()+adjustment);
+				currentRule.setWeight(currentRule.getWeight()+adjustment);
 			}
 			else
 			{
-				ruleSpaceList.get(i).setWeight((ruleSpaceList.get(i).getWeight()+compensation));
+				currentRule.setWeight(currentRule.getWeight()+compensation);
 			}
-			if(ruleSpaceList.get(i).getWeight()<wMin)
+			if(currentRule.getWeight()<wMin)
 			{
-				remainder=remainder+(ruleSpaceList.get(i).getWeight()-wMin);
-				ruleSpaceList.get(i).setWeight(wMin);	
+				remainder=remainder+(currentRule.getWeight()-wMin);
+				currentRule.setWeight(wMin);	
 			}
-			else if(ruleSpaceList.get(i).getWeight()>wMax)
+			else if(currentRule.getWeight()>wMax)
 			{
-				remainder=remainder+(ruleSpaceList.get(i).getWeight()-wMax);
-				ruleSpaceList.get(i).setWeight(wMax);	
+				remainder=remainder+(currentRule.getWeight()-wMax);
+				currentRule.setWeight(wMax);	
 			}
 		}
-		ruleSpaceList=distributeRemainder(1600,ruleSpaceList,wMax,wMin);
-		return ruleSpaceList;
+		distributeRemainder(ruleSpaceList,remainder,wMax,wMin);
+
 	}
 	
-	public ArrayList<Rule> distributeRemainder(int totalWeights,ArrayList<Rule> ruleSpaceList, int wMax, int wMin)
+	public void distributeRemainder(ArrayList<Rule> ruleSpaceList, int remainder,int maxWeight, int minWeight)
 	{
 		
-		
-		int totalWeightsCurrent=0;
-		for(int i=0;i<totalRules;i++)
-		{	
-			totalWeightsCurrent=totalWeightsCurrent+ruleSpaceList.get(i).getWeight();
-		}
-	
-		double difference=Math.abs(totalWeights-totalWeightsCurrent);
-		double fractiontoDistribute=difference/(double)totalRules;
-		for(int i=0;i<totalRules;i++)
-		{	
-			if(totalWeightsCurrent<totalWeights)
+		int i=0;
+		while(remainder>0)
+		{
+			Rule currentRule=ruleSpaceList.get(i);
+			if(currentRule.getWeight()<=maxWeight-1)
 			{
-				if(ruleSpaceList.get(i).getWeight()+(int)(fractiontoDistribute+0.5)>wMax)
-				{
-					ruleSpaceList.get(i).setWeight(ruleSpaceList.get(i).getWeight()+((int)(fractiontoDistribute+0.5)-wMax));
-				}
-				else
-				{
-					ruleSpaceList.get(i).setWeight(ruleSpaceList.get(i).getWeight()+((int)(fractiontoDistribute+0.5)));
-				}
+				currentRule.setWeight(currentRule.getWeight()+1);
+				remainder=remainder-1;
 			}
-			else
-			{
-				if(ruleSpaceList.get(i).getWeight()-(int)(fractiontoDistribute+0.5)<wMin)
-				{
-					ruleSpaceList.get(i).setWeight(ruleSpaceList.get(i).getWeight()-(wMin-(int)(fractiontoDistribute+0.5)));
-				}
-				else
-				{
-					ruleSpaceList.get(i).setWeight(ruleSpaceList.get(i).getWeight()-((int)(fractiontoDistribute+0.5)));
-				}
-			}
+			i=(i+1)%totalRules;
 		}
-		return ruleSpaceList;
+		while(remainder<0)
+		{
+			Rule currentRule=ruleSpaceList.get(i);
+			if(currentRule.getWeight()>=minWeight+1)
+			{
+				currentRule.setWeight(currentRule.getWeight()-1);
+				remainder=remainder+1;
+			}
+			i=(i+1)%totalRules;
+		}
+
 	}
 }
