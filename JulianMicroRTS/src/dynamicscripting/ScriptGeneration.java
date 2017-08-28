@@ -5,7 +5,7 @@ import java.util.List;
 
 public class ScriptGeneration {
 
-	private final int scriptSize=1;
+	private final int scriptSize=2;
 	private int maxTries=5;
 	
 	
@@ -52,7 +52,7 @@ public class ScriptGeneration {
 		{
 			int trySelection=0;
 			boolean lineAdded=false;
-			while(trySelection<maxTries && lineAdded==false)
+			while(trySelection<maxTries && lineAdded==true)
 			{
 				int sum=0;
 				int j=0;
