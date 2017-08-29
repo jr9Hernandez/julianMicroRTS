@@ -260,9 +260,9 @@ public class DynamicScripting extends AIWithComputationBudget {
 				gs2.issue(pa2);
 			}
 		}		
-		double e = evaluation.evaluate(player, 1 - player, gs2);
+		double globalFitness = evaluation.evaluate(player, 1 - player, gs2);
 		
-		System.out.println(" done: " + e);
+		System.out.println(" done: " + globalFitness);
 		// if (DEBUG>=1) System.out.println(" done: " + e);
 		ScriptGeneration actualScript = new ScriptGeneration(totalRules);
 		
@@ -271,7 +271,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 		List<Unit> playerUnits = aux.units1(player,gs);
 		int n1=playerUnits.size();
 		for (int i = 0; i < n1; i++) {
-			actualScript.UpdateWeightsBeta(RulesSelectedUnit.get(i), RulesSpaceUnit.get(i), (int)((e) + 0.5d),initialWeight);
+			actualScript.UpdateWeightsBeta(RulesSelectedUnit.get(i), RulesSpaceUnit.get(i), globalFitness ,initialWeight);
 		}
 	}
 

@@ -105,7 +105,7 @@ public class ScriptGeneration {
 	    return true;
 	}
 	
-	public void UpdateWeightsBeta(ArrayList<Rule> rulesSelectedList, ArrayList<Rule> ruleSpaceList, int fitness, int wInit)
+	public void UpdateWeightsBeta(ArrayList<Rule> rulesSelectedList, ArrayList<Rule> ruleSpaceList, double fitness, int wInit)
 	{
 		int wMax=2000;
 		int wMin=0;
@@ -124,7 +124,7 @@ public class ScriptGeneration {
 			return;
 		}
 		int nonActive=totalRules-active;
-		int adjustment=fitness;
+		int adjustment=(int)(fitness);
 		int compensation= -active*adjustment/nonActive;
 		int remainder=0;
 		
@@ -179,5 +179,10 @@ public class ScriptGeneration {
 			i=(i+1)%totalRules;
 		}
 
+	}
+	
+	public int calculateAdjustment(double fitness)
+	{
+		return 0;
 	}
 }
