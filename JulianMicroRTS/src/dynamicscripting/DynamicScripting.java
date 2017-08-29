@@ -32,7 +32,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 	PathFinding pf;
 	HashMap<UnitType, List<UnitScript>> scripts = null;
 	
-	HashMap<Integer, ArrayList<Rule>> RulesSpaceUnit = new HashMap<>();;
+	HashMap<String, ArrayList<Rule>> RulesSpaceUnit = new HashMap<>();;
 	HashMap<Integer, ArrayList<Rule>> RulesSelectedUnit = new HashMap<>();
 	HashMap<Unit, Integer> UnitsTimeDeath = new HashMap<>();
 	private RulesSpace rulesSpace = new RulesSpace();
@@ -51,6 +51,9 @@ public class DynamicScripting extends AIWithComputationBudget {
 	EvaluationFunction evaluation = null;
 	int initialWeight=100;
 	
+	int numTypesUnits;
+	String [] typesUnits;
+	
 
 	// This is the default constructor that microRTS will call:
 	public DynamicScripting(UnitTypeTable utt) {
@@ -66,6 +69,13 @@ public class DynamicScripting extends AIWithComputationBudget {
 		attackTo = new UnitScriptAttackTo(pf);
 		moveAwayTo = new UnitScriptMoveAwayTo(pf);
 		//moveTo = new UnitScriptMoveTo(pf);
+		
+		numTypesUnits=4;
+		typesUnits=new String[numTypesUnits];
+		typesUnits[0]="Worker";
+		typesUnits[1]="Light";
+		typesUnits[2]="Heavy";
+		typesUnits[3]="Ranged";
 
 	}
 
@@ -141,17 +151,17 @@ public class DynamicScripting extends AIWithComputationBudget {
 	}
 
 	private void generationRulesSpaces(int n1) {
-		for (int i = 0; i < n1; i++) {
+		for (int i = 0; i < numTypesUnits; i++) {
 			//Unit u = playerUnits.get(i);
 			ArrayList<Rule> rulesSpaceList = rulesGeneration();
-			RulesSpaceUnit.put(i, rulesSpaceList);
+			RulesSpaceUnit.put(typesUnits[i], rulesSpaceList);
 		}
 	}
 
-	public void selectionRulesForUnits(int n1) {
+	public void selectionRulesForUnits(int n1,List<Unit> playerUnits) {
 		for (int i = 0; i < n1; i++) {
-			//Unit u = playerUnits.get(i);
-			ScriptGeneration actualScript = new ScriptGeneration(totalRules, RulesSpaceUnit.get(i));
+			Unit u = playerUnits.get(i);
+			ScriptGeneration actualScript = new ScriptGeneration(totalRules, RulesSpaceUnit.get(u.getType().name));
 			ArrayList<Rule> rulesSelectedList = actualScript.selectionRules();
 			RulesSelectedUnit.put(i, rulesSelectedList);
 
@@ -175,14 +185,14 @@ public class DynamicScripting extends AIWithComputationBudget {
 		if(isPlayout && firstExecution)
 		{
 			RulesSelectedUnit.clear();
-			selectionRulesForUnits(n1);
+			selectionRulesForUnits(n1,playerUnits);
 			firstExecution=false;
 		}
 		
 		else if(!isPlayout && firstExecution)
 		{		
 			RulesSelectedUnit.clear();
-			selectionRulesForUnits(n1);
+			selectionRulesForUnits(n1,playerUnits);
 			firstExecution=false;
 			
 			for (int i = 0; i < n1; i++) {
@@ -275,7 +285,8 @@ public class DynamicScripting extends AIWithComputationBudget {
 		List<Unit> playerUnits = aux.units1(player,gs);
 		int n1=playerUnits.size();
 		for (int i = 0; i < n1; i++) {
-			actualScript.UpdateWeightsBeta(RulesSelectedUnit.get(i), RulesSpaceUnit.get(i), globalFitness ,initialWeight);
+			Unit u = playerUnits.get(i);
+			actualScript.UpdateWeightsBeta(RulesSelectedUnit.get(i), RulesSpaceUnit.get(u.getType().name), globalFitness ,initialWeight);
 		}
 	}
 
