@@ -250,9 +250,6 @@ public class DynamicScripting extends AIWithComputationBudget {
 		AI ai1 = new WorkerRush(m_utt, new BFSPathFinding());
 		int timeLimit = gs2.getTime() + LOOKAHEAD;
 		boolean gameover = false;
-		List<Unit> playerUnits = aux.units1(player,gs);
-		int n1=playerUnits.size();
-		UnitsTimeDeath.clear();
 		
 		while (!gameover && gs2.getTime()<timeLimit) {
 			if (gs2.isComplete()) {
@@ -277,6 +274,8 @@ public class DynamicScripting extends AIWithComputationBudget {
 		//Here we are updating
 		ScriptGeneration actualScript = new ScriptGeneration(totalRules);
 
+		List<Unit> playerUnits = aux.units1(player,gs);
+		int n1=playerUnits.size();
 		for (int i = 0; i < n1; i++) {
 			actualScript.UpdateWeightsBeta(RulesSelectedUnit.get(i), RulesSpaceUnit.get(i), globalFitness ,initialWeight);
 		}
