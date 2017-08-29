@@ -253,10 +253,8 @@ public class DynamicScripting extends AIWithComputationBudget {
 		
 		while (!gameover && gs2.getTime()<timeLimit) {
 			if (gs2.isComplete()) {
-				gameover = gs2.cycle();
-			    }
-				
-			 else {
+				gameover = gs2.cycle();					
+			}else {
 				 
 				PlayerAction pa = ai1.getAction(player-1, gs2);
 				gs2.issue(pa);
