@@ -254,32 +254,12 @@ public class DynamicScripting extends AIWithComputationBudget {
 		int n1=playerUnits.size();
 		UnitsTimeDeath.clear();
 		
-		for (int i = 0; i < n1; i++) {
-			Unit u = playerUnits.get(i);
-			UnitsTimeDeath.put(u, -1);
-		}
-		
 		while (!gameover && gs2.getTime()<timeLimit) {
 			if (gs2.isComplete()) {
 				gameover = gs2.cycle();
 			    }
 				
 			 else {
-				
-//				List<Unit> currentUnit=gs2.getUnits();
-//			    Iterator it = UnitsTimeDeath.entrySet().iterator();
-//			    while (it.hasNext()) {
-//			    	
-//			    
-//			    Map.Entry pair = (Map.Entry)it.next();
-//			    System.out.println(pair.getKey() + " = " + pair.getValue());
-//			    if(currentUnit.contains(pair.getKey()))
-//			    {
-//			     UnitsTimeDeath.replace(key, oldValue, newValue)
-//			    }
-//			    it.remove(); // avoids a ConcurrentModificationException
-//			    	
-//			    }
 				 
 				PlayerAction pa = ai1.getAction(player-1, gs2);
 				gs2.issue(pa);
@@ -293,9 +273,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 		
 		System.out.println(" done: " + globalFitness);
 		// if (DEBUG>=1) System.out.println(" done: " + e);
-		
-		
-		
+			
 		//Here we are updating
 		ScriptGeneration actualScript = new ScriptGeneration(totalRules);
 
