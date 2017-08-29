@@ -26,5 +26,10 @@ public class AuxMethods {
 		}
 		return playerUnits;
 	}
+	public double NormalizeInRangue(double currentValue, int space, double dislocate)
+	{
+		double newValue=(currentValue/space)+dislocate;
+		return newValue;
+	}
 
 }

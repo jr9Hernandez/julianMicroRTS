@@ -3,7 +3,9 @@ package dynamicscripting;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import ai.abstraction.Attack;
 import ai.abstraction.WorkerRush;
@@ -32,6 +34,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 	
 	HashMap<Integer, ArrayList<Rule>> RulesSpaceUnit = new HashMap<>();;
 	HashMap<Integer, ArrayList<Rule>> RulesSelectedUnit = new HashMap<>();
+	HashMap<Unit, Integer> UnitsTimeDeath = new HashMap<>();
 	private RulesSpace rulesSpace = new RulesSpace();
 	private int totalRules;
 	private ConditionsScripts conditionsScripts;
@@ -247,11 +250,36 @@ public class DynamicScripting extends AIWithComputationBudget {
 		AI ai1 = new WorkerRush(m_utt, new BFSPathFinding());
 		int timeLimit = gs2.getTime() + LOOKAHEAD;
 		boolean gameover = false;
+		List<Unit> playerUnits = aux.units1(player,gs);
+		int n1=playerUnits.size();
+		UnitsTimeDeath.clear();
+		
+		for (int i = 0; i < n1; i++) {
+			Unit u = playerUnits.get(i);
+			UnitsTimeDeath.put(u, -1);
+		}
 		
 		while (!gameover && gs2.getTime()<timeLimit) {
 			if (gs2.isComplete()) {
 				gameover = gs2.cycle();
-			} else {				
+			    }
+				
+			 else {
+				
+//				List<Unit> currentUnit=gs2.getUnits();
+//			    Iterator it = UnitsTimeDeath.entrySet().iterator();
+//			    while (it.hasNext()) {
+//			    	
+//			    
+//			    Map.Entry pair = (Map.Entry)it.next();
+//			    System.out.println(pair.getKey() + " = " + pair.getValue());
+//			    if(currentUnit.contains(pair.getKey()))
+//			    {
+//			     UnitsTimeDeath.replace(key, oldValue, newValue)
+//			    }
+//			    it.remove(); // avoids a ConcurrentModificationException
+//			    	
+//			    }
 				 
 				PlayerAction pa = ai1.getAction(player-1, gs2);
 				gs2.issue(pa);
@@ -261,15 +289,16 @@ public class DynamicScripting extends AIWithComputationBudget {
 			}
 		}		
 		double globalFitness = evaluation.evaluate(player, 1 - player, gs2);
+		globalFitness=aux.NormalizeInRangue(globalFitness,2,0.5);
 		
 		System.out.println(" done: " + globalFitness);
 		// if (DEBUG>=1) System.out.println(" done: " + e);
-		ScriptGeneration actualScript = new ScriptGeneration(totalRules);
+		
 		
 		
 		//Here we are updating
-		List<Unit> playerUnits = aux.units1(player,gs);
-		int n1=playerUnits.size();
+		ScriptGeneration actualScript = new ScriptGeneration(totalRules);
+
 		for (int i = 0; i < n1; i++) {
 			actualScript.UpdateWeightsBeta(RulesSelectedUnit.get(i), RulesSpaceUnit.get(i), globalFitness ,initialWeight);
 		}
