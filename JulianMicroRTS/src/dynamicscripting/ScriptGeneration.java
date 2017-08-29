@@ -124,7 +124,7 @@ public class ScriptGeneration {
 			return;
 		}
 		int nonActive=totalRules-active;
-		int adjustment=(int)(fitness);
+		int adjustment=calculateAdjustment(fitness);
 		int compensation= -active*adjustment/nonActive;
 		int remainder=0;
 		
@@ -183,6 +183,6 @@ public class ScriptGeneration {
 	
 	public int calculateAdjustment(double fitness)
 	{
-		return 0;
+		return (int)fitness;
 	}
 }
