@@ -31,7 +31,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 	HashMap<UnitType, List<UnitScript>> scripts = null;
 	
 	HashMap<Integer, ArrayList<Rule>> RulesSpaceUnit = new HashMap<>();;
-	HashMap<Integer, ArrayList<Rule>> RulesSelectedUnit = new HashMap<>();;
+	HashMap<Integer, ArrayList<Rule>> RulesSelectedUnit = new HashMap<>();
 	private RulesSpace rulesSpace = new RulesSpace();
 	private int totalRules;
 	private ConditionsScripts conditionsScripts;
@@ -80,7 +80,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 	// Returns the action the bot wants to execute.
 	public PlayerAction getAction(int player, GameState gs) {
 		PlayerAction pa = new PlayerAction();
-		pa.fillWithNones(gs, player, 10);
+		//pa.fillWithNones(gs, player, 10);
 
 		// Here I have to assig an action for each unit!
 		if(isPlayout)
@@ -171,18 +171,20 @@ public class DynamicScripting extends AIWithComputationBudget {
 		
 		if(isPlayout && firstExecution)
 		{
-			
+			RulesSelectedUnit.clear();
 			selectionRulesForUnits(playerUnits, n1);
 			firstExecution=false;
 		}
 		
 		else if(!isPlayout && firstExecution)
 		{		
+			RulesSelectedUnit.clear();
 			selectionRulesForUnits(playerUnits, n1);
 			firstExecution=false;
 			
 			for (int i = 0; i < n1; i++) {
 				System.out.println("Rule selected "+i+" "+RulesSelectedUnit.get(i).get(0).getRule_condition()+RulesSelectedUnit.get(i).get(0).getRule_action()+RulesSelectedUnit.get(i).get(0).getRule_paramether());
+				System.out.println("Rule selected "+i+" "+RulesSelectedUnit.get(i).get(1).getRule_condition()+RulesSelectedUnit.get(i).get(1).getRule_action()+RulesSelectedUnit.get(i).get(1).getRule_paramether());
 			}
 		}
 		
@@ -197,13 +199,13 @@ public class DynamicScripting extends AIWithComputationBudget {
 				ArrayList<Rule> rulesSelected = RulesSelectedUnit.get(i);
 
 				for (int j = 0; j < rulesSelected.size(); j++) {
-					Rule rule = rulesSelected.get(j);
+					Rule currentRule = rulesSelected.get(j);
 
-					if (conditionsScripts.validationCondition(rulesSelected.get(j).getRule_condition(),
-							rulesSelected.get(j).getRule_paramether(), u)) {
+					if (conditionsScripts.validationCondition(currentRule.getRule_condition(),
+							currentRule.getRule_paramether(), u)) {
 
-						Unit u2 = parametersScripts.validationParameter(u, gs,rulesSelected.get(j).getRule_paramether());
-						if (rulesSelected.get(j).getRule_action() == rulesSpace.getAction_attack()) {
+						Unit u2 = parametersScripts.validationParameter(u, gs,currentRule.getRule_paramether());
+						if (currentRule.getRule_action() == rulesSpace.getAction_attack()) {
 							//System.out.println("action Attack " + rulesSelected.get(j).getRule_paramether());
 							UnitScript s = attackTo.instantiate(u, gs, u2);
 							UnitAction ua = s.getAction(u, gs);
@@ -211,7 +213,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 							ruleApplied=true;
 							break;
 							
-						} else if (rulesSelected.get(j).getRule_action() == rulesSpace.getAction_moveawayof()) {
+						} else if (currentRule.getRule_action() == rulesSpace.getAction_moveawayof()) {
 							//System.out.println("action move Away " + rulesSelected.get(j).getRule_paramether());
 							UnitScript s = moveAwayTo.instantiate(u, gs, u2);
 							UnitAction ua = s.getAction(u, gs);
@@ -265,7 +267,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 		ScriptGeneration actualScript = new ScriptGeneration(totalRules);
 		
 		
-		
+		//Here we are updating
 		List<Unit> playerUnits = aux.units1(player,gs);
 		int n1=playerUnits.size();
 		for (int i = 0; i < n1; i++) {

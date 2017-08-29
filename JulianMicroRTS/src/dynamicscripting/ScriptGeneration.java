@@ -48,11 +48,12 @@ public class ScriptGeneration {
 //				sumWeights=0;
 //			}
 		}
+//		System.out.println("sumWeights "+sumWeights);
 		for(int i=0; i<scriptSize;i++)
 		{
 			int trySelection=0;
 			boolean lineAdded=false;
-			while(trySelection<maxTries && lineAdded==true)
+			while(trySelection<maxTries && lineAdded==false)
 			{
 				int sum=0;
 				int j=0;
@@ -72,13 +73,15 @@ public class ScriptGeneration {
 				}
 				if(selected!=-1)
 				{
-					lineAdded=insertedInScript(ruleSpaceList.get(selected),rulesSelectedList);
+					
+					lineAdded=insertInScript(ruleSpaceList.get(selected),rulesSelectedList);
 					
 				}
-				if(!lineAdded)
+				if(lineAdded)
 				{
 					rulesSelectedList.add(ruleSpaceList.get(selected));
 					atLeastOneAdded=true;
+
 				}
 				trySelection++;
 			}
@@ -92,14 +95,14 @@ public class ScriptGeneration {
 		return rulesSelectedList;
 	}
 	
-	public boolean insertedInScript(Rule selectedRule, ArrayList<Rule> rulesSelectedList)
+	public boolean insertInScript(Rule selectedRule, ArrayList<Rule> rulesSelectedList)
 	{
 	    for (Rule rule : rulesSelectedList) {
 	        if (rule.getRule_id() == selectedRule.getRule_id()) {
-	            return true;
+	            return false;
 	        }
 	    }
-	    return false;
+	    return true;
 	}
 	
 	public void UpdateWeightsBeta(ArrayList<Rule> rulesSelectedList, ArrayList<Rule> ruleSpaceList, int fitness, int wInit)
@@ -111,7 +114,7 @@ public class ScriptGeneration {
 		for(int i=0;i<totalRules;i++)
 		{	
 			totalWeights=totalWeights+ruleSpaceList.get(i).getWeight();
-			if(insertedInScript(ruleSpaceList.get(i),rulesSelectedList))
+			if(!insertInScript(ruleSpaceList.get(i),rulesSelectedList))
 			{	
 				active=active+1;
 			}
@@ -128,7 +131,7 @@ public class ScriptGeneration {
 		for(int i=0;i<totalRules;i++)
 		{
 			Rule currentRule=ruleSpaceList.get(i);
-			if(insertedInScript(currentRule,rulesSelectedList))
+			if(!insertInScript(currentRule,rulesSelectedList))
 			{
 				currentRule.setWeight(currentRule.getWeight()+adjustment);
 			}
