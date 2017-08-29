@@ -140,7 +140,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 		return rulesSpaceList;
 	}
 
-	private void generationRulesSpaces(List<Unit> playerUnits, int n1) {
+	private void generationRulesSpaces(int n1) {
 		for (int i = 0; i < n1; i++) {
 			//Unit u = playerUnits.get(i);
 			ArrayList<Rule> rulesSpaceList = rulesGeneration();
@@ -148,7 +148,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 		}
 	}
 
-	public void selectionRulesForUnits(List<Unit> playerUnits, int n1) {
+	public void selectionRulesForUnits(int n1) {
 		for (int i = 0; i < n1; i++) {
 			//Unit u = playerUnits.get(i);
 			ScriptGeneration actualScript = new ScriptGeneration(totalRules, RulesSpaceUnit.get(i));
@@ -168,21 +168,21 @@ public class DynamicScripting extends AIWithComputationBudget {
 		
 		if(firstAll)
 		{
-			generationRulesSpaces(playerUnits, n1);
+			generationRulesSpaces(n1);
 			firstAll=false;
 		}
 		
 		if(isPlayout && firstExecution)
 		{
 			RulesSelectedUnit.clear();
-			selectionRulesForUnits(playerUnits, n1);
+			selectionRulesForUnits(n1);
 			firstExecution=false;
 		}
 		
 		else if(!isPlayout && firstExecution)
 		{		
 			RulesSelectedUnit.clear();
-			selectionRulesForUnits(playerUnits, n1);
+			selectionRulesForUnits(n1);
 			firstExecution=false;
 			
 			for (int i = 0; i < n1; i++) {
