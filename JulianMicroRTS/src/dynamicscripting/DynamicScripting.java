@@ -277,19 +277,18 @@ public class DynamicScripting extends AIWithComputationBudget {
 				PlayerAction pa2 = ActionsAssignments(player, gs2);
 				gs2.issue(pa2);
 			}
-		}		
+		}	
+		
+		//From Here the parameter for adjustment
 		double globalFitness = evaluation.evaluate(player, 1 - player, gs2);
 		globalFitness=aux.NormalizeInRangue(globalFitness,2,0.5);
-		
 		System.out.println(" done: " + globalFitness);
-		// if (DEBUG>=1) System.out.println(" done: " + e);
 		
 		double bFactor=unitStatistics.bFactor();
-		if(bFactor!=0)
 		System.out.println("bFactor "+bFactor);
+		
 		//Here we are updating
 		ScriptGeneration actualScript = new ScriptGeneration(totalRules); 
-
 		List<Unit> playerUnits = aux.units1(player,gs);
 		int n1=playerUnits.size();
 		for (int i = 0; i < n1; i++) {
