@@ -40,7 +40,7 @@ public class UnitStatistics {
 		PhysicalGameState pgs = g.getPhysicalGameState();
 		for(int i=0;i<maxUnits.length;i++)
 		{
-			Unit u=maxUnits[i];
+			Unit u=maxUnits[i]; 
 			if(pgs.getUnits().contains(u))
 			{
 				if(u.getHitPoints()<=0)
