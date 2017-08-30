@@ -48,7 +48,7 @@ public class ScriptGeneration {
 //				sumWeights=0;
 //			}
 		}
-//		System.out.println("sumWeights "+sumWeights);
+		System.out.println("sumWeights "+sumWeights);
 		for(int i=0; i<scriptSize;i++)
 		{
 			int trySelection=0;
@@ -126,7 +126,7 @@ public class ScriptGeneration {
 		int nonActive=totalRules-active;
 		int adjustment=calculateAdjustment(fitness);
 		int compensation= -active*adjustment/nonActive;
-		int remainder=0;
+		int remainder=-active*adjustment-nonActive*compensation;
 		
 		for(int i=0;i<totalRules;i++)
 		{
@@ -183,6 +183,6 @@ public class ScriptGeneration {
 	
 	public int calculateAdjustment(double fitness)
 	{
-		return (int)fitness;
+		return (int)((fitness-0.5)*2);
 	}
 }
