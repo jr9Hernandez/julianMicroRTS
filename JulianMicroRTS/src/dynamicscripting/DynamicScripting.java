@@ -283,15 +283,21 @@ public class DynamicScripting extends AIWithComputationBudget {
 				PlayerAction pa2 = ActionsAssignments(player, gs2);
 				gs2.issue(pa2);
 				
-				timeDeath=unitStatistics.aFactor(timeDeath);
+				timeDeath=unitStatistics.timeDeath(timeDeath);
 			}
 		}	
-		timeDeath=unitStatistics.aFactor(timeDeath);
+		timeDeath=unitStatistics.timeDeath(timeDeath);
 
 		//From Here the parameter for adjustment
 		double globalEvaluation = evaluation.evaluate(player, 1 - player, gs2);
 		globalEvaluation=aux.NormalizeInRangue(globalEvaluation,2,0.5);
 		System.out.println(" done: " + globalEvaluation);
+		
+		double aFactor[]=new double[playerUnitsg2.size()];
+		for (int i = 0; i < playerUnitsg2.size(); i++) {
+			Unit u = playerUnitsg2.get(i);
+			aFactor[i]=unitStatistics.aFactor(timeDeath[i], LOOKAHEAD, u);
+		}
 		
 		double teamFactor=unitStatistics.teamFactor();
 		System.out.println("teamFactor "+teamFactor);
@@ -312,7 +318,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 		int n1=playerUnits.size();
 		for (int i = 0; i < n1; i++) {
 			Unit u = playerUnits.get(i);
-			actualScript.UpdateWeightsBeta(RulesSelectedUnit.get(i), RulesSpaceUnit.get(u.getType().name), globalEvaluation ,initialWeight, teamFactor,bFactor,cFactor);
+			actualScript.UpdateWeightsBeta(RulesSelectedUnit.get(i), RulesSpaceUnit.get(u.getType().name), globalEvaluation ,initialWeight, teamFactor,bFactor,cFactor,aFactor[i]);
 		}
 	}
 

@@ -105,7 +105,7 @@ public class ScriptGeneration {
 	    return true;
 	}
 	
-	public void UpdateWeightsBeta(ArrayList<Rule> rulesSelectedList, ArrayList<Rule> ruleSpaceList, double globalEvaluation, int wInit, double teamFactor, double bFactor, double cFactor)
+	public void UpdateWeightsBeta(ArrayList<Rule> rulesSelectedList, ArrayList<Rule> ruleSpaceList, double globalEvaluation, int wInit, double teamFactor, double bFactor, double cFactor, double aFactor)
 	{
 		int wMax=2000;
 		int wMin=0;
@@ -124,7 +124,7 @@ public class ScriptGeneration {
 			return;
 		}
 		int nonActive=totalRules-active;
-		int adjustment=calculateAdjustment(globalEvaluation,teamFactor,bFactor,cFactor);
+		int adjustment=calculateAdjustment(globalEvaluation,teamFactor,bFactor,cFactor,aFactor);
 		int compensation= -active*adjustment/nonActive;
 		int remainder=-active*adjustment-nonActive*compensation;
 		
@@ -181,14 +181,14 @@ public class ScriptGeneration {
 
 	}
 	
-	public int calculateAdjustment(double globalEvaluation,double teamFactor, double bFactor, double cFactor)
+	public int calculateAdjustment(double globalEvaluation,double teamFactor, double bFactor, double cFactor, double aFactor)
 	{
 		double Rmax=100;
 		double Pmax=70;
 		double bValue=0.3;
 		double differenceWeight;
 		
-		double fitness=(0.1)*(3*teamFactor+2*bFactor+2*cFactor);
+		double fitness=(0.1)*(3*teamFactor+3*aFactor+2*bFactor+2*cFactor);
 		//System.out.println("cali "+fitness);
 		if(fitness<bValue)
 		{

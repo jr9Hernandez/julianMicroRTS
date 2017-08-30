@@ -55,23 +55,26 @@ public class UnitStatistics {
 		}
 		return teamFactor;
 	}
-	
-	public int [] aFactor(int [] timeDeath)
+
+	public double aFactor(int timeDeathUnit, int maxDeathUnit, Unit u)
 	{
-	
-		PhysicalGameState pgs = g.getPhysicalGameState();
-		for(int i=0;i<timeDeath.length;i++)
+		
+		double aFactor;
+		
+		double minDeathUnit=Math.min(((double)timeDeathUnit/(double)maxDeathUnit), 1);
+		
+		double otherValue=2+(u.getHitPoints()/u.getMaxHitPoints());
+		
+		if(u.getHitPoints()<=0)
 		{
-			if(timeDeath[i]==-1 )
-			{
-				Unit u=maxUnits[i];
-				if(!pgs.getUnits().contains(u))
-				{
-					timeDeath[i]=g.getTime();
-				}
-			}
+			aFactor=minDeathUnit;
 		}
-		return timeDeath;
+		else
+		{
+			aFactor=otherValue;
+		}
+		
+		return 0.33*aFactor;
 	}
 
 	public double bFactor()
@@ -125,5 +128,23 @@ public class UnitStatistics {
 		}
 		cFactor=(1/(2*(double)minUnits.length))*sumFactor;
 		return cFactor;
+	}
+	
+	public int [] timeDeath(int [] timeDeath)
+	{
+	
+		PhysicalGameState pgs = g.getPhysicalGameState();
+		for(int i=0;i<timeDeath.length;i++)
+		{
+			if(timeDeath[i]==-1 )
+			{
+				Unit u=maxUnits[i];
+				if(!pgs.getUnits().contains(u))
+				{
+					timeDeath[i]=g.getTime();
+				}
+			}
+		}
+		return timeDeath;
 	}
 }
