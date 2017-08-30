@@ -46,6 +46,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 	boolean isPlayout=true;
 	boolean firstAll=true;
 	AuxMethods aux=new AuxMethods();
+	UnitStatistics unitStatistics;
 	int nplayouts = 0;
 	int LOOKAHEAD = 500;
 	EvaluationFunction evaluation = null;
@@ -260,6 +261,10 @@ public class DynamicScripting extends AIWithComputationBudget {
 		AI ai1 = new WorkerRush(m_utt, new BFSPathFinding());
 		int timeLimit = gs2.getTime() + LOOKAHEAD;
 		boolean gameover = false;
+		
+		List<Unit> playerUnitsg2 = aux.units1(player,gs2);
+		List<Unit> playerUnitsEnemyg2 = aux.units1(player-1,gs2);
+		unitStatistics=new UnitStatistics(player, player-1, gs2, playerUnitsg2, playerUnitsEnemyg2);
 		
 		while (!gameover && gs2.getTime()<timeLimit) {
 			if (gs2.isComplete()) {
