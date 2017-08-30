@@ -188,9 +188,9 @@ public class ScriptGeneration {
 		double bValue=0.3;
 		double differenceWeight;
 		
-		double fitness=(0.1)*(3*teamFactor+2*bFactor+7*cFactor);
+		double fitness=(0.1)*(3*teamFactor+2*bFactor+2*cFactor);
 		//System.out.println("cali "+fitness);
-		if(fitness<0.3)
+		if(fitness<bValue)
 		{
 			differenceWeight=-(Pmax*((bValue-fitness)/bValue));
 		}
@@ -199,7 +199,7 @@ public class ScriptGeneration {
 			differenceWeight=(Rmax*((fitness-bValue)/(1-bValue)));
 		}
 		
-				System.out.println("differenceWeight "+differenceWeight);
+		System.out.println("differenceWeight "+differenceWeight);
 		return (int)(differenceWeight);
 	}
 }
