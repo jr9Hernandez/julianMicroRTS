@@ -48,7 +48,7 @@ public class ScriptGeneration {
 //				sumWeights=0;
 //			}
 		}
-		System.out.println("sumWeights "+sumWeights);
+//		System.out.println("sumWeights "+sumWeights);
 		for(int i=0; i<scriptSize;i++)
 		{
 			int trySelection=0;
