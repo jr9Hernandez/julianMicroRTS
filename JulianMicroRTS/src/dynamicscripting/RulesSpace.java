@@ -32,13 +32,13 @@ public class RulesSpace {
 	//These variables identify the possible actions of a rule
 
 	//Closest_EnemyUnit
-	private final int paramether_closestEnemy=0;
+	private final int paramether_closestEnemy=3;
 	//Fartest_EnemyUnit
-	private final int paramether_fartestEnemy=1;
+	private final int paramether_fartestEnemy=2;
 	//Weakest_EnemyUnit
-	private final int paramether_weakestEnemy=2;
+	private final int paramether_weakestEnemy=0;
 	//Strongest_EnemyUnit
-	private final int paramether_strongestEnemy=3;
+	private final int paramether_strongestEnemy=1;
 
 	
 	

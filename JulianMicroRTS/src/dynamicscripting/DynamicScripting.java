@@ -280,7 +280,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 		// if (DEBUG>=1) System.out.println(" done: " + e);
 			
 		//Here we are updating
-		ScriptGeneration actualScript = new ScriptGeneration(totalRules);
+		ScriptGeneration actualScript = new ScriptGeneration(totalRules); 
 
 		List<Unit> playerUnits = aux.units1(player,gs);
 		int n1=playerUnits.size();
