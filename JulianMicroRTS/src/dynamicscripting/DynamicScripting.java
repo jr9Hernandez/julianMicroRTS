@@ -280,12 +280,18 @@ public class DynamicScripting extends AIWithComputationBudget {
 		}	
 		
 		//From Here the parameter for adjustment
-		double globalFitness = evaluation.evaluate(player, 1 - player, gs2);
-		globalFitness=aux.NormalizeInRangue(globalFitness,2,0.5);
-		System.out.println(" done: " + globalFitness);
+		double globalEvaluation = evaluation.evaluate(player, 1 - player, gs2);
+		globalEvaluation=aux.NormalizeInRangue(globalEvaluation,2,0.5);
+		System.out.println(" done: " + globalEvaluation);
+		
+		double teamFactor=unitStatistics.teamFactor();
+		System.out.println("teamFactor "+teamFactor);
 		
 		double bFactor=unitStatistics.bFactor();
 		System.out.println("bFactor "+bFactor);
+		
+		double cFactor=unitStatistics.cFactor();
+		System.out.println("cFactor "+cFactor);
 		
 		//Here we are updating
 		ScriptGeneration actualScript = new ScriptGeneration(totalRules); 
@@ -293,7 +299,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 		int n1=playerUnits.size();
 		for (int i = 0; i < n1; i++) {
 			Unit u = playerUnits.get(i);
-			actualScript.UpdateWeightsBeta(RulesSelectedUnit.get(i), RulesSpaceUnit.get(u.getType().name), globalFitness ,initialWeight);
+			actualScript.UpdateWeightsBeta(RulesSelectedUnit.get(i), RulesSpaceUnit.get(u.getType().name), globalEvaluation ,initialWeight, teamFactor,bFactor,cFactor);
 		}
 	}
 

@@ -5,7 +5,7 @@ import java.util.List;
 
 public class ScriptGeneration {
 
-	private final int scriptSize=2;
+	private final int scriptSize=1;
 	private int maxTries=5;
 	
 	
@@ -105,7 +105,7 @@ public class ScriptGeneration {
 	    return true;
 	}
 	
-	public void UpdateWeightsBeta(ArrayList<Rule> rulesSelectedList, ArrayList<Rule> ruleSpaceList, double fitness, int wInit)
+	public void UpdateWeightsBeta(ArrayList<Rule> rulesSelectedList, ArrayList<Rule> ruleSpaceList, double globalEvaluation, int wInit, double teamFactor, double bFactor, double cFactor)
 	{
 		int wMax=2000;
 		int wMin=0;
@@ -124,7 +124,7 @@ public class ScriptGeneration {
 			return;
 		}
 		int nonActive=totalRules-active;
-		int adjustment=calculateAdjustment(fitness);
+		int adjustment=calculateAdjustment(globalEvaluation,teamFactor,bFactor,cFactor);
 		int compensation= -active*adjustment/nonActive;
 		int remainder=-active*adjustment-nonActive*compensation;
 		
@@ -181,8 +181,25 @@ public class ScriptGeneration {
 
 	}
 	
-	public int calculateAdjustment(double fitness)
+	public int calculateAdjustment(double globalEvaluation,double teamFactor, double bFactor, double cFactor)
 	{
-		return (int)((fitness-0.5)*2);
+		double Rmax=100;
+		double Pmax=70;
+		double bValue=0.3;
+		double differenceWeight;
+		
+		double fitness=(0.1)*(3*teamFactor+2*bFactor+7*cFactor);
+		//System.out.println("cali "+fitness);
+		if(fitness<0.3)
+		{
+			differenceWeight=-(Pmax*((bValue-fitness)/bValue));
+		}
+		else
+		{
+			differenceWeight=(Rmax*((fitness-bValue)/(1-bValue)));
+		}
+		
+				System.out.println("differenceWeight "+differenceWeight);
+		return (int)(differenceWeight);
 	}
 }

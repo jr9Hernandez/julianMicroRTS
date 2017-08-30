@@ -32,6 +32,29 @@ public class UnitStatistics {
 			minUnits[i]=u;
 		}
 	}
+	
+	public double teamFactor()
+	{
+		double teamFactor=0;
+		PhysicalGameState pgs = g.getPhysicalGameState();
+		for(int i=0;i<maxUnits.length;i++)
+		{
+			Unit u=maxUnits[i]; 
+			if(pgs.getUnits().contains(u))
+			{
+				if(u.getHitPoints()<=0)
+				{
+					teamFactor=teamFactor+0;
+				}
+				else
+				{
+					
+					teamFactor=teamFactor+ ( (1/(2*(double)maxUnits.length)) * (1+ ( (double)u.getHitPoints()/(double)u.getMaxHitPoints() ) )  );
+				}
+			}
+		}
+		return teamFactor;
+	}
 
 	public double bFactor()
 	{
@@ -51,11 +74,39 @@ public class UnitStatistics {
 				{
 					
 					sumFactor=sumFactor+(1+((double)u.getHitPoints()/(double)u.getMaxHitPoints()));
-					System.out.println("algumsinho"+sumFactor);
 				}
 			}
 		}
 		bFactor=(1/(2*(double)maxUnits.length))*sumFactor;
 		return bFactor;
+	}
+	
+	public double cFactor()
+	{
+		double sumFactor=0;
+		double cFactor=0;
+		PhysicalGameState pgs = g.getPhysicalGameState();
+		for(int i=0;i<minUnits.length;i++)
+		{
+			Unit u=minUnits[i]; 
+			if(pgs.getUnits().contains(u))
+			{
+				if(u.getHitPoints()<=0)
+				{
+					sumFactor=sumFactor+1;
+				}
+				else
+				{
+					
+					sumFactor=sumFactor+(1-((double)u.getHitPoints()/(double)u.getMaxHitPoints()));
+				}
+			}
+			else
+			{
+				sumFactor=sumFactor+1;
+			}
+		}
+		cFactor=(1/(2*(double)minUnits.length))*sumFactor;
+		return cFactor;
 	}
 }
