@@ -96,9 +96,8 @@ public class UnitStatistics {
 					sumFactor=sumFactor+1;
 				}
 				else
-				{
-					
-					sumFactor=sumFactor+(1-((double)u.getHitPoints()/(double)u.getMaxHitPoints()));
+				{					
+					sumFactor=sumFactor+(1- ((double)u.getHitPoints()/(double)u.getMaxHitPoints()));
 				}
 			}
 			else
