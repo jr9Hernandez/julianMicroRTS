@@ -10,8 +10,6 @@ public class UnitStatistics {
 	int maxPlayer;
 	int minPlayer;
 	GameState g;
-	List<Unit> playerUnitsg2;
-	List<Unit> playerUnitsEnemyg2;
 	Unit[] maxUnits;
 	Unit[] minUnits;
 	
@@ -21,8 +19,6 @@ public class UnitStatistics {
 		this.maxPlayer=maxPlayer;
 		this.minPlayer=minPlayer;
 		this.g=g;
-		this.playerUnitsg2=playerUnitsg2;
-		this.playerUnitsEnemyg2=playerUnitsEnemyg2;
 		
 		maxUnits=new Unit[playerUnitsg2.size()];
 		minUnits=new Unit[playerUnitsEnemyg2.size()];
@@ -30,33 +26,36 @@ public class UnitStatistics {
 		for (int i = 0; i < playerUnitsg2.size(); i++) {
 			Unit u = playerUnitsg2.get(i);
 			maxUnits[i]=u;
-			System.out.println("ulocal"+u.getType().name);
 		}
 		for (int i = 0; i < playerUnitsEnemyg2.size(); i++) {
 			Unit u = playerUnitsEnemyg2.get(i);
 			minUnits[i]=u;
-			System.out.println("uVist"+u.getType().name);
 		}
 	}
 
-	public double aFactor()
+	public double bFactor()
 	{
-        PhysicalGameState pgs = g.getPhysicalGameState();
-
-        
-        
-        
-        
-        float score = g.getPlayer(maxPlayer).getResources();
-        boolean anyunit = false;
-        for(Unit u:pgs.getUnits()) {
-            if (u.getPlayer()==maxPlayer) {
-                anyunit = true;
-                score += u.getResources();
-                score += u.getCost()*Math.sqrt( u.getHitPoints()/u.getMaxHitPoints() );
-            }
-        }
-        if (!anyunit) return 0;
-        return score;
+		double sumFactor=0;
+		double bFactor=0;
+		PhysicalGameState pgs = g.getPhysicalGameState();
+		for(int i=0;i<maxUnits.length;i++)
+		{
+			Unit u=maxUnits[i];
+			if(pgs.getUnits().contains(u))
+			{
+				if(u.getHitPoints()<=0)
+				{
+					sumFactor=sumFactor+0;
+				}
+				else
+				{
+					
+					sumFactor=sumFactor+(1+((double)u.getHitPoints()/(double)u.getMaxHitPoints()));
+					System.out.println("algumsinho"+sumFactor);
+				}
+			}
+		}
+		bFactor=(1/(2*(double)maxUnits.length))*sumFactor;
+		return bFactor;
 	}
 }

@@ -283,7 +283,10 @@ public class DynamicScripting extends AIWithComputationBudget {
 		
 		System.out.println(" done: " + globalFitness);
 		// if (DEBUG>=1) System.out.println(" done: " + e);
-			
+		
+		double bFactor=unitStatistics.bFactor();
+		if(bFactor!=0)
+		System.out.println("bFactor "+bFactor);
 		//Here we are updating
 		ScriptGeneration actualScript = new ScriptGeneration(totalRules); 
 
