@@ -48,7 +48,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 	AuxMethods aux=new AuxMethods();
 	UnitStatistics unitStatistics;
 	int nplayouts = 0;
-	int LOOKAHEAD = 500;
+	int LOOKAHEAD = 1000;
 	EvaluationFunction evaluation = null;
 	int initialWeight=100;
 	
@@ -265,6 +265,12 @@ public class DynamicScripting extends AIWithComputationBudget {
 		List<Unit> playerUnitsg2 = aux.units1(player,gs2);
 		List<Unit> playerUnitsEnemyg2 = aux.units1(player-1,gs2);
 		unitStatistics=new UnitStatistics(player, player-1, gs2, playerUnitsg2, playerUnitsEnemyg2);
+		int [] timeDeath=new int[playerUnitsg2.size()];
+		
+		for(int i=0;i<timeDeath.length;i++)
+		{
+			timeDeath[i]=-1;
+		}
 		
 		while (!gameover && gs2.getTime()<timeLimit) {
 			if (gs2.isComplete()) {
@@ -276,9 +282,12 @@ public class DynamicScripting extends AIWithComputationBudget {
 				
 				PlayerAction pa2 = ActionsAssignments(player, gs2);
 				gs2.issue(pa2);
+				
+				timeDeath=unitStatistics.aFactor(timeDeath);
 			}
 		}	
-		
+		timeDeath=unitStatistics.aFactor(timeDeath);
+
 		//From Here the parameter for adjustment
 		double globalEvaluation = evaluation.evaluate(player, 1 - player, gs2);
 		globalEvaluation=aux.NormalizeInRangue(globalEvaluation,2,0.5);
@@ -292,6 +301,10 @@ public class DynamicScripting extends AIWithComputationBudget {
 		
 		double cFactor=unitStatistics.cFactor();
 		System.out.println("cFactor "+cFactor);
+		
+//		for (int i = 0; i < playerUnitsg2.size(); i++) {
+//			System.out.println("unit "+timeDeath[i]+ " "+playerUnitsg2.get(i).getType().name);
+//		}
 		
 		//Here we are updating
 		ScriptGeneration actualScript = new ScriptGeneration(totalRules); 

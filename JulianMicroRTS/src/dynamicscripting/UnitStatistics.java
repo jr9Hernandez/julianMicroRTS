@@ -55,6 +55,24 @@ public class UnitStatistics {
 		}
 		return teamFactor;
 	}
+	
+	public int [] aFactor(int [] timeDeath)
+	{
+	
+		PhysicalGameState pgs = g.getPhysicalGameState();
+		for(int i=0;i<timeDeath.length;i++)
+		{
+			if(timeDeath[i]==-1 )
+			{
+				Unit u=maxUnits[i];
+				if(!pgs.getUnits().contains(u))
+				{
+					timeDeath[i]=g.getTime();
+				}
+			}
+		}
+		return timeDeath;
+	}
 
 	public double bFactor()
 	{
