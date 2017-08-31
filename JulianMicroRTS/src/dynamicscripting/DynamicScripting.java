@@ -19,6 +19,7 @@ import ai.evaluation.EvaluationFunction;
 import ai.evaluation.SimpleSqrtEvaluationFunction3;
 import ai.portfolio.PortfolioAI;
 import rts.GameState;
+import rts.PhysicalGameState;
 import rts.PlayerAction;
 import rts.PlayerActionGenerator;
 import rts.UnitAction;
@@ -51,6 +52,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 	int LOOKAHEAD = 1000;
 	EvaluationFunction evaluation = null;
 	int initialWeight=100;
+	Unit [] maxUnits;
 	
 	int numTypesUnits;
 	String [] typesUnits;
@@ -151,7 +153,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 		return rulesSpaceList;
 	}
 
-	private void generationRulesSpaces(int n1) {
+	private void generationRulesSpaces() {
 		for (int i = 0; i < numTypesUnits; i++) {
 			//Unit u = playerUnits.get(i);
 			ArrayList<Rule> rulesSpaceList = rulesGeneration();
@@ -159,9 +161,9 @@ public class DynamicScripting extends AIWithComputationBudget {
 		}
 	}
 
-	public void selectionRulesForUnits(int n1,List<Unit> playerUnits) {
+	public void selectionRulesForUnits(int n1,Unit [] playerUnits) {
 		for (int i = 0; i < n1; i++) {
-			Unit u = playerUnits.get(i);
+			Unit u = playerUnits[i];
 			ScriptGeneration actualScript = new ScriptGeneration(totalRules, RulesSpaceUnit.get(u.getType().name));
 			ArrayList<Rule> rulesSelectedList = actualScript.selectionRules();
 			RulesSelectedUnit.put(i, rulesSelectedList);
@@ -174,29 +176,35 @@ public class DynamicScripting extends AIWithComputationBudget {
 		PlayerAction pa = new PlayerAction();
 		pa.fillWithNones(gs, player, 10);
 		
-		List<Unit> playerUnits = aux.units1(player,gs);
-		int n1=playerUnits.size();
+		
+		
 		
 		if(firstAll)
 		{
-			generationRulesSpaces(n1);
+			List<Unit> playerUnits = aux.units1(player,gs);
+			maxUnits=new Unit[playerUnits.size()];
+			for (int i = 0; i < playerUnits.size(); i++) {
+				Unit u = playerUnits.get(i);
+				maxUnits[i]=u;
+			}
+			generationRulesSpaces();
 			firstAll=false;
 		}
 		
 		if(isPlayout && firstExecution)
 		{
 			RulesSelectedUnit.clear();
-			selectionRulesForUnits(n1,playerUnits);
+			selectionRulesForUnits(maxUnits.length,maxUnits);
 			firstExecution=false;
 		}
 		
 		else if(!isPlayout && firstExecution)
 		{		
 			RulesSelectedUnit.clear();
-			selectionRulesForUnits(n1,playerUnits);
+			selectionRulesForUnits(maxUnits.length,maxUnits);
 			firstExecution=false;
 			
-			for (int i = 0; i < n1; i++) {
+			for (int i = 0; i < maxUnits.length; i++) {
 				System.out.println("Rule selected "+i+" "+RulesSelectedUnit.get(i).get(0).getRule_condition()+RulesSelectedUnit.get(i).get(0).getRule_action()+RulesSelectedUnit.get(i).get(0).getRule_paramether());
 //				System.out.println("Rule selected "+i+" "+RulesSelectedUnit.get(i).get(1).getRule_condition()+RulesSelectedUnit.get(i).get(1).getRule_action()+RulesSelectedUnit.get(i).get(1).getRule_paramether());
 			}
@@ -204,11 +212,12 @@ public class DynamicScripting extends AIWithComputationBudget {
 		
 		parametersScripts = new ParametersScripts(rulesSpace);
 		conditionsScripts = new ConditionsScripts(rulesSpace, parametersScripts, gs);
-
-		for (int i = 0; i < n1; i++) {
-			Unit u = playerUnits.get(i);
+		PhysicalGameState pgs = gs.getPhysicalGameState();
+		
+		for (int i = 0; i < maxUnits.length; i++) {
+			Unit u = maxUnits[i];
 			boolean ruleApplied=false;
-			if (gs.getUnitAction(u) == null) {
+			if (gs.getUnitAction(u) == null && pgs.getUnits().contains(u)) {
 
 				ArrayList<Rule> rulesSelected = RulesSelectedUnit.get(i);
 
