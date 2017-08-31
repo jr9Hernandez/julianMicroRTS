@@ -181,25 +181,34 @@ public class DynamicScripting extends AIWithComputationBudget {
 		
 		if(firstAll)
 		{
-			List<Unit> playerUnits = aux.units1(player,gs);
-			maxUnits=new Unit[playerUnits.size()];
-			for (int i = 0; i < playerUnits.size(); i++) {
-				Unit u = playerUnits.get(i);
-				maxUnits[i]=u;
-			}
+
 			generationRulesSpaces();
 			firstAll=false;
 		}
 		
 		if(isPlayout && firstExecution)
 		{
+			List<Unit> playerUnits = aux.units1(player,gs);
+			maxUnits=new Unit[playerUnits.size()];
+			for (int i = 0; i < playerUnits.size(); i++) {
+				Unit u = playerUnits.get(i);
+				maxUnits[i]=u;
+			}
+			
 			RulesSelectedUnit.clear();
 			selectionRulesForUnits(maxUnits.length,maxUnits);
 			firstExecution=false;
 		}
 		
 		else if(!isPlayout && firstExecution)
-		{		
+		{	
+			List<Unit> playerUnits = aux.units1(player,gs);
+			maxUnits=new Unit[playerUnits.size()];
+			for (int i = 0; i < playerUnits.size(); i++) {
+				Unit u = playerUnits.get(i);
+				maxUnits[i]=u;
+			}
+			
 			RulesSelectedUnit.clear();
 			selectionRulesForUnits(maxUnits.length,maxUnits);
 			firstExecution=false;
