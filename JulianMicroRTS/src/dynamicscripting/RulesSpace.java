@@ -3,7 +3,7 @@ package dynamicscripting;
 public class RulesSpace {
 	
 	//number of conditions, actions, paramethers
-	private int numberConditions=2;
+	private int numberConditions=3;
 	private int numberActions=2;
 	private int numberParamethers=4;
 
@@ -14,7 +14,7 @@ public class RulesSpace {
 	//If (enemy is inside ourUnit unit fire range)
 	private final int condition_enemyInsideRange = 1;
 	//If (enemy is not inside ourUnit fire range)
-//	private final int condition_enemyInsideRange_not = 2;
+	private final int condition_enemyInsideRange_not = 2;
 
 	//These variables identify the possible actions of a rule
 	
@@ -87,12 +87,12 @@ public class RulesSpace {
 	}
 
 
-//	/**
-//	 * @return the condition_enemyInsideRange_not
-//	 */
-//	public int getCondition_enemyInsideRange_not() {
-//		return condition_enemyInsideRange_not;
-//	}
+	/**
+	 * @return the condition_enemyInsideRange_not
+	 */
+	public int getCondition_enemyInsideRange_not() {
+		return condition_enemyInsideRange_not;
+	}
 
 
 	/**

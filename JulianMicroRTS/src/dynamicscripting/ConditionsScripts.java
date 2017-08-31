@@ -27,10 +27,10 @@ public class ConditionsScripts {
 		{
 			return true;
 		}
-//	    else if(idCondition==rulesSpace.getCondition_enemyInsideRange_not() && !validationConditionEnemyInsideRange(idParamether,u))
-//		{
-//			return true;
-//		}
+	    else if(idCondition==rulesSpace.getCondition_enemyInsideRange_not() && !validationConditionEnemyInsideRange(idParamether,u))
+		{
+			return true;
+		}
 		return false;
 	}
 	
