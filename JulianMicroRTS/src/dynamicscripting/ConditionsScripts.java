@@ -31,7 +31,7 @@ public class ConditionsScripts {
 //		{
 //			return true;
 //		}
-	    else if(idCondition==rulesSpace.getCondition_enemyPointingRange() && !validationConditionEnemyPointingRange(idParamether,u))
+	    else if(idCondition==rulesSpace.getCondition_enemyPointingRange() && validationConditionEnemyPointingRange(idParamether,u))
 		{
 			return true;
 		}
