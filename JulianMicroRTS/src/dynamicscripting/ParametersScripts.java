@@ -87,7 +87,7 @@ public class ParametersScripts {
         for (Unit u2 : gs.getPhysicalGameState().getUnits()) {
             if (u2.getPlayer()>=0 && u2.getPlayer() != u.getPlayer()) {
             	int hp=u2.getHitPoints();
-                if (strongest == null || hp < strongesthp) {
+                if (strongest == null || hp > strongesthp) {
                 	strongest = u2;
                 	strongesthp = hp;
                 }
