@@ -27,7 +27,11 @@ public class ConditionsScripts {
 		{
 			return true;
 		}
-	    else if(idCondition==rulesSpace.getCondition_enemyInsideRange_not() && !validationConditionEnemyInsideRange(idParamether,u))
+//	    else if(idCondition==rulesSpace.getCondition_enemyInsideRange_not() && !validationConditionEnemyInsideRange(idParamether,u))
+//		{
+//			return true;
+//		}
+	    else if(idCondition==rulesSpace.getCondition_enemyPointingRange() && !validationConditionEnemyPointingRange(idParamether,u))
 		{
 			return true;
 		}
@@ -42,6 +46,20 @@ public class ConditionsScripts {
         int dy = u2.getY()-u.getY();
         double d = Math.sqrt(dx*dx+dy*dy);
         if (d<=u.getAttackRange()+1) 
+        {
+            return true;
+        }
+        return false;
+	}
+	
+	public boolean validationConditionEnemyPointingRange(int idParameter,Unit u) {
+		
+		Unit u2 = parametersScripts.validationParameter(u, gs, idParameter);
+
+		int dx = u2.getX()-u.getX();
+        int dy = u2.getY()-u.getY();
+        double d = Math.sqrt(dx*dx+dy*dy);
+        if (d<=u2.getAttackRange()+1) 
         {
             return true;
         }

@@ -14,7 +14,9 @@ public class RulesSpace {
 	//If (enemy is inside ourUnit unit fire range)
 	private final int condition_enemyInsideRange = 1;
 	//If (enemy is not inside ourUnit fire range)
-	private final int condition_enemyInsideRange_not = 2;
+//	private final int condition_enemyInsideRange_not = 2;
+	//If (our unit is inside inside ourUnit fire range)
+	private final int condition_enemyPointingRange = 2;
 
 	//These variables identify the possible actions of a rule
 	
@@ -87,11 +89,19 @@ public class RulesSpace {
 	}
 
 
+//	/**
+//	 * @return the condition_enemyInsideRange_not
+//	 */
+//	public int getCondition_enemyInsideRange_not() {
+//		return condition_enemyInsideRange_not;
+//	}
+
+
 	/**
-	 * @return the condition_enemyInsideRange_not
+	 * @return the condition_enemyPointingRange_not
 	 */
-	public int getCondition_enemyInsideRange_not() {
-		return condition_enemyInsideRange_not;
+	public int getCondition_enemyPointingRange() {
+		return condition_enemyPointingRange;
 	}
 
 
