@@ -307,9 +307,9 @@ public class DynamicScripting extends AIWithComputationBudget {
 		double cFactor=unitStatistics.cFactor();
 		System.out.println("cFactor "+cFactor);
 		
-//		for (int i = 0; i < playerUnitsg2.size(); i++) {
-//			System.out.println("unit "+timeDeath[i]+ " "+playerUnitsg2.get(i).getType().name);
-//		}
+		for (int i = 0; i < playerUnitsg2.size(); i++) {
+			System.out.println("unit "+timeDeath[i]+ " "+playerUnitsg2.get(i).getType().name+" "+aFactor[i]);
+		}
 		
 		//Here we are updating
 		ScriptGeneration actualScript = new ScriptGeneration(totalRules); 
