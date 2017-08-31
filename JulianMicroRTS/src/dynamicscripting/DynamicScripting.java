@@ -295,8 +295,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 		
 		double aFactor[]=new double[playerUnitsg2.size()];
 		for (int i = 0; i < playerUnitsg2.size(); i++) {
-			Unit u = playerUnitsg2.get(i);
-			aFactor[i]=unitStatistics.aFactor(timeDeath[i], LOOKAHEAD, u);
+			aFactor[i]=unitStatistics.aFactor(timeDeath[i], LOOKAHEAD, i);
 		}
 		
 		double teamFactor=unitStatistics.teamFactor();

@@ -56,24 +56,29 @@ public class UnitStatistics {
 		return teamFactor;
 	}
 
-	public double aFactor(int timeDeathUnit, int maxDeathUnit, Unit u)
+	public double aFactor(int timeDeathUnit, int maxDeathUnit, int k)
 	{
 		
 		double aFactor;
-		
+		Unit u=maxUnits[k];
+		PhysicalGameState pgs = g.getPhysicalGameState();
 		double minDeathUnit=Math.min(((double)timeDeathUnit/(double)maxDeathUnit), 1);
-		
 		double otherValue=2+(u.getHitPoints()/u.getMaxHitPoints());
 		
-		if(u.getHitPoints()<=0)
+		if(pgs.getUnits().contains(u))
 		{
+			if(u.getHitPoints()<=0)
+			{
+				aFactor=minDeathUnit;
+			}
+			else
+			{
+				aFactor=otherValue;
+			}
+		}
+		else {
 			aFactor=minDeathUnit;
 		}
-		else
-		{
-			aFactor=otherValue;
-		}
-		
 		return 0.33*aFactor;
 	}
 
