@@ -331,10 +331,8 @@ public class DynamicScripting extends AIWithComputationBudget {
 		
 		//Here we are updating
 		ScriptGeneration actualScript = new ScriptGeneration(totalRules); 
-		List<Unit> playerUnits = aux.units1(player,gs);
-		int n1=playerUnits.size();
-		for (int i = 0; i < n1; i++) {
-			Unit u = playerUnits.get(i);
+		for (int i = 0; i < playerUnitsg2.size(); i++) {
+			Unit u = playerUnitsg2.get(i);
 			actualScript.UpdateWeightsBeta(RulesSelectedUnit.get(i), RulesSpaceUnit.get(u.getType().name), globalEvaluation ,initialWeight, teamFactor,bFactor,cFactor,aFactor[i]);
 		}
 	}
