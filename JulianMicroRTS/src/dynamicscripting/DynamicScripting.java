@@ -309,7 +309,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 		//From Here the parameter for adjustment
 		double globalEvaluation = evaluation.evaluate(player, 1 - player, gs2);
 		globalEvaluation=aux.NormalizeInRangue(globalEvaluation,2,0.5);
-		System.out.println(" done: " + globalEvaluation);
+		//System.out.println(" done: " + globalEvaluation);
 		
 		double aFactor[]=new double[playerUnitsg2.size()];
 		for (int i = 0; i < playerUnitsg2.size(); i++) {
@@ -317,16 +317,16 @@ public class DynamicScripting extends AIWithComputationBudget {
 		}
 		
 		double teamFactor=unitStatistics.teamFactor();
-		System.out.println("teamFactor "+teamFactor);
+		//System.out.println("teamFactor "+teamFactor);
 		
 		double bFactor=unitStatistics.bFactor();
-		System.out.println("bFactor "+bFactor);
+		//System.out.println("bFactor "+bFactor);
 		
 		double cFactor=unitStatistics.cFactor();
-		System.out.println("cFactor "+cFactor);
+		//System.out.println("cFactor "+cFactor);
 		
 		for (int i = 0; i < playerUnitsg2.size(); i++) {
-			System.out.println("unit "+timeDeath[i]+ " "+playerUnitsg2.get(i).getType().name+" "+aFactor[i]);
+			//System.out.println("unit "+timeDeath[i]+ " "+playerUnitsg2.get(i).getType().name+" "+aFactor[i]);
 		}
 		
 		//Here we are updating
