@@ -184,12 +184,12 @@ public class ScriptGeneration {
 	
 	public int calculateAdjustment(double globalEvaluation,double teamFactor, double bFactor, double cFactor, double aFactor)
 	{
-		double Rmax=100;
-		double Pmax=70;
-		double bValue=0.3;
+		double Rmax=150;
+		double Pmax=40;
+		double bValue=0.1;
 		double differenceWeight;
 		
-		double fitness=(0.1)*(3*teamFactor+3*aFactor+2*bFactor+2*cFactor);
+		double fitness=(0.1)*(5*globalEvaluation+0*aFactor+0*bFactor+5*cFactor);
 		//System.out.println("cali "+fitness);
 		if(fitness<bValue)
 		{

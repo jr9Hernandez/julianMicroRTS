@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import ai.RandomBiasedAI;
 import ai.abstraction.Attack;
 import ai.abstraction.WorkerRush;
 import ai.abstraction.pathfinding.AStarPathFinding;
@@ -277,6 +278,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 		firstExecution=true;
 		GameState gs2 = gs.clone();
 		AI ai1 = new WorkerRush(m_utt, new BFSPathFinding());
+		//AI ai1 =new RandomBiasedAI();
 		int timeLimit = gs2.getTime() + LOOKAHEAD;
 		boolean gameover = false;
 		
@@ -309,7 +311,9 @@ public class DynamicScripting extends AIWithComputationBudget {
 		//From Here the parameter for adjustment
 		double globalEvaluation = evaluation.evaluate(player, 1 - player, gs2);
 		globalEvaluation=aux.NormalizeInRangue(globalEvaluation,2,0.5);
-		System.out.println(" done: " + globalEvaluation);
+//		System.out.println(" done1: " + globalEvaluation);
+		
+		System.out.println(" done: " + gs2.winner());
 		
 		double aFactor[]=new double[playerUnitsg2.size()];
 		for (int i = 0; i < playerUnitsg2.size(); i++) {
