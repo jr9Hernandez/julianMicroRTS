@@ -63,7 +63,7 @@ public class UnitStatistics {
 		Unit u=maxUnits[k];
 		PhysicalGameState pgs = g.getPhysicalGameState();
 		double minDeathUnit=Math.min(((double)timeDeathUnit/(double)maxDeathUnit), 1);
-		double otherValue=2+(u.getHitPoints()/u.getMaxHitPoints());
+		double otherValue=2+((double)u.getHitPoints()/(double)u.getMaxHitPoints());
 		
 		if(pgs.getUnits().contains(u))
 		{
