@@ -108,11 +108,18 @@ public class ParametersScripts {
         for (Unit u2 : gs.getPhysicalGameState().getUnits()) {
             if (u2.getPlayer()>=0 && u2.getPlayer() != u.getPlayer()) {
                 int d = Math.abs(u2.getX() - u.getX()) + Math.abs(u2.getY() - u.getY());
-                if ((closest == null || d < closestDistance) && (!unitsAssignedEnemys.contains(u2))) {
-                    closest = u2;
+                if ((closest == null || d < closestDistance) ) {
+                    if(!unitsAssignedEnemys.contains(u2))
+					{
+                	closest = u2;
                     closestDistance = d;
+					}
                 }
             }
+        }
+        if(closest == null)
+        {
+        	closest=closestEnemyUnit(u,gs);
         }
         return closest;
     }
