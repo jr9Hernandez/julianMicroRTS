@@ -309,7 +309,8 @@ public class DynamicScripting extends AIWithComputationBudget {
 		//From Here the parameter for adjustment
 		double globalEvaluation = evaluation.evaluate(player, 1 - player, gs2);
 		globalEvaluation=aux.NormalizeInRangue(globalEvaluation,2,0.5);
-		System.out.println(" done: " + globalEvaluation);
+		//System.out.println(" done: " + globalEvaluation);
+		System.out.println(" done: " + gs2.winner());
 		
 		double aFactor[]=new double[playerUnitsg2.size()];
 		for (int i = 0; i < playerUnitsg2.size(); i++) {
