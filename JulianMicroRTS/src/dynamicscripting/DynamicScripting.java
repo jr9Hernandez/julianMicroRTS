@@ -53,6 +53,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 	EvaluationFunction evaluation = null;
 	int initialWeight=100;
 	Unit [] maxUnits;
+	private ArrayList<Unit> unitsAssignedEnemys;
 	
 	int numTypesUnits;
 	String [] typesUnits;
@@ -223,6 +224,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 		conditionsScripts = new ConditionsScripts(rulesSpace, parametersScripts, gs);
 		PhysicalGameState pgs = gs.getPhysicalGameState();
 		
+		unitsAssignedEnemys=new ArrayList<Unit>();
 		for (int i = 0; i < maxUnits.length; i++) {
 			Unit u = maxUnits[i];
 			boolean ruleApplied=false;
@@ -234,15 +236,16 @@ public class DynamicScripting extends AIWithComputationBudget {
 					Rule currentRule = rulesSelected.get(j);
 
 					if (conditionsScripts.validationCondition(currentRule.getRule_condition(),
-							currentRule.getRule_paramether(), u)) {
+							currentRule.getRule_paramether(), u,unitsAssignedEnemys)) {
 
-						Unit u2 = parametersScripts.validationParameter(u, gs,currentRule.getRule_paramether());
+						Unit u2 = parametersScripts.validationParameter(u, gs,currentRule.getRule_paramether(),unitsAssignedEnemys);
 						if (currentRule.getRule_action() == rulesSpace.getAction_attack()) {
 							//System.out.println("action Attack " + rulesSelected.get(j).getRule_paramether());
 							UnitScript s = attackTo.instantiate(u, gs, u2);
 			                if (s!=null) {
 			                    UnitAction ua = s.getAction(u, gs);
 			                    if (ua!=null) {
+			                    	unitsAssignedEnemys.add(u2);
 			                        pa.addUnitAction(u, ua);
 			                    } else {
 			                        pa.addUnitAction(u, new UnitAction(UnitAction.TYPE_NONE));

@@ -1,5 +1,7 @@
 package dynamicscripting;
 
+import java.util.ArrayList;
+
 import rts.GameState;
 import rts.units.Unit;
 
@@ -12,7 +14,7 @@ public class ParametersScripts {
 		this.rulesSpace=rulesSpace;
 	}
 	
-	public Unit validationParameter(Unit u, GameState gs, int idParameter)
+	public Unit validationParameter(Unit u, GameState gs, int idParameter, ArrayList<Unit> unitsAssignedEnemys)
 	{
 		if(idParameter==rulesSpace.getParamether_closestEnemy())
 		{
@@ -29,6 +31,10 @@ public class ParametersScripts {
 		else if(idParameter==rulesSpace.getParamether_strongestEnemy())
 		{
 			return strongestEnemyUnit(u, gs);
+		}
+		else if(idParameter==rulesSpace.getParamether_closestEnemyNotAssigned())
+		{
+			return closestEnemyNotAssignedUnit(u, gs,unitsAssignedEnemys);
 		}
 		return null;
 	}
@@ -94,5 +100,20 @@ public class ParametersScripts {
             }
         }
         return strongest;
+    }
+    public Unit closestEnemyNotAssignedUnit(Unit u, GameState gs,ArrayList<Unit> unitsAssignedEnemys) 
+    {
+        Unit closest = null;
+        int closestDistance = 0;
+        for (Unit u2 : gs.getPhysicalGameState().getUnits()) {
+            if (u2.getPlayer()>=0 && u2.getPlayer() != u.getPlayer()) {
+                int d = Math.abs(u2.getX() - u.getX()) + Math.abs(u2.getY() - u.getY());
+                if ((closest == null || d < closestDistance) && (!unitsAssignedEnemys.contains(u2))) {
+                    closest = u2;
+                    closestDistance = d;
+                }
+            }
+        }
+        return closest;
     }
 }

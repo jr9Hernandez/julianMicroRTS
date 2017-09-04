@@ -1,5 +1,7 @@
 package dynamicscripting;
 
+import java.util.ArrayList;
+
 import rts.GameState;
 import rts.UnitAction;
 import rts.units.Unit;
@@ -17,13 +19,13 @@ public class ConditionsScripts {
 		this.gs=gs;
 	}
 	
-	public boolean validationCondition(int idCondition, int idParamether, Unit u)
+	public boolean validationCondition(int idCondition, int idParamether, Unit u, ArrayList<Unit> unitsAssignedEnemys)
 	{
 		if(idCondition==rulesSpace.getCondition_no())
 		{
 			return true;
 		}
-	    else if(idCondition==rulesSpace.getCondition_enemyInsideRange() && validationConditionEnemyInsideRange(idParamether,u))
+	    else if(idCondition==rulesSpace.getCondition_enemyInsideRange() && validationConditionEnemyInsideRange(idParamether,u,unitsAssignedEnemys))
 		{
 			return true;
 		}
@@ -31,16 +33,16 @@ public class ConditionsScripts {
 //		{
 //			return true;
 //		}
-	    else if(idCondition==rulesSpace.getCondition_enemyPointingRange() && validationConditionEnemyPointingRange(idParamether,u))
+	    else if(idCondition==rulesSpace.getCondition_enemyPointingRange() && validationConditionEnemyPointingRange(idParamether,u,unitsAssignedEnemys))
 		{
 			return true;
 		}
 		return false;
 	}
 	
-	public boolean validationConditionEnemyInsideRange(int idParameter,Unit u) {
+	public boolean validationConditionEnemyInsideRange(int idParameter,Unit u, ArrayList<Unit> unitsAssignedEnemys) {
 		
-		Unit u2 = parametersScripts.validationParameter(u, gs, idParameter);
+		Unit u2 = parametersScripts.validationParameter(u, gs, idParameter,unitsAssignedEnemys);
 
 		int dx = u2.getX()-u.getX();
         int dy = u2.getY()-u.getY();
@@ -52,9 +54,9 @@ public class ConditionsScripts {
         return false;
 	}
 	
-	public boolean validationConditionEnemyPointingRange(int idParameter,Unit u) {
+	public boolean validationConditionEnemyPointingRange(int idParameter,Unit u, ArrayList<Unit> unitsAssignedEnemys) {
 		
-		Unit u2 = parametersScripts.validationParameter(u, gs, idParameter);
+		Unit u2 = parametersScripts.validationParameter(u, gs, idParameter,unitsAssignedEnemys);
 
 		int dx = u2.getX()-u.getX();
         int dy = u2.getY()-u.getY();
