@@ -240,16 +240,32 @@ public class DynamicScripting extends AIWithComputationBudget {
 						if (currentRule.getRule_action() == rulesSpace.getAction_attack()) {
 							//System.out.println("action Attack " + rulesSelected.get(j).getRule_paramether());
 							UnitScript s = attackTo.instantiate(u, gs, u2);
-							UnitAction ua = s.getAction(u, gs);
-							pa.addUnitAction(u, ua);
+			                if (s!=null) {
+			                    UnitAction ua = s.getAction(u, gs);
+			                    if (ua!=null) {
+			                        pa.addUnitAction(u, ua);
+			                    } else {
+			                        pa.addUnitAction(u, new UnitAction(UnitAction.TYPE_NONE));
+			                    }
+			                } else {
+			                    pa.addUnitAction(u, new UnitAction(UnitAction.TYPE_NONE));                
+			                }
 							ruleApplied=true;
 							break;
 							
 						} else if (currentRule.getRule_action() == rulesSpace.getAction_moveawayof()) {
 							//System.out.println("action move Away " + rulesSelected.get(j).getRule_paramether());
 							UnitScript s = moveAwayTo.instantiate(u, gs, u2);
-							UnitAction ua = s.getAction(u, gs);
-							pa.addUnitAction(u, ua);
+			                if (s!=null) {
+			                    UnitAction ua = s.getAction(u, gs);
+			                    if (ua!=null) {
+			                        pa.addUnitAction(u, ua);
+			                    } else {
+			                        pa.addUnitAction(u, new UnitAction(UnitAction.TYPE_NONE));
+			                    }
+			                } else {
+			                    pa.addUnitAction(u, new UnitAction(UnitAction.TYPE_NONE));                
+			                }
 							ruleApplied=true;
 							break;
 						}	
