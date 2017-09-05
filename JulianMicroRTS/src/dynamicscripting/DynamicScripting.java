@@ -234,11 +234,12 @@ public class DynamicScripting extends AIWithComputationBudget {
 
 				for (int j = 0; j < rulesSelected.size(); j++) {
 					Rule currentRule = rulesSelected.get(j);
+					
+					Unit u2 = parametersScripts.validationParameter(u, gs,currentRule.getRule_paramether(),unitsAssignedEnemys);
 
 					if (conditionsScripts.validationCondition(currentRule.getRule_condition(),
-							currentRule.getRule_paramether(), u,unitsAssignedEnemys)) {
-
-						Unit u2 = parametersScripts.validationParameter(u, gs,currentRule.getRule_paramether(),unitsAssignedEnemys);
+							u2, u)) {
+						
 						if (currentRule.getRule_action() == rulesSpace.getAction_attack()) {
 							//System.out.println("action Attack " + rulesSelected.get(j).getRule_paramether());
 							UnitScript s = attackTo.instantiate(u, gs, u2);

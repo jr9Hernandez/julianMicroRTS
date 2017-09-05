@@ -19,13 +19,13 @@ public class ConditionsScripts {
 		this.gs=gs;
 	}
 	
-	public boolean validationCondition(int idCondition, int idParamether, Unit u, ArrayList<Unit> unitsAssignedEnemys)
+	public boolean validationCondition(int idCondition, Unit u2, Unit u)
 	{
 		if(idCondition==rulesSpace.getCondition_no())
 		{
 			return true;
 		}
-	    else if(idCondition==rulesSpace.getCondition_enemyInsideRange() && validationConditionEnemyInsideRange(idParamether,u,unitsAssignedEnemys))
+	    else if(idCondition==rulesSpace.getCondition_enemyInsideRange() && validationConditionEnemyInsideRange(u2,u))
 		{
 			return true;
 		}
@@ -33,16 +33,15 @@ public class ConditionsScripts {
 //		{
 //			return true;
 //		}
-	    else if(idCondition==rulesSpace.getCondition_enemyPointingRange() && validationConditionEnemyPointingRange(idParamether,u,unitsAssignedEnemys))
+	    else if(idCondition==rulesSpace.getCondition_enemyPointingRange() && validationConditionEnemyPointingRange(u2,u))
 		{
 			return true;
 		}
 		return false;
 	}
 	
-	public boolean validationConditionEnemyInsideRange(int idParameter,Unit u, ArrayList<Unit> unitsAssignedEnemys) {
+	public boolean validationConditionEnemyInsideRange(Unit u2,Unit u) {
 		
-		Unit u2 = parametersScripts.validationParameter(u, gs, idParameter,unitsAssignedEnemys);
 
 		int dx = u2.getX()-u.getX();
         int dy = u2.getY()-u.getY();
@@ -54,9 +53,8 @@ public class ConditionsScripts {
         return false;
 	}
 	
-	public boolean validationConditionEnemyPointingRange(int idParameter,Unit u, ArrayList<Unit> unitsAssignedEnemys) {
+	public boolean validationConditionEnemyPointingRange(Unit u2,Unit u) {
 		
-		Unit u2 = parametersScripts.validationParameter(u, gs, idParameter,unitsAssignedEnemys);
 
 		int dx = u2.getX()-u.getX();
         int dy = u2.getY()-u.getY();
