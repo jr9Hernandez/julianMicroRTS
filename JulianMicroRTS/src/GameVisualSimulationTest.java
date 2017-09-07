@@ -32,8 +32,8 @@ public class GameVisualSimulationTest {
         UnitTypeTable utt = new UnitTypeTable();
 //        PhysicalGameState pgs = PhysicalGameState.load("maps/16x16/basesWorkers16x16.xml", utt);
 //        PhysicalGameState pgs = PhysicalGameState.load("maps/8x8/melee8x8Mixed4.xml", utt);
-//        PhysicalGameState pgs = PhysicalGameState.load("maps/16x16/melee16x16Mixed12.xml", utt);
-        PhysicalGameState pgs = PhysicalGameState.load("maps/16x16/melee16x16Mixed8.xml", utt);
+        PhysicalGameState pgs = PhysicalGameState.load("maps/16x16/melee16x16Mixed12.xml", utt);
+//        PhysicalGameState pgs = PhysicalGameState.load("maps/16x16/melee16x16Mixed8.xml", utt);
 //        PhysicalGameState pgs = MapGenerator.basesWorkers8x8Obstacle();
 
         GameState gs = new GameState(pgs, utt);
@@ -41,12 +41,12 @@ public class GameVisualSimulationTest {
         int PERIOD = 20;
         boolean gameover = false;
         
-        AI ai1 = new WorkerRush(utt, new BFSPathFinding());        
+//        AI ai1 = new WorkerRush(utt, new BFSPathFinding());        
 //        AI ai2 = new RandomBiasedAI();
         AI ai2 = new DynamicScripting(utt);
 //        AI ai1= new PortfolioAI(utt);
         //AI ai2=new PuppetSearchMCTS(utt);
-        //AI ai2=new LightRush(utt);
+        AI ai1=new LightRush(utt);
 
         JFrame w = PhysicalGameStatePanel.newVisualizer(gs,640,640,false,PhysicalGameStatePanel.COLORSCHEME_BLACK);
  //       JFrame w = PhysicalGameStatePanel.newVisualizer(gs,640,640,false,PhysicalGameStatePanel.COLORSCHEME_WHITE);

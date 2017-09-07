@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import ai.abstraction.Attack;
+import ai.abstraction.LightRush;
 import ai.abstraction.WorkerRush;
 import ai.abstraction.pathfinding.AStarPathFinding;
 import ai.abstraction.pathfinding.BFSPathFinding;
@@ -301,7 +302,9 @@ public class DynamicScripting extends AIWithComputationBudget {
 		nplayouts++;
 		firstExecution=true;
 		GameState gs2 = gs.clone();
-		AI ai1 = new WorkerRush(m_utt, new BFSPathFinding());
+		//AI ai1 = new WorkerRush(m_utt, new BFSPathFinding());
+		AI ai1 = new LightRush(m_utt, new BFSPathFinding());
+		
 		int timeLimit = gs2.getTime() + LOOKAHEAD;
 		boolean gameover = false;
 		
