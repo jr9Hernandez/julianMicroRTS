@@ -31,5 +31,13 @@ public class AuxMethods {
 		double newValue=(currentValue/space)+dislocate;
 		return newValue;
 	}
+	public boolean validationConstraintRule(int i, int j, int k, RulesSpace rulesSpace)
+	{
+		if(j==rulesSpace.getAction_moveawayof() && k==rulesSpace.getParamether_closestEnemyNotAssigned())
+		{return false;
+		}
+		
+		return false;
+	}
 
 }

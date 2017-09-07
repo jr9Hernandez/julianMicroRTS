@@ -132,19 +132,24 @@ public class DynamicScripting extends AIWithComputationBudget {
 	// This method will create the space of rules
 	public ArrayList<Rule> rulesGeneration() {
 		ArrayList<Rule> rulesSpaceList = new ArrayList<Rule>();
-		totalRules = rulesSpace.getNumberConditions() * rulesSpace.getNumberParamethers()
-				* rulesSpace.getNumberActions();
+		
 		int counterId = 0;
 		for (int i = 0; i < rulesSpace.getNumberConditions(); i++) {
 			for (int j = 0; j < rulesSpace.getNumberActions(); j++) {
 				for (int k = 0; k < rulesSpace.getNumberParamethers(); k++) {
-					Rule rule = new Rule(counterId, initialWeight, false, i, j, k);
-					counterId++;
-					rulesSpaceList.add(rule);
+					
+					if(aux.validationConstraintRule(i,j,k,rulesSpace))
+					{
+						Rule rule = new Rule(counterId, initialWeight, false, i, j, k);
+						counterId++;
+						rulesSpaceList.add(rule);
+					}					
 
 				}
 			}
 		}
+		
+		totalRules = counterId;
 
 		// code for print the actual arraylist of objects
 		for (Rule rule : rulesSpaceList) {
