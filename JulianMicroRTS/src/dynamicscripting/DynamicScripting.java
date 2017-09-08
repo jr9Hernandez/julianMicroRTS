@@ -226,7 +226,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 			}
 			
 			RulesSelectedUnit.clear();
-			selectionFinalRulesForUnits(maxUnits.length,maxUnits);
+			selectionRulesForUnits(maxUnits.length,maxUnits);
 			firstExecution=false;
 			
 			//here Im printing the current dataRules Space
