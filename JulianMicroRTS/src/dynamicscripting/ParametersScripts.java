@@ -89,13 +89,13 @@ public class ParametersScripts {
     public Unit strongestEnemyUnit(Unit u, GameState gs) 
     {
         Unit strongest = null;
-        int strongesthp = 0;
+        int strongestMd = 0;
         for (Unit u2 : gs.getPhysicalGameState().getUnits()) {
             if (u2.getPlayer()>=0 && u2.getPlayer() != u.getPlayer()) {
-            	int hp=u2.getHitPoints();
-                if (strongest == null || hp > strongesthp) {
+            	int md=u2.getMaxDamage();
+                if (strongest == null || md > strongestMd) {
                 	strongest = u2;
-                	strongesthp = hp;
+                	strongestMd = md;
                 }
             }
         }
