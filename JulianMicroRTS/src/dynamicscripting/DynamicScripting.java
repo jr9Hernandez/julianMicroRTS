@@ -177,6 +177,16 @@ public class DynamicScripting extends AIWithComputationBudget {
 		}
 	}
 	
+	public void selectionFinalRulesForUnits(int n1,Unit [] playerUnits) {
+		for (int i = 0; i < n1; i++) {
+			Unit u = playerUnits[i];
+			ScriptGeneration actualScript = new ScriptGeneration(totalRules, RulesSpaceUnit.get(u.getType().name));
+			ArrayList<Rule> rulesSelectedList = actualScript.selectionFinalRules();
+			RulesSelectedUnit.put(i, rulesSelectedList);
+
+		}
+	}
+	
 	public PlayerAction ActionsAssignments(int player, GameState gs)
 	{
 		PlayerAction pa = new PlayerAction();
@@ -216,7 +226,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 			}
 			
 			RulesSelectedUnit.clear();
-			selectionRulesForUnits(maxUnits.length,maxUnits);
+			selectionFinalRulesForUnits(maxUnits.length,maxUnits);
 			firstExecution=false;
 			
 			//here Im printing the current dataRules Space

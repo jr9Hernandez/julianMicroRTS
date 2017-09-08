@@ -3,6 +3,8 @@ package dynamicscripting;
 import java.util.ArrayList;
 import java.util.List;
 
+import rts.units.Unit;
+
 public class ScriptGeneration {
 
 	private final int scriptSize=2;
@@ -93,6 +95,30 @@ public class ScriptGeneration {
 			rulesSelectedList.add(ruleSpaceList.get(r));
 		}
 		return rulesSelectedList;
+	}
+	
+	public ArrayList<Rule> selectionFinalRules()
+	{
+		ArrayList<Rule> rulesSelectedFinalList=new ArrayList<Rule>();
+		Rule best = null;
+	    int bestWeight = 0;
+	    
+		for(int i=0; i<scriptSize;i++)
+		{
+			for(int j=0;j<ruleSpaceList.size();j++)
+			{
+				Rule currentRule=ruleSpaceList.get(j);
+				if((best==null || currentRule.getWeight()<bestWeight) && !rulesSelectedFinalList.contains(currentRule))
+				{
+					best=currentRule;
+					bestWeight=currentRule.getWeight();
+				}
+			}
+			rulesSelectedFinalList.add(best);
+			
+		}
+
+		return rulesSelectedFinalList;
 	}
 	
 	public boolean insertInScript(Rule selectedRule, ArrayList<Rule> rulesSelectedList)
