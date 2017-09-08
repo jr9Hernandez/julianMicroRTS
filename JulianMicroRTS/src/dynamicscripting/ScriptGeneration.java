@@ -108,7 +108,7 @@ public class ScriptGeneration {
 			for(int j=0;j<ruleSpaceList.size();j++)
 			{
 				Rule currentRule=ruleSpaceList.get(j);
-				if((best==null || currentRule.getWeight()<bestWeight) && !rulesSelectedFinalList.contains(currentRule))
+				if((best==null || currentRule.getWeight()>bestWeight) && !rulesSelectedFinalList.contains(currentRule))
 				{
 					best=currentRule;
 					bestWeight=currentRule.getWeight();
