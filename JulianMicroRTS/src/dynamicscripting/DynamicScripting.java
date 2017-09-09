@@ -214,6 +214,12 @@ public class DynamicScripting extends AIWithComputationBudget {
 			RulesSelectedUnit.clear();
 			selectionRulesForUnits(maxUnits.length,maxUnits);
 			firstExecution=false;
+			
+			for (int i = 0; i < maxUnits.length; i++) {
+				System.out.println("Rule selected "+i+" "+RulesSelectedUnit.get(i).get(0).getRule_condition()+RulesSelectedUnit.get(i).get(0).getRule_action()+RulesSelectedUnit.get(i).get(0).getRule_paramether());
+//				System.out.println("Rule selected "+i+" "+RulesSelectedUnit.get(i).get(1).getRule_condition()+RulesSelectedUnit.get(i).get(1).getRule_action()+RulesSelectedUnit.get(i).get(1).getRule_paramether());
+			}
+		
 		}
 		
 		else if(!isPlayout && firstExecution)
