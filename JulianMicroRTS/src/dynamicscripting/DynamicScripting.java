@@ -215,6 +215,16 @@ public class DynamicScripting extends AIWithComputationBudget {
 			selectionRulesForUnits(maxUnits.length,maxUnits);
 			firstExecution=false;
 			
+			//here Im printing the current dataRules Space
+			for (int i = 0; i < numTypesUnits; i++) {
+				//Unit u = playerUnits.get(i);
+				for(int j=0; j<totalRules;j++)
+				{
+					Rule rule=RulesSpaceUnit.get(typesUnits[i]).get(j);
+					System.out.println("Final Rule "+rule.getRule_id()+" "+rule.getRule_condition()+" "+rule.getRule_action()+" "+rule.getRule_paramether()+" "+rule.getWeight());
+				}
+			}
+			
 			for (int i = 0; i < maxUnits.length; i++) {
 				System.out.println("Rule selected "+i+" "+RulesSelectedUnit.get(i).get(0).getRule_condition()+RulesSelectedUnit.get(i).get(0).getRule_action()+RulesSelectedUnit.get(i).get(0).getRule_paramether());
 //				System.out.println("Rule selected "+i+" "+RulesSelectedUnit.get(i).get(1).getRule_condition()+RulesSelectedUnit.get(i).get(1).getRule_action()+RulesSelectedUnit.get(i).get(1).getRule_paramether());
