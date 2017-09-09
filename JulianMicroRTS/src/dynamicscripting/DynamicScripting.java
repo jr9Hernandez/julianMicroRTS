@@ -105,6 +105,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 			try {
 				for(int i=0;i<1000;i++)
 				{
+					System.out.println("New Simulation! ");
 					playout(player, gs);
 				}				
 				
