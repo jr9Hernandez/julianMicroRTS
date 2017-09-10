@@ -46,7 +46,7 @@ public class ConditionsScripts {
 		int dx = u2.getX()-u.getX();
         int dy = u2.getY()-u.getY();
         double d = Math.sqrt(dx*dx+dy*dy);
-        if (d<=u.getAttackRange()+1) 
+        if (d<=u.getAttackRange()+2) 
         {
             return true;
         }
@@ -59,7 +59,7 @@ public class ConditionsScripts {
 		int dx = u2.getX()-u.getX();
         int dy = u2.getY()-u.getY();
         double d = Math.sqrt(dx*dx+dy*dy);
-        if (d<=u2.getAttackRange()+1) 
+        if (d<=u2.getAttackRange()+2) 
         {
             return true;
         }

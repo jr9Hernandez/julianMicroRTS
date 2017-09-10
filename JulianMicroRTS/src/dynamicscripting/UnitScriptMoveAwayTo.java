@@ -135,7 +135,7 @@ public class UnitScriptMoveAwayTo extends UnitScript {
 			newY = u.getY();
 		}
 
-		if (targetParameterRule != null) {
+//		if (targetParameterRule != null) {
 			UnitScriptMoveAwayTo script = new UnitScriptMoveAwayTo(pf);
 			if (d <= targetParameterRule.getAttackRange() + 1) {
 				
@@ -146,10 +146,10 @@ public class UnitScriptMoveAwayTo extends UnitScript {
 					script.action = new Move(u, newX, newY, pf);
 					return script;
 				}
-			} else {
-				script.action = new DoNothing(u);
-				return script;
-			}
+//			} else {
+//				script.action = new DoNothing(u);
+//				return script;
+//			}
 		} else {
 			return null;
 		}
