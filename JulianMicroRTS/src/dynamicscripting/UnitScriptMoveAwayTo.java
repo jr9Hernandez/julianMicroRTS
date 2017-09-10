@@ -135,9 +135,9 @@ public class UnitScriptMoveAwayTo extends UnitScript {
 			newY = u.getY();
 		}
 
-//		if (targetParameterRule != null) {
+		if (targetParameterRule != null) {
 			UnitScriptMoveAwayTo script = new UnitScriptMoveAwayTo(pf);
-			if (d <= targetParameterRule.getAttackRange() + 1) {
+//			if (d <= targetParameterRule.getAttackRange() + 1) {
 				
 				if (u.getX() == newX && u.getY() == newY) {
 					script.action = new DoNothing(u);
