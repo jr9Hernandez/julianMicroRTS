@@ -26,12 +26,24 @@ public class ScriptGeneration {
 		this.ruleSpaceList=rulesSpaceList;
 		rulesSelectedList=new ArrayList<Rule>();
 		objAuxMethods=new AuxMethods();
+		
 	}
 	
 	public ScriptGeneration(int totalRules)
 	{
 		
 		this.totalRules=totalRules;
+	}
+	public void desactivateRules()
+	{
+		for(int i=0;i<ruleSpaceList.size();i++)
+		{
+			Rule currentRule=ruleSpaceList.get(i);
+			for (int j=0;j<ruleSpaceList.size();j++)
+			{
+				currentRule.active[j]=false;
+			}
+		}
 	}
 	/**
 	 * SelectionRules() is based in the algorithm for script generation presented in Adaptive game AI with dynamic scripting
