@@ -26,6 +26,7 @@ public class ScriptGeneration {
 		this.ruleSpaceList=rulesSpaceList;
 		rulesSelectedList=new ArrayList<Rule>();
 		objAuxMethods=new AuxMethods();
+		desactivateRules();
 		
 	}
 	
@@ -39,7 +40,7 @@ public class ScriptGeneration {
 		for(int i=0;i<ruleSpaceList.size();i++)
 		{
 			Rule currentRule=ruleSpaceList.get(i);
-			for (int j=0;j<ruleSpaceList.size();j++)
+			for (int j=0;j<currentRule.getActive().length;j++)
 			{
 				currentRule.active[j]=false;
 			}
