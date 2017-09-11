@@ -131,7 +131,7 @@ public class ScriptGeneration {
 	    return true;
 	}
 	
-	public void UpdateWeightsBeta(ArrayList<Rule> rulesSelectedList, ArrayList<Rule> ruleSpaceList, double globalEvaluation, int wInit, double teamFactor, double bFactor, double cFactor, double aFactor)
+	public void UpdateWeightsBeta(int unitId,ArrayList<Rule> rulesSelectedList, ArrayList<Rule> ruleSpaceList, double globalEvaluation, int wInit, double teamFactor, double bFactor, double cFactor, double aFactor)
 	{
 		System.out.println("Rule Before! "+rulesSelectedList.get(0).getWeight());
 		int wMax=2000;
@@ -141,7 +141,7 @@ public class ScriptGeneration {
 		for(int i=0;i<totalRules;i++)
 		{	
 			totalWeights=totalWeights+ruleSpaceList.get(i).getWeight();
-			if(!insertInScript(ruleSpaceList.get(i),rulesSelectedList))
+			if(ruleSpaceList.get(i).getActive()[unitId])
 			{	
 				active=active+1;
 			}
@@ -158,7 +158,7 @@ public class ScriptGeneration {
 		for(int i=0;i<totalRules;i++)
 		{
 			Rule currentRule=ruleSpaceList.get(i);
-			if(!insertInScript(currentRule,rulesSelectedList))
+			if(ruleSpaceList.get(i).getActive()[unitId])
 			{
 				currentRule.setWeight(currentRule.getWeight()+adjustment);
 			}

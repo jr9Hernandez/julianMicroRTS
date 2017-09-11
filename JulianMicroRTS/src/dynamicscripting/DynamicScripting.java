@@ -131,7 +131,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 	}
 
 	// This method will create the space of rules
-	public ArrayList<Rule> rulesGeneration() {
+	public ArrayList<Rule> rulesGeneration(int unitsSize) {
 		ArrayList<Rule> rulesSpaceList = new ArrayList<Rule>();
 		
 		int counterId = 0;
@@ -141,7 +141,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 					
 					if(aux.validationConstraintRule(i,j,k,rulesSpace))
 					{
-						Rule rule = new Rule(counterId, initialWeight, false, i, j, k);
+						Rule rule = new Rule(counterId, initialWeight, unitsSize, i, j, k);
 						counterId++;
 						rulesSpaceList.add(rule);
 					}					
@@ -160,10 +160,10 @@ public class DynamicScripting extends AIWithComputationBudget {
 		return rulesSpaceList;
 	}
 
-	private void generationRulesSpaces() {
+	private void generationRulesSpaces(int unitsSize) {
 		for (int i = 0; i < numTypesUnits; i++) {
 			//Unit u = playerUnits.get(i);
-			ArrayList<Rule> rulesSpaceList = rulesGeneration();
+			ArrayList<Rule> rulesSpaceList = rulesGeneration(unitsSize);
 			RulesSpaceUnit.put(typesUnits[i], rulesSpaceList);
 		}
 	}
@@ -198,8 +198,8 @@ public class DynamicScripting extends AIWithComputationBudget {
 		
 		if(firstAll)
 		{
-
-			generationRulesSpaces();
+			List<Unit> playerUnits = aux.units1(player,gs);
+			generationRulesSpaces(playerUnits.size());
 			firstAll=false;
 		}
 		
@@ -290,6 +290,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 			                    if (ua!=null) {
 			                    	unitsAssignedEnemys.add(u2);
 			                        pa.addUnitAction(u, ua);
+			                        currentRule.active[i]=true;
 			                    } else {
 			                        pa.addUnitAction(u, new UnitAction(UnitAction.TYPE_NONE));
 			                    }
@@ -306,6 +307,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 			                    UnitAction ua = s.getAction(u, gs);
 			                    if (ua!=null) {
 			                        pa.addUnitAction(u, ua);
+			                        currentRule.active[i]=true;
 			                    } else {
 			                        pa.addUnitAction(u, new UnitAction(UnitAction.TYPE_NONE));
 			                    }
@@ -396,7 +398,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 		ScriptGeneration actualScript = new ScriptGeneration(totalRules); 
 		for (int i = 0; i < playerUnitsg2.size(); i++) {
 			Unit u = playerUnitsg2.get(i);
-			actualScript.UpdateWeightsBeta(RulesSelectedUnit.get(i), RulesSpaceUnit.get(u.getType().name), globalEvaluation ,initialWeight, teamFactor,bFactor,cFactor,aFactor[i]);
+			actualScript.UpdateWeightsBeta(i,RulesSelectedUnit.get(i), RulesSpaceUnit.get(u.getType().name), globalEvaluation ,initialWeight, teamFactor,bFactor,cFactor,aFactor[i]);
 		}
 	}
 

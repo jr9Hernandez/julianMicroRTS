@@ -4,17 +4,17 @@ public class Rule {
 	
 	private int rule_id;
 	private int weight;
-	private boolean active;
+	protected boolean [] active;
 	private int rule_condition;
 	private int rule_action;
 	private int rule_paramether;
 	
 
-	public Rule(int rule_id,int weight, boolean active, int rule_condition, int rule_action, int rule_paramether){
+	public Rule(int rule_id,int weight, int sizeUnits, int rule_condition, int rule_action, int rule_paramether){
 		
 		this.rule_id=rule_id;		
 		this.weight=weight;
-		this.active=active;
+		this.active=new boolean[sizeUnits];
 		this.rule_condition=rule_condition;
 		this.rule_action=rule_action;
 		this.rule_paramether=rule_paramether;
@@ -38,14 +38,14 @@ public class Rule {
 	/**
 	 * @return the active, determines if the current object rule is active for the script
 	 */
-	public boolean getActive() {
+	public boolean [] getActive() {
 		return active;
 	}
 
 	/**
 	 * @param active the active to set
 	 */
-	public void setActive(boolean active) {
+	public void setActive(boolean [] active) {
 		this.active = active;
 	}
 
