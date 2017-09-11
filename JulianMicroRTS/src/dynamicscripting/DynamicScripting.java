@@ -283,39 +283,37 @@ public class DynamicScripting extends AIWithComputationBudget {
 							u2, u)) {
 						
 						if (currentRule.getRule_action() == rulesSpace.getAction_attack()) {
+							currentRule.active[i]=true;
 							//System.out.println("action Attack " + rulesSelected.get(j).getRule_paramether());
 							UnitScript s = attackTo.instantiate(u, gs, u2);
 			                if (s!=null) {
 			                    UnitAction ua = s.getAction(u, gs);
 			                    if (ua!=null) {
 			                    	unitsAssignedEnemys.add(u2);
-			                        pa.addUnitAction(u, ua);
-			                        
+			                        pa.addUnitAction(u, ua);			                        
 			                    } else {
 			                        pa.addUnitAction(u, new UnitAction(UnitAction.TYPE_NONE));
 			                    }
 			                } else {
 			                    pa.addUnitAction(u, new UnitAction(UnitAction.TYPE_NONE));                
-			                }
-			                currentRule.active[i]=true;
+			                }			                
 							ruleApplied=true;
 							break;
 							
 						} else if (currentRule.getRule_action() == rulesSpace.getAction_moveawayof()) {
+							currentRule.active[i]=true;
 							//System.out.println("action move Away " + rulesSelected.get(j).getRule_paramether());
 							UnitScript s = moveAwayTo.instantiate(u, gs, u2);
 			                if (s!=null) {
 			                    UnitAction ua = s.getAction(u, gs);
 			                    if (ua!=null) {
-			                        pa.addUnitAction(u, ua);
-			                        
+			                        pa.addUnitAction(u, ua);			                        
 			                    } else {
 			                        pa.addUnitAction(u, new UnitAction(UnitAction.TYPE_NONE));
 			                    }
 			                } else {
 			                    pa.addUnitAction(u, new UnitAction(UnitAction.TYPE_NONE));                
-			                }
-			                currentRule.active[i]=true;
+			                }			                
 							ruleApplied=true;
 							break;
 						}	
@@ -399,6 +397,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 		//Here we are updating
 		ScriptGeneration actualScript = new ScriptGeneration(totalRules); 
 		for (int i = 0; i < playerUnitsg2.size(); i++) {
+			System.out.println("New Script Updating");
 			Unit u = playerUnitsg2.get(i);
 			actualScript.UpdateWeightsBeta(i,RulesSelectedUnit.get(i), RulesSpaceUnit.get(u.getType().name), globalEvaluation ,initialWeight, teamFactor,bFactor,cFactor,aFactor[i]);
 		}

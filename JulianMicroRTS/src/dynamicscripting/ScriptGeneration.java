@@ -154,7 +154,8 @@ public class ScriptGeneration {
 		for(int i=0;i<totalRules;i++)
 		{	
 			totalWeights=totalWeights+ruleSpaceList.get(i).getWeight();
-			if(ruleSpaceList.get(i).getActive()[unitId])
+			System.out.println("political "+ruleSpaceList.get(i).active[unitId]);
+			if(ruleSpaceList.get(i).active[unitId])
 			{	
 				active=active+1;
 			}
@@ -171,7 +172,7 @@ public class ScriptGeneration {
 		for(int i=0;i<totalRules;i++)
 		{
 			Rule currentRule=ruleSpaceList.get(i);
-			if(ruleSpaceList.get(i).getActive()[unitId])
+			if(ruleSpaceList.get(i).active[unitId])
 			{
 				currentRule.setWeight(currentRule.getWeight()+adjustment);
 			}
