@@ -290,13 +290,14 @@ public class DynamicScripting extends AIWithComputationBudget {
 			                    if (ua!=null) {
 			                    	unitsAssignedEnemys.add(u2);
 			                        pa.addUnitAction(u, ua);
-			                        currentRule.active[i]=true;
+			                        
 			                    } else {
 			                        pa.addUnitAction(u, new UnitAction(UnitAction.TYPE_NONE));
 			                    }
 			                } else {
 			                    pa.addUnitAction(u, new UnitAction(UnitAction.TYPE_NONE));                
 			                }
+			                currentRule.active[i]=true;
 							ruleApplied=true;
 							break;
 							
@@ -307,13 +308,14 @@ public class DynamicScripting extends AIWithComputationBudget {
 			                    UnitAction ua = s.getAction(u, gs);
 			                    if (ua!=null) {
 			                        pa.addUnitAction(u, ua);
-			                        currentRule.active[i]=true;
+			                        
 			                    } else {
 			                        pa.addUnitAction(u, new UnitAction(UnitAction.TYPE_NONE));
 			                    }
 			                } else {
 			                    pa.addUnitAction(u, new UnitAction(UnitAction.TYPE_NONE));                
 			                }
+			                currentRule.active[i]=true;
 							ruleApplied=true;
 							break;
 						}	
