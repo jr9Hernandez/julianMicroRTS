@@ -45,11 +45,10 @@ public class AuxMethods {
 		{
 			return false;
 		}
-		if(i==rulesSpace.getCondition_no() && j==rulesSpace.getAction_moveawayof())
+		if(i==rulesSpace.getCondition_enemyInsideRange() && k!=rulesSpace.getParamether_closestEnemy())
 		{
 			return false;
 		}
-		
 		return true;
 	}
 
