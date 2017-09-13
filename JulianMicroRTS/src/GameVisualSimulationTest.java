@@ -29,12 +29,22 @@ import util.XMLWriter;
  */
 public class GameVisualSimulationTest {
     public static void main(String args[]) throws Exception {
+    	
         UnitTypeTable utt = new UnitTypeTable();
-//        PhysicalGameState pgs = PhysicalGameState.load("maps/16x16/basesWorkers16x16.xml", utt);
-//        PhysicalGameState pgs = PhysicalGameState.load("maps/8x8/melee8x8Mixed4.xml", utt);
-//        PhysicalGameState pgs = PhysicalGameState.load("maps/16x16/melee16x16Mixed12.xml", utt);
-        PhysicalGameState pgs = PhysicalGameState.load("maps/16x16/melee16x16Mixed8.xml", utt);
-//        PhysicalGameState pgs = MapGenerator.basesWorkers8x8Obstacle();
+        PhysicalGameState pgs = null;
+        //pgs = PhysicalGameState.load("maps/24x24/melee24x24Mixed16.xml", utt);        
+        
+        for(int i=0;i<4;i++)
+        {
+        if (i==0) {
+            pgs = PhysicalGameState.load("maps/8x8/melee8x8Mixed4.xml", utt);
+        } else if (i==1) {
+            pgs = PhysicalGameState.load("maps/16x16/melee16x16Mixed8.xml", utt);
+        } else if (i==2) {
+            pgs = PhysicalGameState.load("maps/16x16/melee16x16Mixed12.xml", utt);
+        } else if (i==3) {
+            pgs = PhysicalGameState.load("maps/24x24/melee24x24Mixed16.xml", utt);
+        }
 
         GameState gs = new GameState(pgs, utt);
         int MAXCYCLES = 5000;
@@ -48,7 +58,7 @@ public class GameVisualSimulationTest {
         //AI ai2=new PuppetSearchMCTS(utt);
         //AI ai2=new LightRush(utt);
 
-        JFrame w = PhysicalGameStatePanel.newVisualizer(gs,640,640,false,PhysicalGameStatePanel.COLORSCHEME_BLACK);
+//        JFrame w = PhysicalGameStatePanel.newVisualizer(gs,640,640,false,PhysicalGameStatePanel.COLORSCHEME_BLACK);
  //       JFrame w = PhysicalGameStatePanel.newVisualizer(gs,640,640,false,PhysicalGameStatePanel.COLORSCHEME_WHITE);
 
         //The next line is just for my Experiments!!!
@@ -63,7 +73,7 @@ public class GameVisualSimulationTest {
 
                 // simulate:
                 gameover = gs.cycle();
-                w.repaint();
+//                w.repaint();
                 nextTimeToUpdate+=PERIOD;
             } else {
                 try {
@@ -75,5 +85,7 @@ public class GameVisualSimulationTest {
         }while(!gameover && gs.getTime()<MAXCYCLES);
         
         System.out.println("Game Over");
+        }
     }    
+        
 }
