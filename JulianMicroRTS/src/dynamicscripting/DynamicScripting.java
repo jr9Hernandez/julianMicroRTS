@@ -227,8 +227,11 @@ public class DynamicScripting extends AIWithComputationBudget {
 			}
 			
 			for (int i = 0; i < maxUnits.length; i++) {
-				System.out.println("Rule selected "+i+" "+RulesSelectedUnit.get(i).get(0).getRule_condition()+RulesSelectedUnit.get(i).get(0).getRule_action()+RulesSelectedUnit.get(i).get(0).getRule_paramether());
-//				System.out.println("Rule selected "+i+" "+RulesSelectedUnit.get(i).get(1).getRule_condition()+RulesSelectedUnit.get(i).get(1).getRule_action()+RulesSelectedUnit.get(i).get(1).getRule_paramether());
+				for(int j=0;j<RulesSelectedUnit.get(i).size();j++)
+				{
+				System.out.println("Rule selected "+i+" "+RulesSelectedUnit.get(i).get(j).getRule_condition()+RulesSelectedUnit.get(i).get(j).getRule_action()+RulesSelectedUnit.get(i).get(j).getRule_paramether());
+				}
+				
 			}
 		
 		}
@@ -257,8 +260,11 @@ public class DynamicScripting extends AIWithComputationBudget {
 			}
 			
 			for (int i = 0; i < maxUnits.length; i++) {
-				System.out.println("Rule selected "+i+" "+RulesSelectedUnit.get(i).get(0).getRule_condition()+RulesSelectedUnit.get(i).get(0).getRule_action()+RulesSelectedUnit.get(i).get(0).getRule_paramether());
-//				System.out.println("Rule selected "+i+" "+RulesSelectedUnit.get(i).get(1).getRule_condition()+RulesSelectedUnit.get(i).get(1).getRule_action()+RulesSelectedUnit.get(i).get(1).getRule_paramether());
+				for(int j=0;j<RulesSelectedUnit.get(i).size();j++)
+				{
+				System.out.println("Rule selected "+i+" "+RulesSelectedUnit.get(i).get(j).getRule_condition()+RulesSelectedUnit.get(i).get(j).getRule_action()+RulesSelectedUnit.get(i).get(j).getRule_paramether());
+				}
+				
 			}
 		}
 		
