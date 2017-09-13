@@ -111,8 +111,6 @@ public class DynamicScripting extends AIWithComputationBudget {
 				for(int i=0;i<1000;i++)
 				{
 					//System.out.println("New Simulation! ");
-					convergenceWin=0;
-					convergenceDraw=0;
 					playout(player, gs);
 					
 					if(convergenceWin>=limitConvergence && roundConvergenceWin==-1)

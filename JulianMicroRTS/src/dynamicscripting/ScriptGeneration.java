@@ -225,12 +225,12 @@ public class ScriptGeneration {
 	public int calculateAdjustment(double globalEvaluation,double teamFactor, double bFactor, double cFactor, double aFactor)
 	{
 		double Rmax=100;
-		double Pmax=70;
-		double bValue=0.2;
+		double Pmax=20;
+		double bValue=0.1;
 		double differenceWeight;
 		
-		double fitness=(0.1)*(5*teamFactor+3*aFactor+2*bFactor+2*cFactor);
-		//System.out.println("fitness "+fitness);
+		double fitness=(0.1)*(3*teamFactor+0*aFactor+0*bFactor+7*cFactor);
+//		System.out.println("fitness "+fitness);
 		if(fitness<bValue)
 		{
 			differenceWeight=-(Pmax*((bValue-fitness)/bValue));
@@ -240,7 +240,7 @@ public class ScriptGeneration {
 			differenceWeight=(Rmax*((fitness-bValue)/(1-bValue)));
 		}
 		
-		//System.out.println("differenceWeight "+differenceWeight);
+//		System.out.println("differenceWeight "+differenceWeight);
 		return (int)(differenceWeight);
 	}
 }
