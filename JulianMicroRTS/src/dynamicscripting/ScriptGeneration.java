@@ -146,7 +146,7 @@ public class ScriptGeneration {
 	
 	public void UpdateWeightsBeta(int unitId,ArrayList<Rule> rulesSelectedList, ArrayList<Rule> ruleSpaceList, double globalEvaluation, int wInit, double teamFactor, double bFactor, double cFactor, double aFactor)
 	{
-		System.out.println("Rule Before! "+rulesSelectedList.get(0).getWeight());
+		//System.out.println("Rule Before! "+rulesSelectedList.get(0).getWeight());
 		int wMax=2000;
 		int wMin=0;
 		int active=0;
@@ -154,7 +154,7 @@ public class ScriptGeneration {
 		for(int i=0;i<totalRules;i++)
 		{	
 			totalWeights=totalWeights+ruleSpaceList.get(i).getWeight();
-			System.out.println("political "+ruleSpaceList.get(i).active[unitId]);
+			//System.out.println("political "+ruleSpaceList.get(i).active[unitId]);
 			if(ruleSpaceList.get(i).active[unitId])
 			{	
 				active=active+1;
@@ -192,7 +192,7 @@ public class ScriptGeneration {
 			}
 		}
 		distributeRemainder(ruleSpaceList,remainder,wMax,wMin);
-		System.out.println("Rule Right Now! "+rulesSelectedList.get(0).getWeight());
+		//System.out.println("Rule Right Now! "+rulesSelectedList.get(0).getWeight());
 	}
 	
 	public void distributeRemainder(ArrayList<Rule> ruleSpaceList, int remainder,int maxWeight, int minWeight)
@@ -230,7 +230,7 @@ public class ScriptGeneration {
 		double differenceWeight;
 		
 		double fitness=(0.1)*(5*teamFactor+3*aFactor+2*bFactor+2*cFactor);
-		System.out.println("fitness "+fitness);
+		//System.out.println("fitness "+fitness);
 		if(fitness<bValue)
 		{
 			differenceWeight=-(Pmax*((bValue-fitness)/bValue));
@@ -240,7 +240,7 @@ public class ScriptGeneration {
 			differenceWeight=(Rmax*((fitness-bValue)/(1-bValue)));
 		}
 		
-		System.out.println("differenceWeight "+differenceWeight);
+		//System.out.println("differenceWeight "+differenceWeight);
 		return (int)(differenceWeight);
 	}
 }

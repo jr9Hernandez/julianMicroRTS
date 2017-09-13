@@ -105,7 +105,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 			try {
 				for(int i=0;i<1000;i++)
 				{
-					System.out.println("New Simulation! ");
+					//System.out.println("New Simulation! ");
 					playout(player, gs);
 				}				
 				
@@ -153,10 +153,10 @@ public class DynamicScripting extends AIWithComputationBudget {
 		totalRules = counterId;
 
 		// code for print the actual arraylist of objects
-		for (Rule rule : rulesSpaceList) {
-			System.out.println(rule.getRule_id() + " " + rule.getWeight() + " " + rule.getActive() + " "
-					+ rule.getRule_condition() + " " + rule.getRule_action() + " " + rule.getRule_paramether());
-		}
+//		for (Rule rule : rulesSpaceList) {
+//			System.out.println(rule.getRule_id() + " " + rule.getWeight() + " " + rule.getActive() + " "
+//					+ rule.getRule_condition() + " " + rule.getRule_action() + " " + rule.getRule_paramether());
+//		}
 		return rulesSpaceList;
 	}
 
@@ -217,22 +217,22 @@ public class DynamicScripting extends AIWithComputationBudget {
 			firstExecution=false;
 			
 			//here Im printing the current dataRules Space
-			for (int i = 0; i < numTypesUnits; i++) {
-				//Unit u = playerUnits.get(i);
-				for(int j=0; j<totalRules;j++)
-				{
-					Rule rule=RulesSpaceUnit.get(typesUnits[i]).get(j);
-					System.out.println("Final Rule "+rule.getRule_id()+" "+rule.getRule_condition()+" "+rule.getRule_action()+" "+rule.getRule_paramether()+" "+rule.getWeight());
-				}
-			}
+//			for (int i = 0; i < numTypesUnits; i++) {
+//				//Unit u = playerUnits.get(i);
+//				for(int j=0; j<totalRules;j++)
+//				{
+//					Rule rule=RulesSpaceUnit.get(typesUnits[i]).get(j);
+//					System.out.println("Final Rule "+rule.getRule_id()+" "+rule.getRule_condition()+" "+rule.getRule_action()+" "+rule.getRule_paramether()+" "+rule.getWeight());
+//				}
+//			}
 			
-			for (int i = 0; i < maxUnits.length; i++) {
-				for(int j=0;j<RulesSelectedUnit.get(i).size();j++)
-				{
-				System.out.println("Rule selected "+i+" "+RulesSelectedUnit.get(i).get(j).getRule_condition()+RulesSelectedUnit.get(i).get(j).getRule_action()+RulesSelectedUnit.get(i).get(j).getRule_paramether());
-				}
-				
-			}
+//			for (int i = 0; i < maxUnits.length; i++) {
+//				for(int j=0;j<RulesSelectedUnit.get(i).size();j++)
+//				{
+//				System.out.println("Rule selected "+i+" "+RulesSelectedUnit.get(i).get(j).getRule_condition()+RulesSelectedUnit.get(i).get(j).getRule_action()+RulesSelectedUnit.get(i).get(j).getRule_paramether());
+//				}
+//				
+//			}
 		
 		}
 		
@@ -378,7 +378,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 		//From Here the parameter for adjustment
 		double globalEvaluation = evaluation.evaluate(player, 1 - player, gs2);
 		globalEvaluation=aux.NormalizeInRangue(globalEvaluation,2,0.5);
-		//System.out.println(" done: " + globalEvaluation);
+		
 		System.out.println(" done: " + gs2.winner());
 		
 		double aFactor[]=new double[playerUnitsg2.size()];
@@ -387,22 +387,22 @@ public class DynamicScripting extends AIWithComputationBudget {
 		}
 		
 		double teamFactor=unitStatistics.teamFactor();
-		System.out.println("teamFactor "+teamFactor);
+		//System.out.println("teamFactor "+teamFactor);
 		
 		double bFactor=unitStatistics.bFactor();
-		System.out.println("bFactor "+bFactor);
+		//System.out.println("bFactor "+bFactor);
 		
 		double cFactor=unitStatistics.cFactor();
-		System.out.println("cFactor "+cFactor);
+		//System.out.println("cFactor "+cFactor);
 		
-		for (int i = 0; i < playerUnitsg2.size(); i++) {
-			System.out.println("unit "+timeDeath[i]+ " "+playerUnitsg2.get(i).getType().name+" "+aFactor[i]);
-		}
+//		for (int i = 0; i < playerUnitsg2.size(); i++) {
+//			System.out.println("unit "+timeDeath[i]+ " "+playerUnitsg2.get(i).getType().name+" "+aFactor[i]);
+//		}
 		
 		//Here we are updating
 		ScriptGeneration actualScript = new ScriptGeneration(totalRules); 
 		for (int i = 0; i < playerUnitsg2.size(); i++) {
-			System.out.println("New Script Updating");
+//			System.out.println("New Script Updating");
 			Unit u = playerUnitsg2.get(i);
 			actualScript.UpdateWeightsBeta(i,RulesSelectedUnit.get(i), RulesSpaceUnit.get(u.getType().name), globalEvaluation ,initialWeight, teamFactor,bFactor,cFactor,aFactor[i]);
 		}
