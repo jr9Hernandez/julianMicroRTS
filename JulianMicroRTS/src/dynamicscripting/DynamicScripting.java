@@ -54,6 +54,11 @@ public class DynamicScripting extends AIWithComputationBudget {
 	int initialWeight=100;
 	Unit [] maxUnits;
 	private ArrayList<Unit> unitsAssignedEnemys;
+	int convergenceWin=0;
+	int convergenceDraw=0;
+	int roundConvergenceWin=-1;
+	int roundConvergenceDraw=-1;
+	int limitConvergence=8;
 	
 	int numTypesUnits;
 	String [] typesUnits;
@@ -106,7 +111,18 @@ public class DynamicScripting extends AIWithComputationBudget {
 				for(int i=0;i<1000;i++)
 				{
 					//System.out.println("New Simulation! ");
+					convergenceWin=0;
+					convergenceDraw=0;
 					playout(player, gs);
+					
+					if(convergenceWin>=limitConvergence && roundConvergenceWin==-1)
+					{
+						roundConvergenceWin=i;
+					}
+					if(convergenceDraw>=limitConvergence && roundConvergenceDraw==-1)
+					{
+						roundConvergenceDraw=i;
+					}
 				}				
 				
 			} catch (Exception e) {
@@ -115,6 +131,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 			}
 			firstExecution=true;
 			isPlayout=false;
+			System.out.println("Convergence "+roundConvergenceWin+" "+roundConvergenceDraw);
 		}
 		else
 		{
@@ -380,6 +397,23 @@ public class DynamicScripting extends AIWithComputationBudget {
 		globalEvaluation=aux.NormalizeInRangue(globalEvaluation,2,0.5);
 		
 		System.out.println(" done: " + gs2.winner());
+		if(gs2.winner()==player ) 
+		{
+			convergenceWin++;
+			if(convergenceDraw>0)
+				convergenceDraw=convergenceDraw+convergenceWin;
+
+		}
+		else if(gs2.winner()==-1 )
+		{
+			convergenceDraw=convergenceDraw+convergenceWin;
+			convergenceWin=0;
+		}
+		else
+		{
+			convergenceWin=0;
+			convergenceDraw=0;
+		}
 		
 		double aFactor[]=new double[playerUnitsg2.size()];
 		for (int i = 0; i < playerUnitsg2.size(); i++) {
