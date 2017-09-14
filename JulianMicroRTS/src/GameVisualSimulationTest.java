@@ -10,7 +10,9 @@ import ai.abstraction.LightRush;
 import ai.abstraction.WorkerRush;
 import ai.abstraction.pathfinding.BFSPathFinding;
 import ai.mcts.naivemcts.NaiveMCTS;
+import ai.montecarlo.MonteCarlo;
 import ai.portfolio.PortfolioAI;
+import ai.portfolio.portfoliogreedysearch.PGSAI;
 import ai.puppet.PuppetSearchMCTS;
 import gui.PhysicalGameStatePanel;
 import java.io.OutputStreamWriter;
@@ -32,7 +34,18 @@ public class GameVisualSimulationTest {
     	
         UnitTypeTable utt = new UnitTypeTable();
         PhysicalGameState pgs = null;
+        int enemy=Integer.parseInt(args[0]);
         //pgs = PhysicalGameState.load("maps/24x24/melee24x24Mixed16.xml", utt);        
+        
+        if (enemy==1) {
+        	AI ai1 = new WorkerRush(utt, new BFSPathFinding()); 
+        } else if (enemy==2) {
+        	AI ai1=new LightRush(utt);
+        } else if (enemy==3) {
+        	AI ai1= new PGSAI(utt);
+        } else if (enemy==4) {        	
+        	AI ai1=new MonteCarlo(utt);
+        } 
         
         for(int i=0;i<4;i++)
         {
@@ -51,12 +64,8 @@ public class GameVisualSimulationTest {
         int PERIOD = 20;
         boolean gameover = false;
         
-        AI ai1 = new WorkerRush(utt, new BFSPathFinding());        
-//        AI ai2 = new RandomBiasedAI();
-        AI ai2 = new DynamicScripting(utt);
-//        AI ai1= new PortfolioAI(utt);
-        //AI ai2=new PuppetSearchMCTS(utt);
-        //AI ai2=new LightRush(utt);
+
+        AI ai2 = new DynamicScripting(utt,enemy);
 
 //        JFrame w = PhysicalGameStatePanel.newVisualizer(gs,640,640,false,PhysicalGameStatePanel.COLORSCHEME_BLACK);
  //       JFrame w = PhysicalGameStatePanel.newVisualizer(gs,640,640,false,PhysicalGameStatePanel.COLORSCHEME_WHITE);

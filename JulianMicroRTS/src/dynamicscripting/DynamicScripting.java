@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import ai.abstraction.Attack;
+import ai.abstraction.LightRush;
 import ai.abstraction.WorkerRush;
 import ai.abstraction.pathfinding.AStarPathFinding;
 import ai.abstraction.pathfinding.BFSPathFinding;
@@ -17,7 +18,9 @@ import ai.core.AIWithComputationBudget;
 import ai.core.ParameterSpecification;
 import ai.evaluation.EvaluationFunction;
 import ai.evaluation.SimpleSqrtEvaluationFunction3;
+import ai.montecarlo.MonteCarlo;
 import ai.portfolio.PortfolioAI;
+import ai.portfolio.portfoliogreedysearch.PGSAI;
 import rts.GameState;
 import rts.PhysicalGameState;
 import rts.PlayerAction;
@@ -59,17 +62,18 @@ public class DynamicScripting extends AIWithComputationBudget {
 	int roundConvergenceWin=-1;
 	int roundConvergenceDraw=-1;
 	int limitConvergence=8;
+	int enemyIA;
 	
 	int numTypesUnits;
 	String [] typesUnits;
 	
 
 	// This is the default constructor that microRTS will call:
-	public DynamicScripting(UnitTypeTable utt) {
-		this(utt, -1, -1, new AStarPathFinding(), new SimpleSqrtEvaluationFunction3());
+	public DynamicScripting(UnitTypeTable utt, int enemy) {
+		this(utt, -1, -1, new AStarPathFinding(), new SimpleSqrtEvaluationFunction3(),enemy);
 	}
 
-	public DynamicScripting(UnitTypeTable utt, int time, int max_playouts, PathFinding a_pf, EvaluationFunction e) {
+	public DynamicScripting(UnitTypeTable utt, int time, int max_playouts, PathFinding a_pf, EvaluationFunction e,int enemyIA) {
 		super(time, max_playouts);
 		m_utt = utt;
 		pf = a_pf;
@@ -85,13 +89,15 @@ public class DynamicScripting extends AIWithComputationBudget {
 		typesUnits[1]="Light";
 		typesUnits[2]="Heavy";
 		typesUnits[3]="Ranged";
+		
+		this.enemyIA=enemyIA;
 
 	}
 
 	// This will be called by microRTS when it wants to create new instances of this
 	// bot (e.g., to play multiple games).
 	public AI clone() {
-		return new DynamicScripting(m_utt);
+		return new DynamicScripting(m_utt,enemyIA);
 	}
 
 	// This will be called once at the beginning of each new game:
@@ -361,9 +367,18 @@ public class DynamicScripting extends AIWithComputationBudget {
 		nplayouts++;
 		firstExecution=true;
 		GameState gs2 = gs.clone();
-		AI ai1 = new WorkerRush(m_utt, new BFSPathFinding());
 		int timeLimit = gs2.getTime() + LOOKAHEAD;
 		boolean gameover = false;
+		AI ai1=null;
+        if (enemyIA==1) {
+        	ai1 = new WorkerRush(m_utt, new BFSPathFinding()); 
+        } else if (enemyIA==2) {
+        	ai1=new LightRush(m_utt);
+        } else if (enemyIA==3) {
+        	ai1= new PGSAI(m_utt);
+        } else if (enemyIA==4) {        	
+        	ai1=new MonteCarlo(m_utt);
+        } 
 		
 		List<Unit> playerUnitsg2 = aux.units1(player,gs2);
 		List<Unit> playerUnitsEnemyg2 = aux.units1(player-1,gs2);
