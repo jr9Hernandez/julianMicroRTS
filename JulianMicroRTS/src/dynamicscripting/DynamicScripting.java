@@ -129,7 +129,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 			}
 			firstExecution=true;
 			isPlayout=false;
-			System.out.println("Convergence "+roundConvergenceWin+" "+roundConvergenceDraw);
+			System.out.print(roundConvergenceWin+" "+roundConvergenceDraw+" ");
 		}
 		else
 		{

@@ -84,7 +84,7 @@ public class GameVisualSimulationTest {
 //            }
 //        }while(!gameover && gs.getTime()<MAXCYCLES);
         
-        System.out.println("Game Over");
+        //System.out.println("Game Over");
         }
     }    
         
