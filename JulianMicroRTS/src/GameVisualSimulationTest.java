@@ -63,26 +63,26 @@ public class GameVisualSimulationTest {
 
         //The next line is just for my Experiments!!!
         ai2.getAction(1, gs);
-        long nextTimeToUpdate = System.currentTimeMillis() + PERIOD;
-        do{
-            if (System.currentTimeMillis()>=nextTimeToUpdate) {
-                PlayerAction pa1 = ai1.getAction(0, gs);
-                PlayerAction pa2 = ai2.getAction(1, gs);
-                gs.issueSafe(pa1);
-                gs.issueSafe(pa2);
-
-                // simulate:
-                gameover = gs.cycle();
-//                w.repaint();
-                nextTimeToUpdate+=PERIOD;
-            } else {
-                try {
-                    Thread.sleep(1);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }while(!gameover && gs.getTime()<MAXCYCLES);
+//        long nextTimeToUpdate = System.currentTimeMillis() + PERIOD;
+//        do{
+//            if (System.currentTimeMillis()>=nextTimeToUpdate) {
+//                PlayerAction pa1 = ai1.getAction(0, gs);
+//                PlayerAction pa2 = ai2.getAction(1, gs);
+//                gs.issueSafe(pa1);
+//                gs.issueSafe(pa2);
+//
+//                // simulate:
+//                gameover = gs.cycle();
+////                w.repaint();
+//                nextTimeToUpdate+=PERIOD;
+//            } else {
+//                try {
+//                    Thread.sleep(1);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }while(!gameover && gs.getTime()<MAXCYCLES);
         
         System.out.println("Game Over");
         }
