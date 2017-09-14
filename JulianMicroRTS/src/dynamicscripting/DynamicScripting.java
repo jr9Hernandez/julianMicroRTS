@@ -382,9 +382,7 @@ public class DynamicScripting extends AIWithComputationBudget {
         	ai1= new PGSAI(m_utt);
         } else if (enemyIA==4) {        	
         	ai1=new ABCD(m_utt);
-        } else if(enemyIA==5) {
-        	ai1=new PuppetSearchMCTS(m_utt);
-        }
+        } 
 		
 		List<Unit> playerUnitsg2 = aux.units1(player,gs2);
 		List<Unit> playerUnitsEnemyg2 = aux.units1(player-1,gs2);
