@@ -46,7 +46,9 @@ public class GameVisualSimulationTest {
         	AI ai1= new PGSAI(utt);
         } else if (enemy==4) {        	
         	AI ai1=new ABCD(utt);
-        } 
+        } else if(enemy==5) {
+        	AI ai1=new PuppetSearchMCTS(utt);
+        }
         
         for(int i=0;i<4;i++)
         {

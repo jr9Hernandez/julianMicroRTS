@@ -24,6 +24,7 @@ import ai.minimax.ABCD.ABCD;
 import ai.montecarlo.MonteCarlo;
 import ai.portfolio.PortfolioAI;
 import ai.portfolio.portfoliogreedysearch.PGSAI;
+import ai.puppet.PuppetSearchMCTS;
 import rts.GameState;
 import rts.PhysicalGameState;
 import rts.PlayerAction;
@@ -117,7 +118,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 		if(isPlayout)
 		{
 			try {
-				for(int i=0;i<1000;i++)
+				for(int i=0;i<750;i++)
 				{
 					//System.out.println("New Simulation! ");
 					playout(player, gs);
@@ -381,7 +382,9 @@ public class DynamicScripting extends AIWithComputationBudget {
         	ai1= new PGSAI(m_utt);
         } else if (enemyIA==4) {        	
         	ai1=new ABCD(m_utt);
-        } 
+        } else if(enemyIA==5) {
+        	ai1=new PuppetSearchMCTS(m_utt);
+        }
 		
 		List<Unit> playerUnitsg2 = aux.units1(player,gs2);
 		List<Unit> playerUnitsEnemyg2 = aux.units1(player-1,gs2);
