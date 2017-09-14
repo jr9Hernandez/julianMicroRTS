@@ -39,12 +39,14 @@ public class GameVisualSimulationTest {
         //pgs = PhysicalGameState.load("maps/24x24/melee24x24Mixed16.xml", utt);        
         
         if (enemy==1) {
+        	AI ai1 = new RandomBiasedAI(utt);
+        }else if (enemy==2) {
         	AI ai1 = new WorkerRush(utt, new BFSPathFinding()); 
-        } else if (enemy==2) {
-        	AI ai1=new LightRush(utt);
         } else if (enemy==3) {
+        	AI ai1=new LightRush(utt);
+        } else if (enemy==4) {
         	AI ai1= new PGSAI(utt);
-        } else if (enemy==4) {        	
+        } else if (enemy==5) {        	
         	AI ai1=new ABCD(utt);
         } 
         

@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import ai.RandomBiasedAI;
 import ai.abstraction.Attack;
 import ai.abstraction.LightRush;
 import ai.abstraction.WorkerRush;
@@ -374,13 +375,16 @@ public class DynamicScripting extends AIWithComputationBudget {
 		int timeLimit = gs2.getTime() + LOOKAHEAD;
 		boolean gameover = false;
 		AI ai1=null;
-        if (enemyIA==1) {
+		
+		if (enemyIA==1) {
+        	ai1 = new RandomBiasedAI(m_utt);
+        }else if (enemyIA==2) {
         	ai1 = new WorkerRush(m_utt, new BFSPathFinding()); 
-        } else if (enemyIA==2) {
-        	ai1=new LightRush(m_utt);
         } else if (enemyIA==3) {
+        	ai1=new LightRush(m_utt);
+        } else if (enemyIA==4) {
         	ai1= new PGSAI(m_utt);
-        } else if (enemyIA==4) {        	
+        } else if (enemyIA==5) {        	
         	ai1=new ABCD(m_utt);
         } 
 		
