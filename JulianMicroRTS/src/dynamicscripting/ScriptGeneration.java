@@ -225,7 +225,7 @@ public class ScriptGeneration {
 	public int calculateAdjustment(double globalEvaluation,double teamFactor, double bFactor, double cFactor, double aFactor)
 	{
 		double Rmax=100;
-		double Pmax=20;
+		double Pmax=25;
 		double bValue=0.1;
 		double differenceWeight;
 		
