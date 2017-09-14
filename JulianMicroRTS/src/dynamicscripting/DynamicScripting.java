@@ -18,6 +18,9 @@ import ai.core.AIWithComputationBudget;
 import ai.core.ParameterSpecification;
 import ai.evaluation.EvaluationFunction;
 import ai.evaluation.SimpleSqrtEvaluationFunction3;
+import ai.mcts.mlps.MLPSMCTS;
+import ai.mcts.uct.UCT;
+import ai.minimax.ABCD.ABCD;
 import ai.montecarlo.MonteCarlo;
 import ai.portfolio.PortfolioAI;
 import ai.portfolio.portfoliogreedysearch.PGSAI;
@@ -377,7 +380,7 @@ public class DynamicScripting extends AIWithComputationBudget {
         } else if (enemyIA==3) {
         	ai1= new PGSAI(m_utt);
         } else if (enemyIA==4) {        	
-        	ai1=new MonteCarlo(m_utt);
+        	ai1=new ABCD(m_utt);
         } 
 		
 		List<Unit> playerUnitsg2 = aux.units1(player,gs2);

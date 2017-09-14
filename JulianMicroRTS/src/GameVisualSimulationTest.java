@@ -10,6 +10,7 @@ import ai.abstraction.LightRush;
 import ai.abstraction.WorkerRush;
 import ai.abstraction.pathfinding.BFSPathFinding;
 import ai.mcts.naivemcts.NaiveMCTS;
+import ai.minimax.ABCD.ABCD;
 import ai.montecarlo.MonteCarlo;
 import ai.portfolio.PortfolioAI;
 import ai.portfolio.portfoliogreedysearch.PGSAI;
@@ -44,7 +45,7 @@ public class GameVisualSimulationTest {
         } else if (enemy==3) {
         	AI ai1= new PGSAI(utt);
         } else if (enemy==4) {        	
-        	AI ai1=new MonteCarlo(utt);
+        	AI ai1=new ABCD(utt);
         } 
         
         for(int i=0;i<4;i++)
