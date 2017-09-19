@@ -57,11 +57,11 @@ public class AuxMethods {
 		{
 			return false;
 		}
-		if(i==rulesSpace.getCondition_enemyPointingRange2() && k!=rulesSpace.getParamether_closestEnemy())
+		if(i==rulesSpace.getCondition_enemyPointingRange3() && k!=rulesSpace.getParamether_closestEnemy())
 		{
 			return false;
 		}
-		if(i==rulesSpace.getCondition_enemyInsideRange2() && k!=rulesSpace.getParamether_closestEnemy())
+		if(i==rulesSpace.getCondition_enemyInsideRange3() && k!=rulesSpace.getParamether_closestEnemy())
 		{
 			return false;
 		}
