@@ -252,13 +252,13 @@ public class DynamicScripting extends AIWithComputationBudget {
 //				}
 //			}
 			
-//			for (int i = 0; i < maxUnits.length; i++) {
-//				for(int j=0;j<RulesSelectedUnit.get(i).size();j++)
-//				{
-//				System.out.println("Rule selected "+i+" "+RulesSelectedUnit.get(i).get(j).getRule_condition()+RulesSelectedUnit.get(i).get(j).getRule_action()+RulesSelectedUnit.get(i).get(j).getRule_paramether());
-//				}
-//				
-//			}
+			for (int i = 0; i < maxUnits.length; i++) {
+				for(int j=0;j<RulesSelectedUnit.get(i).size();j++)
+				{
+				System.out.println("Rule selected "+i+" "+RulesSelectedUnit.get(i).get(j).getRule_condition()+RulesSelectedUnit.get(i).get(j).getRule_action()+RulesSelectedUnit.get(i).get(j).getRule_paramether());
+				}
+				
+			}
 		
 		}
 		
@@ -417,7 +417,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 		double globalEvaluation = evaluation.evaluate(player, 1 - player, gs2);
 		globalEvaluation=aux.NormalizeInRangue(globalEvaluation,2,0.5);
 		
-		//System.out.println(" done: " + gs2.winner());
+		System.out.println(" done: " + gs2.winner());
 		
 		if(gs2.winner()==player ) 
 		{
