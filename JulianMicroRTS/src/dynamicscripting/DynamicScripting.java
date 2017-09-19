@@ -57,7 +57,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 	AuxMethods aux=new AuxMethods();
 	UnitStatistics unitStatistics;
 	int nplayouts = 0;
-	int LOOKAHEAD = 2000;
+	int LOOKAHEAD = 3000;
 	EvaluationFunction evaluation = null;
 	int initialWeight=100;
 	Unit [] maxUnits;
@@ -463,6 +463,20 @@ public class DynamicScripting extends AIWithComputationBudget {
 			Unit u = playerUnitsg2.get(i);
 			actualScript.UpdateWeightsBeta(i,RulesSelectedUnit.get(i), RulesSpaceUnit.get(u.getType().name), globalEvaluation ,initialWeight, teamFactor,bFactor,cFactor,aFactor[i]);
 		}
+	}
+
+	/**
+	 * @return the rulesSpaceUnit
+	 */
+	public HashMap<String, ArrayList<Rule>> getRulesSpaceUnit() {
+		return RulesSpaceUnit;
+	}
+
+	/**
+	 * @param rulesSpaceUnit the rulesSpaceUnit to set
+	 */
+	public void setRulesSpaceUnit(HashMap<String, ArrayList<Rule>> rulesSpaceUnit) {
+		RulesSpaceUnit = rulesSpaceUnit;
 	}
 
 }
