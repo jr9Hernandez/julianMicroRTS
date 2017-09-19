@@ -3,7 +3,7 @@ package dynamicscripting;
 public class RulesSpace {
 	
 	//number of conditions, actions, paramethers
-	private int numberConditions=3;
+	private int numberConditions=7;
 	private int numberActions=2;
 	private int numberParamethers=5;
 
@@ -12,11 +12,15 @@ public class RulesSpace {
 	//No condition
 	private final int condition_no=0;
 	//If (enemy is inside ourUnit unit fire range)
-	private final int condition_enemyInsideRange = 1;
+	private final int condition_enemyInsideRange1 = 1;
+	private final int condition_enemyInsideRange2 = 2;
+	private final int condition_enemyInsideRange3 = 3;
 	//If (enemy is not inside ourUnit fire range)
 //	private final int condition_enemyInsideRange_not = 2;
 	//If (our unit is inside inside ourUnit fire range)
-	private final int condition_enemyPointingRange = 2;
+	private final int condition_enemyPointingRange1 = 4;
+	private final int condition_enemyPointingRange2 = 5;
+	private final int condition_enemyPointingRange3 = 6;
 
 	//These variables identify the possible actions of a rule
 	
@@ -86,8 +90,22 @@ public class RulesSpace {
 	/**
 	 * @return the condition_enemyInsideRange
 	 */
-	public int getCondition_enemyInsideRange() {
-		return condition_enemyInsideRange;
+	public int getCondition_enemyInsideRange1() {
+		return condition_enemyInsideRange1;
+	}
+	
+	/**
+	 * @return the condition_enemyInsideRange
+	 */
+	public int getCondition_enemyInsideRange2() {
+		return condition_enemyInsideRange2;
+	}
+	
+	/**
+	 * @return the condition_enemyInsideRange
+	 */
+	public int getCondition_enemyInsideRange3() {
+		return condition_enemyInsideRange3;
 	}
 
 
@@ -102,8 +120,20 @@ public class RulesSpace {
 	/**
 	 * @return the condition_enemyPointingRange_not
 	 */
-	public int getCondition_enemyPointingRange() {
-		return condition_enemyPointingRange;
+	public int getCondition_enemyPointingRange1() {
+		return condition_enemyPointingRange1;
+	}
+	/**
+	 * @return the condition_enemyPointingRange_not
+	 */
+	public int getCondition_enemyPointingRange2() {
+		return condition_enemyPointingRange2;
+	}
+	/**
+	 * @return the condition_enemyPointingRange_not
+	 */
+	public int getCondition_enemyPointingRange3() {
+		return condition_enemyPointingRange3;
 	}
 
 

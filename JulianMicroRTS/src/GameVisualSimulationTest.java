@@ -65,7 +65,7 @@ public class GameVisualSimulationTest {
         }
 
         GameState gs = new GameState(pgs, utt);
-        int MAXCYCLES = 5000;
+        int MAXCYCLES = 1000;
         int PERIOD = 20;
         boolean gameover = false;
         

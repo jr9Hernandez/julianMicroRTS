@@ -57,7 +57,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 	AuxMethods aux=new AuxMethods();
 	UnitStatistics unitStatistics;
 	int nplayouts = 0;
-	int LOOKAHEAD = 1000;
+	int LOOKAHEAD = 2000;
 	EvaluationFunction evaluation = null;
 	int initialWeight=100;
 	Unit [] maxUnits;
