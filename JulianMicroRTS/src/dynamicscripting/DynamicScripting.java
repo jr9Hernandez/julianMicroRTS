@@ -465,4 +465,18 @@ public class DynamicScripting extends AIWithComputationBudget {
 		}
 	}
 
+	/**
+	 * @return the rulesSpaceUnit
+	 */
+	public HashMap<String, ArrayList<Rule>> getRulesSpaceUnit() {
+		return RulesSpaceUnit;
+	}
+
+	/**
+	 * @param rulesSpaceUnit the rulesSpaceUnit to set
+	 */
+	public void setRulesSpaceUnit(HashMap<String, ArrayList<Rule>> rulesSpaceUnit) {
+		RulesSpaceUnit = rulesSpaceUnit;
+	}
+
 }
