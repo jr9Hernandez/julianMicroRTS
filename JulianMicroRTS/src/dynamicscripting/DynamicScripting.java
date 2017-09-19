@@ -417,7 +417,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 		double globalEvaluation = evaluation.evaluate(player, 1 - player, gs2);
 		globalEvaluation=aux.NormalizeInRangue(globalEvaluation,2,0.5);
 		
-		//System.out.println(" done: " + gs2.winner());
+		System.out.println(" done: " + gs2.winner());
 		
 		if(gs2.winner()==player ) 
 		{

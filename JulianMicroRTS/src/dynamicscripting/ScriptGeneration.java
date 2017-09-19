@@ -225,12 +225,12 @@ public class ScriptGeneration {
 	public int calculateAdjustment(double globalEvaluation,double teamFactor, double bFactor, double cFactor, double aFactor)
 	{
 		double Rmax=100;
-		double Pmax=25;
-		double bValue=0.1;
+		double Pmax=70;
+		double bValue=0.25;
 		double differenceWeight;
 		
 		double fitness=(0.1)*(3*teamFactor+1*aFactor+0*bFactor+6*cFactor);
-//		System.out.println("fitness "+fitness);
+		System.out.println("fitness "+fitness);
 		if(fitness<bValue)
 		{
 			differenceWeight=-(Pmax*((bValue-fitness)/bValue));

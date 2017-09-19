@@ -35,19 +35,20 @@ public class GameVisualSimulationTest {
     	
         UnitTypeTable utt = new UnitTypeTable();
         PhysicalGameState pgs = null;
-        int enemy=Integer.parseInt(args[0]);
+        AI ai1=null;
+        int enemy=2;
         //pgs = PhysicalGameState.load("maps/24x24/melee24x24Mixed16.xml", utt);        
         
         if (enemy==1) {
-        	AI ai1 = new RandomBiasedAI(utt);
+        	ai1 = new RandomBiasedAI(utt);
         }else if (enemy==2) {
-        	AI ai1 = new WorkerRush(utt, new BFSPathFinding()); 
+        	ai1 = new WorkerRush(utt, new BFSPathFinding()); 
         } else if (enemy==3) {
-        	AI ai1=new LightRush(utt);
+        	ai1=new LightRush(utt);
         } else if (enemy==4) {
-        	AI ai1= new PGSAI(utt);
+        	ai1= new PGSAI(utt);
         } else if (enemy==5) {        	
-        	AI ai1=new ABCD(utt);
+        	ai1=new ABCD(utt);
         } 
         
         for(int i=0;i<4;i++)
@@ -71,30 +72,30 @@ public class GameVisualSimulationTest {
         AI ai2 = new DynamicScripting(utt,enemy);
 
 //        JFrame w = PhysicalGameStatePanel.newVisualizer(gs,640,640,false,PhysicalGameStatePanel.COLORSCHEME_BLACK);
- //       JFrame w = PhysicalGameStatePanel.newVisualizer(gs,640,640,false,PhysicalGameStatePanel.COLORSCHEME_WHITE);
+        JFrame w = PhysicalGameStatePanel.newVisualizer(gs,640,640,false,PhysicalGameStatePanel.COLORSCHEME_WHITE);
 
         //The next line is just for my Experiments!!!
         ai2.getAction(1, gs);
-//        long nextTimeToUpdate = System.currentTimeMillis() + PERIOD;
-//        do{
-//            if (System.currentTimeMillis()>=nextTimeToUpdate) {
-//                PlayerAction pa1 = ai1.getAction(0, gs);
-//                PlayerAction pa2 = ai2.getAction(1, gs);
-//                gs.issueSafe(pa1);
-//                gs.issueSafe(pa2);
-//
-//                // simulate:
-//                gameover = gs.cycle();
-////                w.repaint();
-//                nextTimeToUpdate+=PERIOD;
-//            } else {
-//                try {
-//                    Thread.sleep(1);
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }while(!gameover && gs.getTime()<MAXCYCLES);
+        long nextTimeToUpdate = System.currentTimeMillis() + PERIOD;
+        do{
+            if (System.currentTimeMillis()>=nextTimeToUpdate) {
+                PlayerAction pa1 = ai1.getAction(0, gs);
+                PlayerAction pa2 = ai2.getAction(1, gs);
+                gs.issueSafe(pa1);
+                gs.issueSafe(pa2);
+
+                // simulate:
+                gameover = gs.cycle();
+                w.repaint();
+                nextTimeToUpdate+=PERIOD;
+            } else {
+                try {
+                    Thread.sleep(1);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }while(!gameover && gs.getTime()<MAXCYCLES);
         
         //System.out.println("Game Over");
         }
