@@ -19,6 +19,7 @@ import gui.PhysicalGameStatePanel;
 import java.io.OutputStreamWriter;
 import javax.swing.JFrame;
 
+import DSPGSAI.DSPGSAI;
 import dynamicscripting.DynamicScripting;
 import rts.GameState;
 import rts.PhysicalGameState;
@@ -70,13 +71,16 @@ public class GameVisualSimulationTest {
         boolean gameover = false;
         
 
-        AI ai2 = new DynamicScripting(utt,enemy);
+        //AI ai2 = new DynamicScripting(utt,enemy);        
+        DynamicScripting aiAux = new DynamicScripting(utt,enemy);
+        AI ai2 = new DSPGSAI(utt,enemy,aiAux);
 
 //        JFrame w = PhysicalGameStatePanel.newVisualizer(gs,640,640,false,PhysicalGameStatePanel.COLORSCHEME_BLACK);
         JFrame w = PhysicalGameStatePanel.newVisualizer(gs,640,640,false,PhysicalGameStatePanel.COLORSCHEME_WHITE);
 
         //The next line is just for my Experiments!!!
-        ai2.getAction(1, gs);
+        //ai2.getAction(1, gs);
+        aiAux.getAction(1, gs);
         long nextTimeToUpdate = System.currentTimeMillis() + PERIOD;
         do{
             if (System.currentTimeMillis()>=nextTimeToUpdate) {

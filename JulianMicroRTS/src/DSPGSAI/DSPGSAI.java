@@ -63,15 +63,15 @@ public class DSPGSAI extends AIWithComputationBudget {
     int enemy;
 
     
-    public DSPGSAI(UnitTypeTable utt, int enemy) {
+    public DSPGSAI(UnitTypeTable utt, int enemy, DynamicScripting aiAux) {
         this(100, -1, 100, 1, 1, 
              new SimpleSqrtEvaluationFunction3(),
              utt,
-             new AStarPathFinding(), enemy);
+             new AStarPathFinding(), enemy, aiAux);
     }
     
     
-    public DSPGSAI(int time, int max_playouts, int la, int a_I, int a_R, EvaluationFunction e, UnitTypeTable a_utt, PathFinding a_pf, int enemy) {
+    public DSPGSAI(int time, int max_playouts, int la, int a_I, int a_R, EvaluationFunction e, UnitTypeTable a_utt, PathFinding a_pf, int enemy, DynamicScripting aiAux) {
         super(time, max_playouts);
         LOOKAHEAD = la;
         I = a_I;
@@ -80,10 +80,8 @@ public class DSPGSAI extends AIWithComputationBudget {
         utt = a_utt;
         pf = a_pf;
         enemy=enemy;
-        
-        //Executing DS in order to get the scripts
-        
-        DS = new DynamicScripting(utt,enemy);
+        DS=aiAux;
+    	HashMap<String, ArrayList<Rule>> RulesSpaceUnit=DS.getRulesSpaceUnit();
         
 
         UnitScript harvest = new UnitScriptHarvest(pf,utt);
@@ -147,10 +145,6 @@ public class DSPGSAI extends AIWithComputationBudget {
 
 
     public PlayerAction getAction(int player, GameState gs) throws Exception {
-    	
-    	//This line is executed in order to get the scripts 
-    	DS.getAction(1, gs);
-    	HashMap<String, ArrayList<Rule>> RulesSpaceUnit=DS.getRulesSpaceUnit();
     	
         if (gs.winner()!=-1) return new PlayerAction();
         if (!gs.canExecuteAnyAction(player)) return new PlayerAction();
