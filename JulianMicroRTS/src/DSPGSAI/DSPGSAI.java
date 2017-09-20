@@ -74,7 +74,7 @@ public class DSPGSAI extends AIWithComputationBudget {
     private ConditionsScripts conditionsScripts;
     UnitScript attackTo;
     UnitScript moveAwayTo;
-
+    int [] actionsExecuted;
     
     public DSPGSAI(UnitTypeTable utt, DynamicScripting aiAux) {
         this(100, -1, 100, 1, 1, 
@@ -209,6 +209,7 @@ public class DSPGSAI extends AIWithComputationBudget {
         }
 
         // generate the final Player Action:
+        unitsAssignedEnemys=new ArrayList<Unit>();
         PlayerAction pa = new PlayerAction();
         for(int i = 0;i<n1;i++) {
             Unit u = playerUnits.get(i);
@@ -235,7 +236,6 @@ public class DSPGSAI extends AIWithComputationBudget {
         // the first script added per type is considered the default:
         List<Rule> l = scripts.get(u.getType());
         Rule currentRule = l.get(0);
-        System.out.println(currentRule.getWeight());
         Unit u2 = parametersScripts.validationParameter(u, gs,currentRule.getRule_paramether(),unitsAssignedEnemys);
         if (currentRule.getRule_action() == DS.getRulesSpace().getAction_attack()) 
         {
@@ -253,8 +253,15 @@ public class DSPGSAI extends AIWithComputationBudget {
     public void improve(int player,
                         UnitScript scriptsToImprove[], List<Unit> units,
                         UnitScript otherScripts[], List<Unit> otherUnits, GameState gs) throws Exception {
+    	actionsExecuted=new int [scriptsToImprove.length];
         for(int i = 0;i<I;i++) {
             if (DEBUG>=1) System.out.println("Improve player " + player + "(" + i + "/" + I + ")");
+            
+            unitsAssignedEnemys=new ArrayList<Unit>();
+            parametersScripts = new ParametersScripts(DS.getRulesSpace());
+            conditionsScripts = new ConditionsScripts(DS.getRulesSpace(), parametersScripts, gs);  
+            
+            
             for(int u = 0;u<scriptsToImprove.length;u++) {
                 if (ITERATIONS_BUDGET>0 && nplayouts>=ITERATIONS_BUDGET) {
                     if (DEBUG>=1) System.out.println("nplayouts>=MAX_PLAYOUTS");
@@ -270,10 +277,6 @@ public class DSPGSAI extends AIWithComputationBudget {
                 UnitScript bestScript = null;
                 List<Rule> candidates = scripts.get(unit.getType());
                 
-                unitsAssignedEnemys=new ArrayList<Unit>();
-                parametersScripts = new ParametersScripts(DS.getRulesSpace());
-                conditionsScripts = new ConditionsScripts(DS.getRulesSpace(), parametersScripts, gs);
-                
                 UnitScript s=null;
                 
                 for(int j=0;j<sizePortfolio;j++) {
@@ -285,12 +288,11 @@ public class DSPGSAI extends AIWithComputationBudget {
 							u2, unit)) {
 						
 						if (us.getRule_action() == DS.getRulesSpace().getAction_attack()) {
-							us.active[i]=true;
 							//System.out.println("action Attack " + rulesSelected.get(j).getRule_paramether());
 							s = attackTo.instantiate(unit, gs, u2);
+							unitsAssignedEnemys.add(u2);
 							
 						} else if (us.getRule_action() == DS.getRulesSpace().getAction_moveawayof()) {
-							us.active[i]=true;
 							//System.out.println("action move Away " + rulesSelected.get(j).getRule_paramether());
 							s = moveAwayTo.instantiate(unit, gs, u2);
 
@@ -301,6 +303,7 @@ public class DSPGSAI extends AIWithComputationBudget {
                     if (s!=null) {
                         if (DEBUG>=2) System.out.println("  " + unit + " -> " + s.getClass().toString());
                         scriptsToImprove[u] = s;
+                        actionsExecuted[u]=us.getRule_action();
                         double e = playout(player, scriptsToImprove, units, otherScripts, otherUnits, gs);
                         if (bestScript==null || e>bestEvaluation) {
                             bestScript = s;
