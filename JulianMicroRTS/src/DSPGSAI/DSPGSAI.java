@@ -234,12 +234,14 @@ public class DSPGSAI extends AIWithComputationBudget {
 
     public UnitScript defaultScript(Unit u, GameState gs) {
         // the first script added per type is considered the default:
+    	unitsAssignedEnemys=new ArrayList<Unit>();
         List<Rule> l = scripts.get(u.getType());
         Rule currentRule = l.get(0);
         Unit u2 = parametersScripts.validationParameter(u, gs,currentRule.getRule_paramether(),unitsAssignedEnemys);
         if (currentRule.getRule_action() == DS.getRulesSpace().getAction_attack()) 
         {
         	UnitScript s = attackTo.instantiate(u, gs, u2);
+        	unitsAssignedEnemys.add(u2);
         }
         else if(currentRule.getRule_action() == DS.getRulesSpace().getAction_moveawayof())
         {
