@@ -64,6 +64,7 @@ public class UnitScriptsAI extends AI {
         for(Unit u:gs.getUnits()) {
             if (u.getPlayer()==player && gs.getUnitAction(u)==null) {
                 UnitScript s = scripts.get(u);
+                System.out.println("no surprises "+u);
 //                if (s!=null) s = s.instantiate(u, gs);
 //                if (s==null) {
 //                    // new unit, or completed script
