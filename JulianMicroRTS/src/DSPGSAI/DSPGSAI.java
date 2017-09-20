@@ -57,7 +57,7 @@ public class DSPGSAI extends AIWithComputationBudget {
     int I = 1;  // number of iterations for improving a given player
     int R = 1;  // number of times to improve with respect to the response fo the other player
     EvaluationFunction evaluation = null;
-    HashMap<UnitType, List<Rule>> scripts = null;
+    HashMap<UnitType, ArrayList<Rule>> scripts = null;
     UnitTypeTable utt;
     PathFinding pf;
 
@@ -95,16 +95,16 @@ public class DSPGSAI extends AIWithComputationBudget {
         DS=aiAux;
     	HashMap<String, ArrayList<Rule>> RulesSpaceUnit=DS.getRulesSpaceUnit();
     	
-    	ArrayList<Rule> workerS=RulesSpaceUnit.get("Worker"); 
+    	ArrayList<Rule> heavyS=RulesSpaceUnit.get("Heavy"); 
     	ArrayList<Rule> lightS=RulesSpaceUnit.get("Light"); 
     	ArrayList<Rule> rangedS=RulesSpaceUnit.get("Ranged"); 
     	
-    	aux.orderInReverseArraylist(workerS);
+    	aux.orderInReverseArraylist(heavyS);
     	aux.orderInReverseArraylist(lightS);
     	aux.orderInReverseArraylist(rangedS);
     	
     	scripts = new HashMap<>();
-    	scripts.put(utt.getUnitType("Worker"),workerS);
+    	scripts.put(utt.getUnitType("Heavy"),heavyS);
     	scripts.put(utt.getUnitType("Light"),lightS);
     	scripts.put(utt.getUnitType("Ranged"),rangedS);
     	
@@ -235,11 +235,12 @@ public class DSPGSAI extends AIWithComputationBudget {
     public UnitScript defaultScript(Unit u, GameState gs) {
         // the first script added per type is considered the default:
     	unitsAssignedEnemys=new ArrayList<Unit>();
-        List<Rule> l = scripts.get(u.getType());
+    	parametersScripts = new ParametersScripts(DS.getRulesSpace());
+        ArrayList<Rule> l = scripts.get(u.getType());
         Rule currentRule = l.get(0);
         Unit u2 = parametersScripts.validationParameter(u, gs,currentRule.getRule_paramether(),unitsAssignedEnemys);
         if (currentRule.getRule_action() == DS.getRulesSpace().getAction_attack()) 
-        {
+        {        	
         	UnitScript s = attackTo.instantiate(u, gs, u2);
         	unitsAssignedEnemys.add(u2);
         }
@@ -247,7 +248,6 @@ public class DSPGSAI extends AIWithComputationBudget {
         {
         	UnitScript s = moveAwayTo.instantiate(u, gs, u2);
         }
-        
         return attackTo.instantiate(u, gs, u2);
     }
 

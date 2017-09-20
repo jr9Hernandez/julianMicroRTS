@@ -30,12 +30,12 @@ public class UnitScriptsAI extends AI {
     UnitScript scriptsInput[];
     List<Unit> unitsInput;
     HashMap<Unit,UnitScript> scripts = new HashMap<>();
-    HashMap<UnitType, List<Rule>> allScripts = null;
+    HashMap<UnitType, ArrayList<Rule>> allScripts = null;
     UnitScript defaultScript = null;
     
     
     public UnitScriptsAI(UnitScript a_scripts[], List<Unit> a_units,
-                         HashMap<UnitType, List<Rule>> a_allScripts,
+                         HashMap<UnitType, ArrayList<Rule>> a_allScripts,
                          UnitScript a_defaultScript) {
         scriptsInput = a_scripts;
         unitsInput = a_units;

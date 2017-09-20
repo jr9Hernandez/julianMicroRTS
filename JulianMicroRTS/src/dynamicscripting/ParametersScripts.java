@@ -16,8 +16,10 @@ public class ParametersScripts {
 	
 	public Unit validationParameter(Unit u, GameState gs, int idParameter, ArrayList<Unit> unitsAssignedEnemys)
 	{
+		
 		if(idParameter==rulesSpace.getParamether_closestEnemy())
 		{
+			
 			return closestEnemyUnit(u, gs);
 		}
 		else if(idParameter==rulesSpace.getParamether_fartestEnemy())
