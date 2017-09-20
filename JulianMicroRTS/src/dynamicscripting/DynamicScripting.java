@@ -479,4 +479,11 @@ public class DynamicScripting extends AIWithComputationBudget {
 		RulesSpaceUnit = rulesSpaceUnit;
 	}
 
+	/**
+	 * @return the rulesSpace
+	 */
+	public RulesSpace getRulesSpace() {
+		return rulesSpace;
+	}
+
 }

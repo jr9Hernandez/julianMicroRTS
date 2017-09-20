@@ -14,11 +14,18 @@ import ai.core.AIWithComputationBudget;
 import ai.core.ParameterSpecification;
 import ai.evaluation.EvaluationFunction;
 import ai.evaluation.SimpleSqrtEvaluationFunction3;
+import dynamicscripting.AuxMethods;
+import dynamicscripting.ConditionsScripts;
 import dynamicscripting.DynamicScripting;
+import dynamicscripting.ParametersScripts;
 import dynamicscripting.Rule;
 import dynamicscripting.UnitScript;
+import dynamicscripting.UnitScriptAttackTo;
+import dynamicscripting.UnitScriptMoveAwayTo;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import rts.GameState;
@@ -50,7 +57,7 @@ public class DSPGSAI extends AIWithComputationBudget {
     int I = 1;  // number of iterations for improving a given player
     int R = 1;  // number of times to improve with respect to the response fo the other player
     EvaluationFunction evaluation = null;
-    HashMap<UnitType, List<UnitScript>> scripts = null;
+    HashMap<UnitType, List<Rule>> scripts = null;
     UnitTypeTable utt;
     PathFinding pf;
 
@@ -60,6 +67,13 @@ public class DSPGSAI extends AIWithComputationBudget {
     int nplayouts = 0;
     
     DynamicScripting DS=null;
+    int sizePortfolio=2;
+    AuxMethods aux=new AuxMethods();
+    private ArrayList<Unit> unitsAssignedEnemys;
+    private ParametersScripts parametersScripts;
+    private ConditionsScripts conditionsScripts;
+    UnitScript attackTo;
+    UnitScript moveAwayTo;
 
     
     public DSPGSAI(UnitTypeTable utt, int enemy, DynamicScripting aiAux) {
@@ -80,61 +94,77 @@ public class DSPGSAI extends AIWithComputationBudget {
         pf = a_pf;
         DS=aiAux;
     	HashMap<String, ArrayList<Rule>> RulesSpaceUnit=DS.getRulesSpaceUnit();
+    	
+    	ArrayList<Rule> workerS=RulesSpaceUnit.get("Worker"); 
+    	ArrayList<Rule> lightS=RulesSpaceUnit.get("Light"); 
+    	ArrayList<Rule> rangedS=RulesSpaceUnit.get("Ranged"); 
+    	
+    	aux.orderInReverseArraylist(workerS);
+    	aux.orderInReverseArraylist(lightS);
+    	aux.orderInReverseArraylist(rangedS);
+    	
+    	scripts = new HashMap<>();
+    	scripts.put(utt.getUnitType("Worker"),workerS);
+    	scripts.put(utt.getUnitType("Light"),lightS);
+    	scripts.put(utt.getUnitType("Ranged"),rangedS);
+    	
+    	attackTo = new UnitScriptAttackTo(pf);
+    	moveAwayTo = new UnitScriptMoveAwayTo(pf);
         
 
-        UnitScript harvest = new UnitScriptHarvest(pf,utt);
-        UnitScript buildBarracks = new UnitScriptBuild(pf,utt.getUnitType("Barracks"));
-        UnitScript buildBase = new UnitScriptBuild(pf,utt.getUnitType("Base"));
-        UnitScript attack = new UnitScriptAttack(pf);
-        UnitScript idle = new UnitScriptIdle();
-        UnitScript trainWorker = new UnitScriptTrain(utt.getUnitType("Worker"));
-        UnitScript trainLight = new UnitScriptTrain(utt.getUnitType("Light"));
-        UnitScript trainHeavy = new UnitScriptTrain(utt.getUnitType("Heavy"));
-        UnitScript trainRanged = new UnitScriptTrain(utt.getUnitType("Ranged"));
+//        UnitScript harvest = new UnitScriptHarvest(pf,utt);
+//        UnitScript buildBarracks = new UnitScriptBuild(pf,utt.getUnitType("Barracks"));
+//        UnitScript buildBase = new UnitScriptBuild(pf,utt.getUnitType("Base"));
+//        UnitScript attack = new UnitScriptAttack(pf);
+//        UnitScript idle = new UnitScriptIdle();
+//        UnitScript trainWorker = new UnitScriptTrain(utt.getUnitType("Worker"));
+//        UnitScript trainLight = new UnitScriptTrain(utt.getUnitType("Light"));
+//        UnitScript trainHeavy = new UnitScriptTrain(utt.getUnitType("Heavy"));
+//        UnitScript trainRanged = new UnitScriptTrain(utt.getUnitType("Ranged"));
 
-        defaultScript = idle;
-        scripts = new HashMap<>();
-        {
-            List<UnitScript> l = new ArrayList<>();
-            l.add(harvest);
-            l.add(buildBarracks);
-            l.add(buildBase);
-            l.add(attack);
-            l.add(idle);
-            scripts.put(utt.getUnitType("Worker"),l);
-        }
-        {
-            List<UnitScript> l = new ArrayList<>();
-            scripts.put(utt.getUnitType("Base"),l);
-            l.add(trainWorker);
-            l.add(idle);
-        }
-        {
-            List<UnitScript> l = new ArrayList<>();
-            scripts.put(utt.getUnitType("Barracks"),l);
-            l.add(trainLight);
-            l.add(trainHeavy);
-            l.add(trainRanged);
-            l.add(idle);
-        }
-        {
-            List<UnitScript> l = new ArrayList<>();
-            scripts.put(utt.getUnitType("Light"),l);
-            l.add(attack);
-            l.add(idle);
-        }
-        {
-            List<UnitScript> l = new ArrayList<>();
-            scripts.put(utt.getUnitType("Heavy"),l);
-            l.add(attack);
-            l.add(idle);
-        }
-        {
-            List<UnitScript> l = new ArrayList<>();
-            scripts.put(utt.getUnitType("Ranged"),l);
-            l.add(attack);
-            l.add(idle);
-        }
+//        defaultScript = idle;
+//        
+//        {
+//            List<UnitScript> l = new ArrayList<>();
+//            l.add(harvest);
+//            l.add(buildBarracks);
+//            l.add(buildBase);
+//            l.add(attack);
+//            l.add(idle);
+//            scripts.put(utt.getUnitType("Worker"),l);
+//        }
+//        {
+//            List<UnitScript> l = new ArrayList<>();
+//            scripts.put(utt.getUnitType("Base"),l);
+//            l.add(trainWorker);
+//            l.add(idle);
+//        }
+//        {
+//            List<UnitScript> l = new ArrayList<>();
+//            scripts.put(utt.getUnitType("Barracks"),l);
+//            l.add(trainLight);
+//            l.add(trainHeavy);
+//            l.add(trainRanged);
+//            l.add(idle);
+//        }
+//        {
+//            List<UnitScript> l = new ArrayList<>();
+//            scripts.put(utt.getUnitType("Light"),l);
+//            l.add(attack);
+//            l.add(idle);
+//        }
+//        {
+//            List<UnitScript> l = new ArrayList<>();
+//            scripts.put(utt.getUnitType("Heavy"),l);
+//            l.add(attack);
+//            l.add(idle);
+//        }
+//        {
+//            List<UnitScript> l = new ArrayList<>();
+//            scripts.put(utt.getUnitType("Ranged"),l);
+//            l.add(attack);
+//            l.add(idle);
+//        }
     }
 
 
@@ -181,7 +211,7 @@ public class DSPGSAI extends AIWithComputationBudget {
         for(int i = 0;i<n1;i++) {
             Unit u = playerUnits.get(i);
             if (gs.getUnitAction(u)==null) {
-                UnitScript s = playerScripts[i].instantiate(u, gs);
+                UnitScript s = playerScripts[i];
                 if (s!=null) {
                     UnitAction ua = s.getAction(u, gs);
                     if (ua!=null) {
@@ -201,8 +231,9 @@ public class DSPGSAI extends AIWithComputationBudget {
 
     public UnitScript defaultScript(Unit u, GameState gs) {
         // the first script added per type is considered the default:
-        List<UnitScript> l = scripts.get(u.getType());
-        return l.get(0).instantiate(u, gs);
+        List<Rule> l = scripts.get(u.getType());
+        Unit u2 = parametersScripts.validationParameter(u, gs,l.get(0).getRule_paramether(),unitsAssignedEnemys);
+        return attackTo.instantiate(u, gs, u2);
     }
 
 
@@ -224,15 +255,42 @@ public class DSPGSAI extends AIWithComputationBudget {
                 Unit unit = units.get(u);
                 double bestEvaluation = 0;
                 UnitScript bestScript = null;
-                List<UnitScript> candidates = scripts.get(unit.getType());
-                for(UnitScript us:candidates) {
-                    UnitScript s = us.instantiate(unit, gs);
+                List<Rule> candidates = scripts.get(unit.getType());
+                
+                unitsAssignedEnemys=new ArrayList<Unit>();
+                parametersScripts = new ParametersScripts(DS.getRulesSpace());
+                conditionsScripts = new ConditionsScripts(DS.getRulesSpace(), parametersScripts, gs);
+                
+                UnitScript s=null;
+                
+                for(int j=0;j<sizePortfolio;j++) {
+                	
+                	Rule us=candidates.get(j);
+                	Unit u2 = parametersScripts.validationParameter(unit, gs,us.getRule_paramether(),unitsAssignedEnemys);
+                	
+					if (conditionsScripts.validationCondition(us.getRule_condition(),
+							u2, unit)) {
+						
+						if (us.getRule_action() == DS.getRulesSpace().getAction_attack()) {
+							us.active[i]=true;
+							//System.out.println("action Attack " + rulesSelected.get(j).getRule_paramether());
+							s = attackTo.instantiate(unit, gs, u2);
+							
+						} else if (us.getRule_action() == DS.getRulesSpace().getAction_moveawayof()) {
+							us.active[i]=true;
+							//System.out.println("action move Away " + rulesSelected.get(j).getRule_paramether());
+							s = moveAwayTo.instantiate(unit, gs, u2);
+
+						}	
+
+					}
+
                     if (s!=null) {
                         if (DEBUG>=2) System.out.println("  " + unit + " -> " + s.getClass().toString());
                         scriptsToImprove[u] = s;
                         double e = playout(player, scriptsToImprove, units, otherScripts, otherUnits, gs);
                         if (bestScript==null || e>bestEvaluation) {
-                            bestScript = us;
+                            bestScript = s;
                             bestEvaluation = e;
                             if (DEBUG>=2) System.out.println("    new best: " + e);
                         }

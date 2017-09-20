@@ -4,7 +4,7 @@ public class Rule {
 	
 	private int rule_id;
 	private int weight;
-	protected boolean [] active;
+	public boolean [] active;
 	private int rule_condition;
 	private int rule_action;
 	private int rule_paramether;

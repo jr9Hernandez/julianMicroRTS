@@ -1,6 +1,8 @@
 package dynamicscripting;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
@@ -66,6 +68,17 @@ public class AuxMethods {
 			return false;
 		}
 		return true;
+	}
+	
+	public void orderInReverseArraylist(ArrayList<Rule> l)
+	{
+    	Collections.sort(l, new Comparator<Rule>() {
+    	    @Override
+    	    public int compare(Rule o1, Rule o2) {
+    	    	Integer w=new Integer(o2.getWeight()); 
+    	        return w.compareTo(o1.getWeight());
+    	    }
+    	});
 	}
 
 }
