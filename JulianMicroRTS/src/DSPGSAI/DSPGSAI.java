@@ -60,18 +60,17 @@ public class DSPGSAI extends AIWithComputationBudget {
     int nplayouts = 0;
     
     DynamicScripting DS=null;
-    int enemy;
 
     
     public DSPGSAI(UnitTypeTable utt, int enemy, DynamicScripting aiAux) {
         this(100, -1, 100, 1, 1, 
              new SimpleSqrtEvaluationFunction3(),
              utt,
-             new AStarPathFinding(), enemy, aiAux);
+             new AStarPathFinding(), aiAux);
     }
     
     
-    public DSPGSAI(int time, int max_playouts, int la, int a_I, int a_R, EvaluationFunction e, UnitTypeTable a_utt, PathFinding a_pf, int enemy, DynamicScripting aiAux) {
+    public DSPGSAI(int time, int max_playouts, int la, int a_I, int a_R, EvaluationFunction e, UnitTypeTable a_utt, PathFinding a_pf, DynamicScripting aiAux) {
         super(time, max_playouts);
         LOOKAHEAD = la;
         I = a_I;
@@ -79,7 +78,6 @@ public class DSPGSAI extends AIWithComputationBudget {
         evaluation = e;
         utt = a_utt;
         pf = a_pf;
-        enemy=enemy;
         DS=aiAux;
     	HashMap<String, ArrayList<Rule>> RulesSpaceUnit=DS.getRulesSpaceUnit();
         
@@ -276,7 +274,7 @@ public class DSPGSAI extends AIWithComputationBudget {
 
     @Override
     public AI clone() {
-        return new DSPGSAI(TIME_BUDGET, ITERATIONS_BUDGET, LOOKAHEAD, I, R, evaluation, utt, pf, enemy);
+        return new DSPGSAI(TIME_BUDGET, ITERATIONS_BUDGET, LOOKAHEAD, I, R, evaluation, utt, pf,DS);
     }
     
     

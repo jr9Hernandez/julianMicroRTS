@@ -72,8 +72,7 @@ public class GameVisualSimulationTest {
         
 
         //AI ai2 = new DynamicScripting(utt,enemy);        
-        DynamicScripting aiAux = new DynamicScripting(utt,enemy);
-        AI ai2 = new DSPGSAI(utt,enemy,aiAux);
+        DynamicScripting aiAux = new DynamicScripting(utt,enemy);        
 
 //        JFrame w = PhysicalGameStatePanel.newVisualizer(gs,640,640,false,PhysicalGameStatePanel.COLORSCHEME_BLACK);
         JFrame w = PhysicalGameStatePanel.newVisualizer(gs,640,640,false,PhysicalGameStatePanel.COLORSCHEME_WHITE);
@@ -81,6 +80,8 @@ public class GameVisualSimulationTest {
         //The next line is just for my Experiments!!!
         //ai2.getAction(1, gs);
         aiAux.getAction(1, gs);
+        AI ai2 = new DSPGSAI(utt,enemy,aiAux);
+        
         long nextTimeToUpdate = System.currentTimeMillis() + PERIOD;
         do{
             if (System.currentTimeMillis()>=nextTimeToUpdate) {
