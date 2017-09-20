@@ -76,7 +76,7 @@ public class DSPGSAI extends AIWithComputationBudget {
     UnitScript moveAwayTo;
 
     
-    public DSPGSAI(UnitTypeTable utt, int enemy, DynamicScripting aiAux) {
+    public DSPGSAI(UnitTypeTable utt, DynamicScripting aiAux) {
         this(100, -1, 100, 1, 1, 
              new SimpleSqrtEvaluationFunction3(),
              utt,
@@ -110,6 +110,8 @@ public class DSPGSAI extends AIWithComputationBudget {
     	
     	attackTo = new UnitScriptAttackTo(pf);
     	moveAwayTo = new UnitScriptMoveAwayTo(pf);
+    	
+    	defaultScript=new UnitScriptAttackTo(pf);
         
 
 //        UnitScript harvest = new UnitScriptHarvest(pf,utt);
@@ -232,7 +234,18 @@ public class DSPGSAI extends AIWithComputationBudget {
     public UnitScript defaultScript(Unit u, GameState gs) {
         // the first script added per type is considered the default:
         List<Rule> l = scripts.get(u.getType());
-        Unit u2 = parametersScripts.validationParameter(u, gs,l.get(0).getRule_paramether(),unitsAssignedEnemys);
+        Rule currentRule = l.get(0);
+        System.out.println(currentRule.getWeight());
+        Unit u2 = parametersScripts.validationParameter(u, gs,currentRule.getRule_paramether(),unitsAssignedEnemys);
+        if (currentRule.getRule_action() == DS.getRulesSpace().getAction_attack()) 
+        {
+        	UnitScript s = attackTo.instantiate(u, gs, u2);
+        }
+        else if(currentRule.getRule_action() == DS.getRulesSpace().getAction_moveawayof())
+        {
+        	UnitScript s = moveAwayTo.instantiate(u, gs, u2);
+        }
+        
         return attackTo.instantiate(u, gs, u2);
     }
 
