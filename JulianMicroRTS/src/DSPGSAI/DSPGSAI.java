@@ -67,7 +67,7 @@ public class DSPGSAI extends AIWithComputationBudget {
     int nplayouts = 0;
     
     DynamicScripting DS=null;
-    int sizePortfolio=4;
+    int sizePortfolio=2;
     AuxMethods aux=new AuxMethods();
     private ArrayList<Unit> unitsAssignedEnemys;
     private ParametersScripts parametersScripts;
@@ -312,8 +312,8 @@ public class DSPGSAI extends AIWithComputationBudget {
                 for(int j=0;j<sizePortfolio;j++) {
                 	
                 	Rule us=candidates.get(j);
-                	System.out.println("UnitType "+unit);
-                	System.out.println("candidate "+j+" "+us.getRule_condition()+" "+us.getRule_action()+" "+us.getRule_paramether());
+                	//System.out.println("UnitType "+unit);
+                	//System.out.println("candidate "+j+" "+us.getRule_condition()+" "+us.getRule_action()+" "+us.getRule_paramether());
                 	Unit u2 = parametersScripts.validationParameter(unit, gs,us.getRule_paramether(),unitsAssignedEnemys);
                 	
 					if (conditionsScripts.validationCondition(us.getRule_condition(),
