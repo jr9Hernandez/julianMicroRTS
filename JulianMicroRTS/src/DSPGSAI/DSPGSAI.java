@@ -114,13 +114,18 @@ public class DSPGSAI extends AIWithComputationBudget {
     	aux.orderInReverseArraylist(lightS);
     	aux.orderInReverseArraylist(rangedS);
 //    	
-//    	System.out.println("PrintingAfter ");
-//
-//			for(int j=0; j<heavyS.size();j++)
-//			{
-//				Rule rule=RulesSpaceUnit.get("Heavy").get(j);
-//				System.out.println("Final Rule "+heavyS.get(j).getRule_id()+" "+heavyS.get(j).getRule_condition()+" "+heavyS.get(j).getRule_action()+" "+heavyS.get(j).getRule_paramether()+" "+heavyS.get(j).getWeight());
-//			}
+    	System.out.println("PrintingAfter ");
+
+			for(int j=0; j<heavyS.size();j++)
+			{
+				Rule rule=RulesSpaceUnit.get("Heavy").get(j);
+				System.out.println("Final Rule "+heavyS.get(j).getRule_id()+" "+heavyS.get(j).getRule_condition()+" "+heavyS.get(j).getRule_action()+" "+heavyS.get(j).getRule_paramether()+" "+heavyS.get(j).getWeight());
+			}
+			for(int j=0; j<lightS.size();j++)
+			{
+				Rule rule=RulesSpaceUnit.get("Light").get(j);
+				System.out.println("Final Rule "+lightS.get(j).getRule_id()+" "+lightS.get(j).getRule_condition()+" "+lightS.get(j).getRule_action()+" "+lightS.get(j).getRule_paramether()+" "+lightS.get(j).getWeight());
+			}
     	
     	scripts = new HashMap<>();
     	scripts.put(utt.getUnitType("Heavy"),heavyS);
