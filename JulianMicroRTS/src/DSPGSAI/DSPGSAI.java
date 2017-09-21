@@ -67,7 +67,7 @@ public class DSPGSAI extends AIWithComputationBudget {
     int nplayouts = 0;
     
     DynamicScripting DS=null;
-    int sizePortfolio=3;
+    int sizePortfolio=2;
     AuxMethods aux=new AuxMethods();
     private ArrayList<Unit> unitsAssignedEnemys;
     private ParametersScripts parametersScripts;
@@ -119,12 +119,12 @@ public class DSPGSAI extends AIWithComputationBudget {
 			for(int j=0; j<heavyS.size();j++)
 			{
 				Rule rule=RulesSpaceUnit.get("Heavy").get(j);
-				System.out.println("Final Rule "+heavyS.get(j).getRule_id()+" "+heavyS.get(j).getRule_condition()+" "+heavyS.get(j).getRule_action()+" "+heavyS.get(j).getRule_paramether()+" "+heavyS.get(j).getWeight());
+				System.out.println("Final Rule Heavy "+heavyS.get(j).getRule_id()+" "+heavyS.get(j).getRule_condition()+" "+heavyS.get(j).getRule_action()+" "+heavyS.get(j).getRule_paramether()+" "+heavyS.get(j).getWeight());
 			}
 			for(int j=0; j<lightS.size();j++)
 			{
 				Rule rule=RulesSpaceUnit.get("Light").get(j);
-				System.out.println("Final Rule "+lightS.get(j).getRule_id()+" "+lightS.get(j).getRule_condition()+" "+lightS.get(j).getRule_action()+" "+lightS.get(j).getRule_paramether()+" "+lightS.get(j).getWeight());
+				System.out.println("Final Rule Light"+lightS.get(j).getRule_id()+" "+lightS.get(j).getRule_condition()+" "+lightS.get(j).getRule_action()+" "+lightS.get(j).getRule_paramether()+" "+lightS.get(j).getWeight());
 			}
     	
     	scripts = new HashMap<>();
@@ -229,10 +229,10 @@ public class DSPGSAI extends AIWithComputationBudget {
         start_time = System.currentTimeMillis();
         nplayouts = 0;
         improve(player, playerScripts, playerUnits, enemyScripts, enemyUnits, gs);
-        for(int r = 0;r<R;r++) {
-            improve(1-player, enemyScripts, enemyUnits, playerScripts, playerUnits, gs);
-            improve(player, playerScripts, playerUnits, enemyScripts, enemyUnits, gs);
-        }
+//        for(int r = 0;r<R;r++) {
+//            improve(1-player, enemyScripts, enemyUnits, playerScripts, playerUnits, gs);
+//            improve(player, playerScripts, playerUnits, enemyScripts, enemyUnits, gs);
+//        }
 
         // generate the final Player Action:
         unitsAssignedEnemys=new ArrayList<Unit>();

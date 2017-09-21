@@ -119,7 +119,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 		if(isPlayout)
 		{
 			try {
-				for(int i=0;i<200;i++)
+				for(int i=0;i<750;i++)
 				{
 					//System.out.println("New Simulation! ");
 					playout(player, gs);
@@ -480,13 +480,6 @@ public class DynamicScripting extends AIWithComputationBudget {
 	 */
 	public HashMap<String, ArrayList<Rule>> getRulesSpaceUnit() {
 		return RulesSpaceUnit;
-	}
-
-	/**
-	 * @param rulesSpaceUnit the rulesSpaceUnit to set
-	 */
-	public void setRulesSpaceUnit(HashMap<String, ArrayList<Rule>> rulesSpaceUnit) {
-		RulesSpaceUnit = rulesSpaceUnit;
 	}
 
 	/**
