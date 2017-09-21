@@ -76,7 +76,6 @@ public class DSPGSAI extends AIWithComputationBudget {
     private ConditionsScripts conditionsScripts;
     UnitScript attackTo;
     UnitScript moveAwayTo;
-    int [] actionsExecuted;
     
     public DSPGSAI(UnitTypeTable utt, DynamicScripting aiAux) {
         this(100, -1, 100, 10, 1, 
@@ -217,8 +216,8 @@ public class DSPGSAI extends AIWithComputationBudget {
         int n1 = playerUnits.size();
         int n2 = enemyUnits.size();
 
-        UnitScript playerScripts[] = new UnitScript[n1];
-        UnitScript enemyScripts[] = new UnitScript[n2];
+        Rule playerScripts[] = new Rule[n1];
+        Rule enemyScripts[] = new Rule[n2];
 
         // Init the players:
         unitsAssignedEnemys=new ArrayList<Unit>();
@@ -242,17 +241,54 @@ public class DSPGSAI extends AIWithComputationBudget {
         for(int i = 0;i<n1;i++) {
             Unit u = playerUnits.get(i);
             if (gs.getUnitAction(u)==null) {
-                UnitScript s = playerScripts[i];
-                if (s!=null) {
-                    UnitAction ua = s.getAction(u, gs);
-                    if (ua!=null) {
-                        pa.addUnitAction(u, ua);
-                    } else {
-                        pa.addUnitAction(u, new UnitAction(UnitAction.TYPE_NONE));
-                    }
-                } else {
-                    pa.addUnitAction(u, new UnitAction(UnitAction.TYPE_NONE));                
-                }
+				Rule currentRule = playerScripts[i];
+				
+				Unit u2 = parametersScripts.validationParameter(u, gs,currentRule.getRule_paramether(),unitsAssignedEnemys);
+
+				if (conditionsScripts.validationCondition(currentRule.getRule_condition(),
+						u2, u)) {
+					
+					if (currentRule.getRule_action() == DS.getRulesSpace().getAction_attack()) {
+						//System.out.println("action Attack " + rulesSelected.get(j).getRule_paramether());
+						UnitScript s = attackTo.instantiate(u, gs, u2);
+		                if (s!=null) {
+		                    UnitAction ua = s.getAction(u, gs);
+		                    if (ua!=null) {
+		                    	unitsAssignedEnemys.add(u2);
+		                        pa.addUnitAction(u, ua);			                        
+		                    } else {
+		                        pa.addUnitAction(u, new UnitAction(UnitAction.TYPE_NONE));
+		                    }
+		                } else {
+		                    pa.addUnitAction(u, new UnitAction(UnitAction.TYPE_NONE));                
+		                }			                
+						break;
+						
+					} else if (currentRule.getRule_action() == DS.getRulesSpace().getAction_moveawayof()) {
+						//System.out.println("action move Away " + rulesSelected.get(j).getRule_paramether());
+						UnitScript s = moveAwayTo.instantiate(u, gs, u2);
+		                if (s!=null) {
+		                    UnitAction ua = s.getAction(u, gs);
+		                    if (ua!=null) {
+		                        pa.addUnitAction(u, ua);			                        
+		                    } else {
+		                        pa.addUnitAction(u, new UnitAction(UnitAction.TYPE_NONE));
+		                    }
+		                } else {
+		                    pa.addUnitAction(u, new UnitAction(UnitAction.TYPE_NONE));                
+		                }			                
+						break;
+					}	
+//					} else if (rulesSelected.get(j).getRule_action() == rulesSpace.getAction_moveto()) {
+//						System.out.println("action move " + rulesSelected.get(j).getRule_paramether());
+//						UnitScript s = moveTo.instantiate(u, gs, u2);
+//						UnitAction ua = s.getAction(u, gs);
+//						pa.addUnitAction(u, ua);
+//						break;
+//						
+//					}
+
+				}
             }
         }
 
@@ -260,37 +296,22 @@ public class DSPGSAI extends AIWithComputationBudget {
     }
 
 
-    public UnitScript defaultScript(Unit u, GameState gs) {
+    public Rule defaultScript(Unit u, GameState gs) {
         // the first script added per type is considered the default:
     	
     	parametersScripts = new ParametersScripts(DS.getRulesSpace());
         ArrayList<Rule> l = scripts.get(u.getType());
         Rule currentRule = l.get(0);
-        Unit u2 = parametersScripts.validationParameter(u, gs,currentRule.getRule_paramether(),unitsAssignedEnemys);
         
-        UnitScript s=null;
-        if (currentRule.getRule_action() == DS.getRulesSpace().getAction_attack()) 
-        {        	
-        	s = attackTo.instantiate(u, gs, u2);
-        	if (s!=null) {
-                UnitAction ua = s.getAction(u, gs);
-                if (ua!=null) {
-                	unitsAssignedEnemys.add(u2);		                        
-                }
-            }
-        }
-        else if(currentRule.getRule_action() == DS.getRulesSpace().getAction_moveawayof())
-        {
-        	s = moveAwayTo.instantiate(u, gs, u2);
-        }
-        return s.instantiate(u, gs, u2);
+        return currentRule;
+
     }
 
 
     public void improve(int player,
-                        UnitScript scriptsToImprove[], List<Unit> units,
-                        UnitScript otherScripts[], List<Unit> otherUnits, GameState gs) throws Exception {
-    	actionsExecuted=new int [scriptsToImprove.length];
+                        Rule scriptsToImprove[], List<Unit> units,
+                        Rule otherScripts[], List<Unit> otherUnits, GameState gs) throws Exception {
+    	
         for(int i = 0;i<I;i++) {
             if (DEBUG>=1) System.out.println("Improve player " + player + "(" + i + "/" + I + ")");
             
@@ -311,43 +332,19 @@ public class DSPGSAI extends AIWithComputationBudget {
 
                 Unit unit = units.get(u);
                 double bestEvaluation = 0;
-                UnitScript bestScript = null;
+                Rule bestScript = null;
                 ArrayList<Rule> candidates = scripts.get(unit.getType());
                 
-                UnitScript s=null;
+                Rule s=null;
                 
                 for(int j=0;j<sizePortfolio;j++) {
                 	
-                	Rule us=candidates.get(j);
-                	//System.out.println("UnitType "+unit);
-                	//System.out.println("candidate "+j+" "+us.getRule_condition()+" "+us.getRule_action()+" "+us.getRule_paramether());
-                	Unit u2 = parametersScripts.validationParameter(unit, gs,us.getRule_paramether(),unitsAssignedEnemys);
-                	
-					if (conditionsScripts.validationCondition(us.getRule_condition(),
-							u2, unit)) {
-						
-						if (us.getRule_action() == DS.getRulesSpace().getAction_attack()) {
-							//System.out.println("action Attack " + rulesSelected.get(j).getRule_paramether());
-							s = attackTo.instantiate(unit, gs, u2);
-					      	if (s!=null) {
-				                UnitAction ua = s.getAction(unit, gs);
-				                if (ua!=null) {
-				                	unitsAssignedEnemys.add(u2);		                        
-				                }
-				            }
-							
-						} else if (us.getRule_action() == DS.getRulesSpace().getAction_moveawayof()) {
-							//System.out.println("action move Away " + rulesSelected.get(j).getRule_paramether());
-							s = moveAwayTo.instantiate(unit, gs, u2);
-
-						}	
-
-					}
+                	Rule us=candidates.get(j);						
+                	s=us;
 
                     if (s!=null) {
                         if (DEBUG>=2) System.out.println("  " + unit + " -> " + s.getClass().toString());
                         scriptsToImprove[u] = s;
-                        actionsExecuted[u]=us.getRule_action();
                         double e = playout(player, scriptsToImprove, units, otherScripts, otherUnits, gs);
                         if (bestScript==null || e>bestEvaluation) {
                             bestScript = s;
@@ -355,21 +352,22 @@ public class DSPGSAI extends AIWithComputationBudget {
                             if (DEBUG>=2) System.out.println("    new best: " + e +" "+j+" "+us.getRule_condition()+" "+us.getRule_action()+" "+us.getRule_paramether());
                         }
                     }
-                }
+                
                 scriptsToImprove[u] = bestScript;
+                }
             }
         }
     }
 
 
     public double playout(int player,
-                          UnitScript scripts1[], List<Unit> units1,
-                          UnitScript scripts2[], List<Unit> units2, GameState gs) throws Exception {
+                          Rule scripts1[], List<Unit> units1,
+                          Rule scripts2[], List<Unit> units2, GameState gs) throws Exception {
 //        if (DEBUG>=1) System.out.println("  playout... " + LOOKAHEAD);
         nplayouts++;
 
-        AI ai1 = new UnitScriptsAI(scripts1, units1, scripts, defaultScript,DS);
-        AI ai2 = new UnitScriptsAI(scripts2, units2, scripts, defaultScript,DS);
+        AI ai1 = new UnitScriptsAI(scripts1, units1, scripts, defaultScript,DS,pf);
+        AI ai2 = new UnitScriptsAI(scripts2, units2, scripts, defaultScript,DS,pf);
 
         GameState gs2 = gs.clone();
         ai1.reset();
