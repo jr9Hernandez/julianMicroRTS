@@ -95,13 +95,32 @@ public class DSPGSAI extends AIWithComputationBudget {
         DS=aiAux;
     	HashMap<String, ArrayList<Rule>> RulesSpaceUnit=DS.getRulesSpaceUnit();
     	
+
+    	
     	ArrayList<Rule> heavyS=RulesSpaceUnit.get("Heavy"); 
     	ArrayList<Rule> lightS=RulesSpaceUnit.get("Light"); 
     	ArrayList<Rule> rangedS=RulesSpaceUnit.get("Ranged"); 
     	
+    	System.out.println("PrintingBefore ");
+
+			for(int j=0; j<heavyS.size();j++)
+			{
+				Rule rule=RulesSpaceUnit.get("Heavy").get(j);
+				System.out.println("Final Rule "+heavyS.get(j).getRule_id()+" "+heavyS.get(j).getRule_condition()+" "+heavyS.get(j).getRule_action()+" "+heavyS.get(j).getRule_paramether()+" "+heavyS.get(j).getWeight());
+			}
+		
+    	
     	aux.orderInReverseArraylist(heavyS);
     	aux.orderInReverseArraylist(lightS);
     	aux.orderInReverseArraylist(rangedS);
+    	
+    	System.out.println("PrintingAfter ");
+
+			for(int j=0; j<heavyS.size();j++)
+			{
+				Rule rule=RulesSpaceUnit.get("Heavy").get(j);
+				System.out.println("Final Rule "+heavyS.get(j).getRule_id()+" "+heavyS.get(j).getRule_condition()+" "+heavyS.get(j).getRule_action()+" "+heavyS.get(j).getRule_paramether()+" "+heavyS.get(j).getWeight());
+			}
     	
     	scripts = new HashMap<>();
     	scripts.put(utt.getUnitType("Heavy"),heavyS);
@@ -286,13 +305,14 @@ public class DSPGSAI extends AIWithComputationBudget {
                 Unit unit = units.get(u);
                 double bestEvaluation = 0;
                 UnitScript bestScript = null;
-                List<Rule> candidates = scripts.get(unit.getType());
+                ArrayList<Rule> candidates = scripts.get(unit.getType());
                 
                 UnitScript s=null;
                 
                 for(int j=0;j<sizePortfolio;j++) {
                 	
                 	Rule us=candidates.get(j);
+                	System.out.println("UnitType "+unit);
                 	System.out.println("candidate "+j+" "+us.getRule_action()+" "+us.getRule_paramether());
                 	Unit u2 = parametersScripts.validationParameter(unit, gs,us.getRule_paramether(),unitsAssignedEnemys);
                 	
