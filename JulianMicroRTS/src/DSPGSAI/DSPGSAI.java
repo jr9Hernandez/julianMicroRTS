@@ -195,7 +195,9 @@ public class DSPGSAI extends AIWithComputationBudget {
         UnitScript enemyScripts[] = new UnitScript[n2];
 
         // Init the players:
+        unitsAssignedEnemys=new ArrayList<Unit>();
         for(int i = 0;i<n1;i++) playerScripts[i] = defaultScript(playerUnits.get(i), gs);
+        unitsAssignedEnemys=new ArrayList<Unit>();
         for(int i = 0;i<n2;i++) enemyScripts[i] = defaultScript(enemyUnits.get(i), gs);
 
         // Note: here, the original algorithm does "getSeedPlayer", which only makes sense if the same scripts can be used for all the units
@@ -234,21 +236,28 @@ public class DSPGSAI extends AIWithComputationBudget {
 
     public UnitScript defaultScript(Unit u, GameState gs) {
         // the first script added per type is considered the default:
-    	unitsAssignedEnemys=new ArrayList<Unit>();
+    	
     	parametersScripts = new ParametersScripts(DS.getRulesSpace());
         ArrayList<Rule> l = scripts.get(u.getType());
         Rule currentRule = l.get(0);
         Unit u2 = parametersScripts.validationParameter(u, gs,currentRule.getRule_paramether(),unitsAssignedEnemys);
+        
+        UnitScript s=null;
         if (currentRule.getRule_action() == DS.getRulesSpace().getAction_attack()) 
         {        	
-        	UnitScript s = attackTo.instantiate(u, gs, u2);
-        	unitsAssignedEnemys.add(u2);
+        	s = attackTo.instantiate(u, gs, u2);
+        	if (s!=null) {
+                UnitAction ua = s.getAction(u, gs);
+                if (ua!=null) {
+                	unitsAssignedEnemys.add(u2);		                        
+                }
+            }
         }
         else if(currentRule.getRule_action() == DS.getRulesSpace().getAction_moveawayof())
         {
-        	UnitScript s = moveAwayTo.instantiate(u, gs, u2);
+        	s = moveAwayTo.instantiate(u, gs, u2);
         }
-        return attackTo.instantiate(u, gs, u2);
+        return s.instantiate(u, gs, u2);
     }
 
 
@@ -284,6 +293,7 @@ public class DSPGSAI extends AIWithComputationBudget {
                 for(int j=0;j<sizePortfolio;j++) {
                 	
                 	Rule us=candidates.get(j);
+                	System.out.println("candidate "+j+" "+us.getRule_action()+" "+us.getRule_paramether());
                 	Unit u2 = parametersScripts.validationParameter(unit, gs,us.getRule_paramether(),unitsAssignedEnemys);
                 	
 					if (conditionsScripts.validationCondition(us.getRule_condition(),
@@ -292,7 +302,12 @@ public class DSPGSAI extends AIWithComputationBudget {
 						if (us.getRule_action() == DS.getRulesSpace().getAction_attack()) {
 							//System.out.println("action Attack " + rulesSelected.get(j).getRule_paramether());
 							s = attackTo.instantiate(unit, gs, u2);
-							unitsAssignedEnemys.add(u2);
+					      	if (s!=null) {
+				                UnitAction ua = s.getAction(unit, gs);
+				                if (ua!=null) {
+				                	unitsAssignedEnemys.add(u2);		                        
+				                }
+				            }
 							
 						} else if (us.getRule_action() == DS.getRulesSpace().getAction_moveawayof()) {
 							//System.out.println("action move Away " + rulesSelected.get(j).getRule_paramether());
@@ -326,8 +341,8 @@ public class DSPGSAI extends AIWithComputationBudget {
 //        if (DEBUG>=1) System.out.println("  playout... " + LOOKAHEAD);
         nplayouts++;
 
-        AI ai1 = new UnitScriptsAI(scripts1, units1, scripts, defaultScript);
-        AI ai2 = new UnitScriptsAI(scripts2, units2, scripts, defaultScript);
+        AI ai1 = new UnitScriptsAI(scripts1, units1, scripts, defaultScript,DS);
+        AI ai2 = new UnitScriptsAI(scripts2, units2, scripts, defaultScript,DS);
 
         GameState gs2 = gs.clone();
         ai1.reset();

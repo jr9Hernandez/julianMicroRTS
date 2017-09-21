@@ -141,6 +141,16 @@ public class DynamicScripting extends AIWithComputationBudget {
 			firstExecution=true;
 			isPlayout=false;
 			System.out.print(roundConvergenceWin+" "+roundConvergenceDraw+" , ");
+			
+			//here Im printing the current dataRules Space
+			for (int i = 0; i < numTypesUnits; i++) {
+				//Unit u = playerUnits.get(i);
+				for(int j=0; j<totalRules;j++)
+				{
+					Rule rule=RulesSpaceUnit.get(typesUnits[i]).get(j);
+					System.out.println("Final Rule "+rule.getRule_id()+" "+rule.getRule_condition()+" "+rule.getRule_action()+" "+rule.getRule_paramether()+" "+rule.getWeight());
+				}
+			}
 		}
 		else
 		{

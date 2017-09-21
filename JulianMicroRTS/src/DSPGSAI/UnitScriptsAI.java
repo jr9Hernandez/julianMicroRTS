@@ -7,6 +7,8 @@ package DSPGSAI;
 
 import ai.core.AI;
 import ai.core.ParameterSpecification;
+import dynamicscripting.DynamicScripting;
+import dynamicscripting.ParametersScripts;
 import dynamicscripting.Rule;
 import dynamicscripting.UnitScript;
 
@@ -32,11 +34,13 @@ public class UnitScriptsAI extends AI {
     HashMap<Unit,UnitScript> scripts = new HashMap<>();
     HashMap<UnitType, ArrayList<Rule>> allScripts = null;
     UnitScript defaultScript = null;
+    private ParametersScripts parametersScripts;
+    DynamicScripting DS=null;
     
     
     public UnitScriptsAI(UnitScript a_scripts[], List<Unit> a_units,
                          HashMap<UnitType, ArrayList<Rule>> a_allScripts,
-                         UnitScript a_defaultScript) {
+                         UnitScript a_defaultScript, DynamicScripting a_DS) {
         scriptsInput = a_scripts;
         unitsInput = a_units;
         for(int i = 0;i<a_scripts.length;i++) {
@@ -44,6 +48,7 @@ public class UnitScriptsAI extends AI {
         }
         allScripts = a_allScripts;
         defaultScript = a_defaultScript;
+        DS=a_DS;
     }
     
     
@@ -60,6 +65,7 @@ public class UnitScriptsAI extends AI {
 
     public PlayerAction getAction(int player, GameState gs) throws Exception {
 //        System.out.println("    UnitScriptsAI.getAction " + player + ", " + gs.getTime());
+    	parametersScripts = new ParametersScripts(DS.getRulesSpace());
         PlayerAction pa = new PlayerAction();
         for(Unit u:gs.getUnits()) {
             if (u.getPlayer()==player && gs.getUnitAction(u)==null) {
@@ -67,6 +73,7 @@ public class UnitScriptsAI extends AI {
 //                if (s!=null) s = s.instantiate(u, gs);
                 if (s==null) {
                     // new unit, or completed script
+                	Unit u2 = parametersScripts.validationParameter(u, gs,3,new ArrayList<Unit>());
                     s = defaultScript.instantiate(u, gs,u);
                     scripts.put(u,s);
                 }
@@ -84,7 +91,7 @@ public class UnitScriptsAI extends AI {
     
     @Override
     public AI clone() {
-        return new UnitScriptsAI(scriptsInput, unitsInput, allScripts, defaultScript);
+        return new UnitScriptsAI(scriptsInput, unitsInput, allScripts, defaultScript,DS);
     }
     
     
