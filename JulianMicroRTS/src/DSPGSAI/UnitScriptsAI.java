@@ -37,7 +37,7 @@ public class UnitScriptsAI extends AI {
     List<Unit> unitsInput;
     HashMap<Unit, Rule> scripts  = new HashMap<>();
     HashMap<UnitType, ArrayList<Rule>> allScripts = null;
-    UnitScript defaultScript = null;
+    Rule defaultScript = null;
     private ParametersScripts parametersScripts;
     private ConditionsScripts conditionsScripts;
     DynamicScripting DS=null;
@@ -48,7 +48,7 @@ public class UnitScriptsAI extends AI {
     
     public UnitScriptsAI(Rule a_scripts [], List<Unit> a_units,
                          HashMap<UnitType, ArrayList<Rule>> a_allScripts,
-                         UnitScript a_defaultScript, DynamicScripting a_DS,PathFinding a_pf) {
+                         Rule a_defaultScript, DynamicScripting a_DS,PathFinding a_pf) {
         scriptsInput = a_scripts;
         unitsInput = a_units;
         for(int i = 0;i<a_scripts.length;i++) {
@@ -85,6 +85,10 @@ public class UnitScriptsAI extends AI {
 
 					Rule currentRule = scripts.get(u);
 					
+					if(currentRule==null)
+					{
+						currentRule=defaultScript;
+					}
 					Unit u2 = parametersScripts.validationParameter(u, gs,currentRule.getRule_paramether(),unitsAssignedEnemys);
 
 					if (conditionsScripts.validationCondition(currentRule.getRule_condition(),

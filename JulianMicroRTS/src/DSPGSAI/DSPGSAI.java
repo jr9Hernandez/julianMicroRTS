@@ -53,7 +53,7 @@ import rts.units.UnitTypeTable;
  */
 public class DSPGSAI extends AIWithComputationBudget {
 
-    public static int DEBUG = 0;
+    public static int DEBUG = 3;
 
     int LOOKAHEAD = 500;
     int I = 1;  // number of iterations for improving a given player
@@ -63,7 +63,7 @@ public class DSPGSAI extends AIWithComputationBudget {
     UnitTypeTable utt;
     PathFinding pf;
 
-    UnitScript defaultScript = null;
+    Rule defaultScript = null;
 
     long start_time = 0;
     int nplayouts = 0;
@@ -136,7 +136,7 @@ public class DSPGSAI extends AIWithComputationBudget {
     	attackTo = new UnitScriptAttackTo(pf);
     	moveAwayTo = new UnitScriptMoveAwayTo(pf);
     	
-    	defaultScript=new UnitScriptAttackTo(pf);
+    	defaultScript=heavyS.get(0);
         
 
 //        UnitScript harvest = new UnitScriptHarvest(pf,utt);
