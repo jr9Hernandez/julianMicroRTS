@@ -13,6 +13,8 @@ import ai.abstraction.pathfinding.PathFinding;
 import ai.core.AIWithComputationBudget;
 import ai.core.ParameterSpecification;
 import ai.evaluation.EvaluationFunction;
+import ai.evaluation.SimpleSqrtEvaluationFunction;
+import ai.evaluation.SimpleSqrtEvaluationFunction2;
 import ai.evaluation.SimpleSqrtEvaluationFunction3;
 import dynamicscripting.AuxMethods;
 import dynamicscripting.ConditionsScripts;
@@ -77,7 +79,7 @@ public class DSPGSAI extends AIWithComputationBudget {
     int [] actionsExecuted;
     
     public DSPGSAI(UnitTypeTable utt, DynamicScripting aiAux) {
-        this(100, -1, 100, 1, 1, 
+        this(100, -1, 100, 10, 1, 
              new SimpleSqrtEvaluationFunction3(),
              utt,
              new AStarPathFinding(), aiAux);
@@ -350,7 +352,7 @@ public class DSPGSAI extends AIWithComputationBudget {
                         if (bestScript==null || e>bestEvaluation) {
                             bestScript = s;
                             bestEvaluation = e;
-                            if (DEBUG>=2) System.out.println("    new best: " + e);
+                            if (DEBUG>=2) System.out.println("    new best: " + e +" "+j+" "+us.getRule_condition()+" "+us.getRule_action()+" "+us.getRule_paramether());
                         }
                     }
                 }
