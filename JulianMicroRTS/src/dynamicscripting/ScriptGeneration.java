@@ -147,7 +147,7 @@ public class ScriptGeneration {
 	public void UpdateWeightsBeta(int unitId,ArrayList<Rule> rulesSelectedList, ArrayList<Rule> ruleSpaceList, double globalEvaluation, int wInit, double teamFactor, double bFactor, double cFactor, double aFactor)
 	{
 		//System.out.println("Rule Before! "+rulesSelectedList.get(0).getWeight());
-		int wMax=1000;
+		int wMax=500;
 		int wMin=0;
 		int active=0;
 		int totalWeights=0;
