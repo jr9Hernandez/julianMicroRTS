@@ -305,6 +305,7 @@ public class DSPGSAI extends AIWithComputationBudget {
                 Unit unit = units.get(u);
                 double bestEvaluation = 0;
                 UnitScript bestScript = null;
+                System.out.println("tipo escolhido "+unit.getType().name);
                 ArrayList<Rule> candidates = scripts.get(unit.getType());
                 
                 UnitScript s=null;
