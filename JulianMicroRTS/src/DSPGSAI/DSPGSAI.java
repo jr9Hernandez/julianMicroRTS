@@ -53,7 +53,7 @@ import rts.units.UnitTypeTable;
  */
 public class DSPGSAI extends AIWithComputationBudget {
 
-    public static int DEBUG = 3;
+    public static int DEBUG = 0;
 
     int LOOKAHEAD = 500;
     int I = 1;  // number of iterations for improving a given player
@@ -78,7 +78,7 @@ public class DSPGSAI extends AIWithComputationBudget {
     UnitScript moveAwayTo;
     
     public DSPGSAI(UnitTypeTable utt, DynamicScripting aiAux) {
-        this(100, -1, 100, 10, 1, 
+        this(100, -1, 100, 6, 1, 
              new SimpleSqrtEvaluationFunction3(),
              utt,
              new AStarPathFinding(), aiAux);
@@ -262,7 +262,7 @@ public class DSPGSAI extends AIWithComputationBudget {
 		                } else {
 		                    pa.addUnitAction(u, new UnitAction(UnitAction.TYPE_NONE));                
 		                }			                
-						break;
+						
 						
 					} else if (currentRule.getRule_action() == DS.getRulesSpace().getAction_moveawayof()) {
 						//System.out.println("action move Away " + rulesSelected.get(j).getRule_paramether());
@@ -277,7 +277,7 @@ public class DSPGSAI extends AIWithComputationBudget {
 		                } else {
 		                    pa.addUnitAction(u, new UnitAction(UnitAction.TYPE_NONE));                
 		                }			                
-						break;
+						
 					}	
 //					} else if (rulesSelected.get(j).getRule_action() == rulesSpace.getAction_moveto()) {
 //						System.out.println("action move " + rulesSelected.get(j).getRule_paramether());
@@ -289,6 +289,9 @@ public class DSPGSAI extends AIWithComputationBudget {
 //					}
 
 				}
+				else {
+					pa.addUnitAction(u, new UnitAction(UnitAction.TYPE_NONE));
+				}
             }
         }
 
@@ -299,7 +302,6 @@ public class DSPGSAI extends AIWithComputationBudget {
     public Rule defaultScript(Unit u, GameState gs) {
         // the first script added per type is considered the default:
     	
-    	parametersScripts = new ParametersScripts(DS.getRulesSpace());
         ArrayList<Rule> l = scripts.get(u.getType());
         Rule currentRule = l.get(0);
         
