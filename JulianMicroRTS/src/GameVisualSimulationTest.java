@@ -80,7 +80,8 @@ public class GameVisualSimulationTest {
         //The next line is just for my Experiments!!!
         //ai2.getAction(1, gs);
         aiAux.getAction(1, gs);
-        AI ai2 = new PGSAI(utt);
+        //AI ai2 = new PGSAI(utt);
+        AI ai2 = new DSPGSAI(utt,aiAux);
         
         long nextTimeToUpdate = System.currentTimeMillis() + PERIOD;
         do{
