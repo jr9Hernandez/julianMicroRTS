@@ -335,12 +335,11 @@ public class DSPGSAI extends AIWithComputationBudget {
                 Rule bestScript = null;
                 ArrayList<Rule> candidates = scripts.get(unit.getType());
                 
-                Rule s=null;
+                
                 
                 for(int j=0;j<sizePortfolio;j++) {
                 	
-                	Rule us=candidates.get(j);						
-                	s=us;
+                	Rule s=candidates.get(j);						
 
                     if (s!=null) {
                         if (DEBUG>=2) System.out.println("  " + unit + " -> " + s.getClass().toString());
@@ -349,12 +348,12 @@ public class DSPGSAI extends AIWithComputationBudget {
                         if (bestScript==null || e>bestEvaluation) {
                             bestScript = s;
                             bestEvaluation = e;
-                            if (DEBUG>=2) System.out.println("    new best: " + e +" "+j+" "+us.getRule_condition()+" "+us.getRule_action()+" "+us.getRule_paramether());
+                            if (DEBUG>=2) System.out.println("    new best: " + e +" "+j+" "+s.getRule_condition()+" "+s.getRule_action()+" "+s.getRule_paramether());
                         }
                     }
-                
-                scriptsToImprove[u] = bestScript;
                 }
+                scriptsToImprove[u] = bestScript;
+                
             }
         }
     }
