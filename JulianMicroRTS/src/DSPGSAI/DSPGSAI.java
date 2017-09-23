@@ -220,9 +220,7 @@ public class DSPGSAI extends AIWithComputationBudget {
         Rule enemyScripts[] = new Rule[n2];
 
         // Init the players:
-        unitsAssignedEnemys=new ArrayList<Unit>();
         for(int i = 0;i<n1;i++) playerScripts[i] = defaultScript(playerUnits.get(i), gs);
-        unitsAssignedEnemys=new ArrayList<Unit>();
         for(int i = 0;i<n2;i++) enemyScripts[i] = defaultScript(enemyUnits.get(i), gs);
 
         // Note: here, the original algorithm does "getSeedPlayer", which only makes sense if the same scripts can be used for all the units
