@@ -122,7 +122,7 @@ public class UnitScriptsAI extends AI {
 							}	
 
 						}	
-						
+						scripts.put(u,currentRule);
 					}
 					UnitAction ua =null;
 					if(s==null)

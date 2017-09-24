@@ -70,7 +70,7 @@ public class DSPGSAI extends AIWithComputationBudget {
     int nplayouts = 0;
     
     DynamicScripting DS=null;
-    int sizePortfolio=2;
+    int sizePortfolio=3;
     AuxMethods aux=new AuxMethods();
     private ArrayList<Unit> unitsAssignedEnemys;
     private ParametersScripts parametersScripts;
@@ -79,7 +79,7 @@ public class DSPGSAI extends AIWithComputationBudget {
     UnitScript moveAwayTo;
     
     public DSPGSAI(UnitTypeTable utt, DynamicScripting aiAux) {
-        this(100, -1, 200, 6, 1, 
+        this(100, -1, 200, 1, 1, 
              new SimpleSqrtEvaluationFunction3(),
              utt,
              new AStarPathFinding(), aiAux);
