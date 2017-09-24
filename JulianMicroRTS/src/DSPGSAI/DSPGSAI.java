@@ -79,7 +79,7 @@ public class DSPGSAI extends AIWithComputationBudget {
     UnitScript moveAwayTo;
     
     public DSPGSAI(UnitTypeTable utt, DynamicScripting aiAux) {
-        this(100, -1, 200, 1, 1, 
+        this(100, -1, 300, 1, 1, 
              new SimpleSqrtEvaluationFunction3(),
              utt,
              new AStarPathFinding(), aiAux);
@@ -304,9 +304,8 @@ public class DSPGSAI extends AIWithComputationBudget {
     public Rule defaultScript(Unit u, GameState gs) {
         // the first script added per type is considered the default:
     	
-        ArrayList<Rule> l = scripts.get(u.getType());
-        Rule currentRule = l.get(0);
-        
+
+        Rule currentRule = new Rule(1200, 100, 0, 0, 0, 0);      
         return currentRule;
 
     }
