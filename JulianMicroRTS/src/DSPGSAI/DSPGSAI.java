@@ -237,7 +237,9 @@ public class DSPGSAI extends AIWithComputationBudget {
         // generate the final Player Action:
         unitsAssignedEnemys=new ArrayList<Unit>();
         PlayerAction pa = new PlayerAction();
+        System.out.println("uniFInalRUle "+playerUnits.get(0)+" "+playerScripts[0].getRule_condition()+" "+playerScripts[0].getRule_action()+" "+playerScripts[0].getRule_paramether());
         for(int i = 0;i<n1;i++) {
+        	
             Unit u = playerUnits.get(i);
             if (gs.getUnitAction(u)==null) {
 				Rule currentRule = playerScripts[i];
@@ -350,7 +352,7 @@ public class DSPGSAI extends AIWithComputationBudget {
                         if (bestScript==null || e>bestEvaluation) {
                             bestScript = s;
                             bestEvaluation = e;
-                            if (DEBUG>=2) System.out.println("    new best: " + e +" "+j+" "+s.getRule_condition()+" "+s.getRule_action()+" "+s.getRule_paramether());
+                            System.out.println("unit "+unit+    "new best: " + e +" "+j+" "+s.getRule_condition()+" "+s.getRule_action()+" "+s.getRule_paramether());
                         }
                     }
                 }

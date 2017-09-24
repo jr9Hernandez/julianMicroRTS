@@ -229,7 +229,7 @@ public class ScriptGeneration {
 		double bValue=0.1;
 		double differenceWeight;
 		
-		double fitness=(0.1)*(3*teamFactor+0*aFactor+0*bFactor+7*cFactor);
+		double fitness=(0.1)*(3*teamFactor+6*aFactor+0*bFactor+7*cFactor);
 //		System.out.println("fitness "+fitness);
 		if(fitness<bValue)
 		{
