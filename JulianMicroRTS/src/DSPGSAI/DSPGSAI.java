@@ -13,6 +13,7 @@ import ai.abstraction.pathfinding.PathFinding;
 import ai.core.AIWithComputationBudget;
 import ai.core.ParameterSpecification;
 import ai.evaluation.EvaluationFunction;
+import ai.evaluation.EvaluationFunctionForwarding;
 import ai.evaluation.SimpleSqrtEvaluationFunction;
 import ai.evaluation.SimpleSqrtEvaluationFunction2;
 import ai.evaluation.SimpleSqrtEvaluationFunction3;
@@ -78,7 +79,7 @@ public class DSPGSAI extends AIWithComputationBudget {
     UnitScript moveAwayTo;
     
     public DSPGSAI(UnitTypeTable utt, DynamicScripting aiAux) {
-        this(100, -1, 100, 6, 1, 
+        this(100, -1, 200, 6, 1, 
              new SimpleSqrtEvaluationFunction3(),
              utt,
              new AStarPathFinding(), aiAux);
@@ -277,6 +278,9 @@ public class DSPGSAI extends AIWithComputationBudget {
 		                }			                
 						
 					}	
+					else {
+						pa.addUnitAction(u, new UnitAction(UnitAction.TYPE_NONE));
+					}
 //					} else if (rulesSelected.get(j).getRule_action() == rulesSpace.getAction_moveto()) {
 //						System.out.println("action move " + rulesSelected.get(j).getRule_paramether());
 //						UnitScript s = moveTo.instantiate(u, gs, u2);
@@ -287,9 +291,7 @@ public class DSPGSAI extends AIWithComputationBudget {
 //					}
 
 				}
-				else {
-					pa.addUnitAction(u, new UnitAction(UnitAction.TYPE_NONE));
-				}
+				
             }
         }
 
