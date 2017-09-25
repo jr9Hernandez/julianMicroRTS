@@ -65,6 +65,7 @@ public class DSPGSAI extends AIWithComputationBudget {
     PathFinding pf;
 
     Rule defaultScript = null;
+    Rule defaultScriptEnemy = null;
 
     long start_time = 0;
     int nplayouts = 0;
@@ -79,7 +80,7 @@ public class DSPGSAI extends AIWithComputationBudget {
     UnitScript moveAwayTo;
     
     public DSPGSAI(UnitTypeTable utt, DynamicScripting aiAux) {
-        this(100, -1, 200, 1, 1, 
+        this(100, -1, 200, 3, 1, 
              new SimpleSqrtEvaluationFunction3(),
              utt,
              new AStarPathFinding(), aiAux);
@@ -136,7 +137,7 @@ public class DSPGSAI extends AIWithComputationBudget {
     	scripts.put(utt.getUnitType("Ranged"),rangedS);
     	
     	defaultScript=heavyS.get(0);
-        
+    	defaultScriptEnemy=new Rule(1200, 100, 0, 0, 0, 0); 
 
 //        UnitScript harvest = new UnitScriptHarvest(pf,utt);
 //        UnitScript buildBarracks = new UnitScriptBuild(pf,utt.getUnitType("Barracks"));
@@ -220,7 +221,7 @@ public class DSPGSAI extends AIWithComputationBudget {
 
         // Init the players:
         for(int i = 0;i<n1;i++) playerScripts[i] = defaultScript(playerUnits.get(i), gs);
-        for(int i = 0;i<n2;i++) enemyScripts[i] = defaultScript(enemyUnits.get(i), gs);
+        for(int i = 0;i<n2;i++) enemyScripts[i] = defaultScriptEnemy(enemyUnits.get(i), gs);
 
         // Note: here, the original algorithm does "getSeedPlayer", which only makes sense if the same scripts can be used for all the units
 
@@ -303,6 +304,16 @@ public class DSPGSAI extends AIWithComputationBudget {
         // the first script added per type is considered the default:
     	
 
+        ArrayList<Rule> l = scripts.get(u.getType());
+        Rule currentRule = l.get(0);
+        
+        return currentRule;
+
+    }
+    public Rule defaultScriptEnemy(Unit u, GameState gs) {
+        // the first script added per type is considered the default:
+    	
+
         Rule currentRule = new Rule(1200, 100, 0, 0, 0, 0);      
         return currentRule;
 
@@ -367,7 +378,7 @@ public class DSPGSAI extends AIWithComputationBudget {
         nplayouts++;
 
         AI ai1 = new UnitScriptsAI(scripts1, units1, scripts, defaultScript,DS,pf);
-        AI ai2 = new UnitScriptsAI(scripts2, units2, scripts, defaultScript,DS,pf);
+        AI ai2 = new UnitScriptsAI(scripts2, units2, scripts, defaultScriptEnemy,DS,pf);
 
         GameState gs2 = gs.clone();
         ai1.reset();
