@@ -104,7 +104,7 @@ public class UnitScriptsAI extends AI {
 
 					}
 					}
-					if(currentRule==null)
+					if(s==null)
 					{
 						currentRule = allScripts.get(u.getType()).get(0);
 						Unit u2 = parametersScripts.validationParameter(u, gs,currentRule.getRule_paramether(),unitsAssignedEnemys);
@@ -121,18 +121,35 @@ public class UnitScriptsAI extends AI {
 								s = moveAwayTo.instantiate(u, gs, u2);
 							}	
 
-						}	
+						}
+						if(s==null)
+						{
+							currentRule=defaultScript;
+							u2 = parametersScripts.validationParameter(u, gs,currentRule.getRule_paramether(),unitsAssignedEnemys);
+
+							if (conditionsScripts.validationCondition(currentRule.getRule_condition(),u2, u)) 
+							{
+								
+								if (currentRule.getRule_action() == DS.getRulesSpace().getAction_attack()) {
+									//System.out.println("action Attack " + rulesSelected.get(j).getRule_paramether());
+									s = attackTo.instantiate(u, gs, u2);		                
+									
+								} else if (currentRule.getRule_action() == DS.getRulesSpace().getAction_moveawayof()) {
+									//System.out.println("action move Away " + rulesSelected.get(j).getRule_paramether());
+									s = moveAwayTo.instantiate(u, gs, u2);
+								}	
+
+							}							
+						}
 						scripts.put(u,currentRule);
 					}
-					UnitAction ua =null;
 					if(s==null)
 					{
-						ua= new UnitAction(UnitAction.TYPE_NONE);
+						Unit u2 = parametersScripts.validationParameter(u, gs,currentRule.getRule_paramether(),unitsAssignedEnemys);
+						s= attackTo.instantiate(u, gs, u2);	
 					}
-					else
-					{
-						ua = s.getAction(u, gs);
-					}
+					UnitAction ua = s.getAction(u, gs);
+					
 	                if (ua!=null) {
 	                    pa.addUnitAction(u, ua);
 	                } else {
