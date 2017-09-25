@@ -71,7 +71,7 @@ public class DSPGSAI extends AIWithComputationBudget {
     int nplayouts = 0;
     
     DynamicScripting DS=null;
-    int sizePortfolio=2;
+    int sizePortfolio=3;
     AuxMethods aux=new AuxMethods();
     private ArrayList<Unit> unitsAssignedEnemys;
     private ParametersScripts parametersScripts;
