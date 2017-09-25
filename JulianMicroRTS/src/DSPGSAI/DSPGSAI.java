@@ -56,7 +56,7 @@ public class DSPGSAI extends AIWithComputationBudget {
 
     public static int DEBUG = 0;
 
-    int LOOKAHEAD = 500;
+    int LOOKAHEAD = 200;
     int I = 1;  // number of iterations for improving a given player
     int R = 1;  // number of times to improve with respect to the response fo the other player
     EvaluationFunction evaluation = null;
@@ -79,7 +79,7 @@ public class DSPGSAI extends AIWithComputationBudget {
     UnitScript moveAwayTo;
     
     public DSPGSAI(UnitTypeTable utt, DynamicScripting aiAux) {
-        this(100, -1, 300, 1, 1, 
+        this(100, -1, 200, 1, 1, 
              new SimpleSqrtEvaluationFunction3(),
              utt,
              new AStarPathFinding(), aiAux);
