@@ -35,7 +35,7 @@ public class UnitScriptsAI extends AI {
     
     Rule scriptsInput[];
     List<Unit> unitsInput;
-    HashMap<Unit, Rule> scripts  = new HashMap<>();
+    HashMap<Long, Rule> scripts  = new HashMap<>();
     HashMap<UnitType, ArrayList<Rule>> allScripts = null;
     Rule defaultScript = null;
     private ParametersScripts parametersScripts;
@@ -52,7 +52,7 @@ public class UnitScriptsAI extends AI {
         scriptsInput = a_scripts;
         unitsInput = a_units;
         for(int i = 0;i<a_scripts.length;i++) {
-            scripts.put(a_units.get(i), a_scripts[i]);
+            scripts.put(a_units.get(i).getID(), a_scripts[i]);
         }
         allScripts = a_allScripts;
         defaultScript = a_defaultScript;
@@ -83,7 +83,7 @@ public class UnitScriptsAI extends AI {
         for(Unit u:gs.getUnits()) {
             if (u.getPlayer()==player && gs.getUnitAction(u)==null) {
 
-					Rule currentRule = scripts.get(u);
+					Rule currentRule = scripts.get(u.getID());
 					UnitScript s=null;
 					Unit u2=null;
 					
@@ -142,7 +142,7 @@ public class UnitScriptsAI extends AI {
 
 							}							
 //						}
-						scripts.put(u,currentRule);
+						scripts.put(u.getID(),currentRule);
 					}
 					UnitAction ua =null;
 					if(s==null)
