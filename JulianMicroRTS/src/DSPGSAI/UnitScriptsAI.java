@@ -95,7 +95,8 @@ public class UnitScriptsAI extends AI {
 						
 						if (currentRule.getRule_action() == DS.getRulesSpace().getAction_attack()) {
 							//System.out.println("action Attack " + rulesSelected.get(j).getRule_paramether());
-							s = attackTo.instantiate(u, gs, u2);		                
+							s = attackTo.instantiate(u, gs, u2);	
+							unitsAssignedEnemys.add(u2);
 							
 						} else if (currentRule.getRule_action() == DS.getRulesSpace().getAction_moveawayof()) {
 							//System.out.println("action move Away " + rulesSelected.get(j).getRule_paramether());
@@ -132,7 +133,8 @@ public class UnitScriptsAI extends AI {
 								
 								if (currentRule.getRule_action() == DS.getRulesSpace().getAction_attack()) {
 									//System.out.println("action Attack " + rulesSelected.get(j).getRule_paramether());
-									s = attackTo.instantiate(u, gs, u2);		                
+									s = attackTo.instantiate(u, gs, u2);	
+									unitsAssignedEnemys.add(u2);
 									
 								} else if (currentRule.getRule_action() == DS.getRulesSpace().getAction_moveawayof()) {
 									//System.out.println("action move Away " + rulesSelected.get(j).getRule_paramether());
