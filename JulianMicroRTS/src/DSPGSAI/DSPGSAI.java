@@ -97,7 +97,8 @@ public class DSPGSAI extends AIWithComputationBudget {
         DS=aiAux;
     	HashMap<String, ArrayList<Rule>> RulesSpaceUnit=DS.getRulesSpaceUnit();
     	
-
+    	attackTo = new UnitScriptAttackTo(pf);
+    	moveAwayTo = new UnitScriptMoveAwayTo(pf);
     	
     	ArrayList<Rule> heavyS=RulesSpaceUnit.get("Heavy"); 
     	ArrayList<Rule> lightS=RulesSpaceUnit.get("Light"); 
@@ -133,9 +134,6 @@ public class DSPGSAI extends AIWithComputationBudget {
     	scripts.put(utt.getUnitType("Heavy"),heavyS);
     	scripts.put(utt.getUnitType("Light"),lightS);
     	scripts.put(utt.getUnitType("Ranged"),rangedS);
-    	
-    	attackTo = new UnitScriptAttackTo(pf);
-    	moveAwayTo = new UnitScriptMoveAwayTo(pf);
     	
     	defaultScript=heavyS.get(0);
         
