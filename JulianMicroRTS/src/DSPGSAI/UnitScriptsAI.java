@@ -143,13 +143,15 @@ public class UnitScriptsAI extends AI {
 						}
 						scripts.put(u,currentRule);
 					}
+					UnitAction ua =null;
 					if(s==null)
 					{
-						Unit u2 = parametersScripts.validationParameter(u, gs,currentRule.getRule_paramether(),unitsAssignedEnemys);
-						s= attackTo.instantiate(u, gs, u2);	
+						ua= new UnitAction(UnitAction.TYPE_NONE);
 					}
-					UnitAction ua = s.getAction(u, gs);
-					
+					else
+					{
+						ua = s.getAction(u, gs);
+					}
 	                if (ua!=null) {
 	                    pa.addUnitAction(u, ua);
 	                } else {
