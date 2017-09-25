@@ -3,15 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ai.asymmetric.PGS;
 
+package PGS_Churchill;
 import ai.abstraction.partialobservability.POHeavyRush;
 import ai.abstraction.partialobservability.POLightRush;
 import ai.abstraction.partialobservability.PORangedRush;
 import ai.abstraction.partialobservability.POWorkerRush;
 import ai.abstraction.pathfinding.AStarPathFinding;
 import ai.abstraction.pathfinding.PathFinding;
-import ai.asymmetric.common.UnitScriptData;
 import ai.core.AI;
 import ai.core.AIWithComputationBudget;
 import ai.core.InterruptibleAI;
@@ -26,8 +25,6 @@ import rts.PlayerAction;
 import rts.UnitAction;
 import rts.units.Unit;
 import rts.units.UnitTypeTable;
-import PVAI.EconomyRush;
-import PVAI.EconomyMilitaryRush;
 import ai.abstraction.pathfinding.FloodFillPathFinding;
 
 /**
