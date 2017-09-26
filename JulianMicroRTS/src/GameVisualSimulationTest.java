@@ -85,7 +85,9 @@ public class GameVisualSimulationTest {
         //AI ai2 = new PGSAI(utt);
         //AI ai2 = new DSPGSAI(utt,aiAux);
         //AI ai2 = new PGSmRTS(utt);
-        AI ai2 = new DSPGSmRTS(utt,aiAux);
+        //AI ai2 = new DSPGSmRTS(utt,aiAux);
+        AI ai2 = new PGSmRTS(utt);
+        
         
         long nextTimeToUpdate = System.currentTimeMillis() + PERIOD;
         do{
