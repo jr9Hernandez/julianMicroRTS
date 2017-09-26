@@ -1,0 +1,76 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package DSPGS_Churchill;
+
+import java.util.ArrayList;
+
+import ai.abstraction.AbstractAction; 
+import ai.abstraction.Attack;
+import ai.abstraction.pathfinding.PathFinding;
+import dynamicscripting.ConditionsScripts;
+import dynamicscripting.DynamicScripting;
+import dynamicscripting.ParametersScripts;
+import dynamicscripting.Rule;
+import dynamicscripting.UnitScript;
+import rts.GameState;
+import rts.PlayerAction;
+import rts.UnitAction;
+import rts.units.Unit;
+import rts.units.UnitType;
+import rts.units.UnitTypeTable;
+
+/**
+ *
+ * @author This class is based in the original class with the same name for portafolio greedy search, by Santi Ontañon
+ */
+public class UnitScriptSingle  {
+    
+    AbstractAction action = null;
+    Rule rule=null;
+	ConditionsScripts conditionsScripts;
+	ParametersScripts parametersScripts;
+	UnitScript s;
+	
+    UnitScript attackTo;
+    UnitScript moveAwayTo;
+    
+    public UnitScriptSingle(Rule a_rule) {
+        rule=rule;
+    }
+    
+    public UnitAction getAction(Unit u, GameState gs) {
+        if (action.completed(gs)) {
+            return null;
+        } else {
+            return action.execute(gs);
+        }
+    }
+    
+    public UnitScript instantiate(Unit u, GameState gs, DynamicScripting DS) {
+
+    	parametersScripts = new ParametersScripts(DS.getRulesSpace());
+		conditionsScripts = new ConditionsScripts(DS.getRulesSpace(), parametersScripts, gs);
+        ArrayList<Unit> unitsAssignedEnemys=new ArrayList<Unit>(); 	
+    	
+		Unit u2 = parametersScripts.validationParameter(u, gs,rule.getRule_paramether(),unitsAssignedEnemys);
+		if (conditionsScripts.validationCondition(rule.getRule_condition(),
+				u2, u)) {
+			
+			if (rule.getRule_action() == DS.getRulesSpace().getAction_attack()) {
+				s = attackTo.instantiate(u, gs, u2);
+				unitsAssignedEnemys.add(u2);
+				
+			} else if (rule.getRule_action() == DS.getRulesSpace().getAction_moveawayof()) {
+				//System.out.println("action move Away " + rulesSelected.get(j).getRule_paramether());
+				s = moveAwayTo.instantiate(u, gs, u2);
+				
+			}	
+
+		}
+		return s;
+    }
+    
+}

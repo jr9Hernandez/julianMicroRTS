@@ -17,6 +17,13 @@ import ai.core.InterruptibleAI;
 import ai.core.ParameterSpecification;
 import ai.evaluation.EvaluationFunction;
 import ai.evaluation.SimpleSqrtEvaluationFunction3;
+import dynamicscripting.AuxMethods;
+import dynamicscripting.DynamicScripting;
+import dynamicscripting.Rule;
+import dynamicscripting.UnitScript;
+import dynamicscripting.UnitScriptAttackTo;
+import dynamicscripting.UnitScriptMoveAwayTo;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,20 +31,21 @@ import rts.GameState;
 import rts.PlayerAction;
 import rts.UnitAction;
 import rts.units.Unit;
+import rts.units.UnitType;
 import rts.units.UnitTypeTable;
 import ai.abstraction.pathfinding.FloodFillPathFinding;
 
 /**
  *
- * @author rubens
+ * @author rubens, modified by Julian.
  */
-public class PGSmRTS extends AIWithComputationBudget implements InterruptibleAI {
+public class DSPGSmRTS extends AIWithComputationBudget implements InterruptibleAI {
 
     int LOOKAHEAD = 200;
     int I = 1;  // number of iterations for improving a given player
     int R = 0;  // number of times to improve with respect to the response fo the other player
     EvaluationFunction evaluation = null;
-    List<AI> scripts = null;
+    //List<AI> scripts = null;
     UnitTypeTable utt;
     PathFinding pf;
     int _startTime;
@@ -49,17 +57,26 @@ public class PGSmRTS extends AIWithComputationBudget implements InterruptibleAI 
 
     GameState gs_to_start_from = null;
     int playerForThisComputation;
+    
+    DynamicScripting DS=null;
+    AuxMethods aux=new AuxMethods();
+    HashMap<UnitType, List<UnitScriptSingle>> scripts = null;
+    int sizePortfolio=2;
+    UnitScriptSingle playerScripts[];
+    UnitScriptSingle enemyScripts[];
+    List<Unit> playerUnits = new ArrayList<>();
+    List<Unit> enemyUnits = new ArrayList<>();
 
-    public PGSmRTS(UnitTypeTable utt) {
+    public DSPGSmRTS(UnitTypeTable utt, DynamicScripting aiAux) {
         this(100, -1, 200, 1, 1,
                 new SimpleSqrtEvaluationFunction3(),
                 //new SimpleSqrtEvaluationFunction2(),
                 //new LanchesterEvaluationFunction(),
                 utt,
-                new AStarPathFinding());
+                new AStarPathFinding(), aiAux);
     }
 
-    public PGSmRTS(int time, int max_playouts, int la, int a_I, int a_R, EvaluationFunction e, UnitTypeTable a_utt, PathFinding a_pf) {
+    public DSPGSmRTS(int time, int max_playouts, int la, int a_I, int a_R, EvaluationFunction e, UnitTypeTable a_utt, PathFinding a_pf, DynamicScripting aiAux) {
         super(time, max_playouts);
 
         LOOKAHEAD = la;
@@ -69,15 +86,68 @@ public class PGSmRTS extends AIWithComputationBudget implements InterruptibleAI 
         utt = a_utt;
         pf = a_pf;
         defaultScript = new POLightRush(a_utt);
-        scripts = new ArrayList<>();
+        //scripts = new ArrayList<>();
+        
+        DS=aiAux;
+        scripts = new HashMap<>();
         buildPortfolio();
     }
 
     protected void buildPortfolio() {
+    	
+        
+    	HashMap<String, ArrayList<Rule>> RulesSpaceUnit=DS.getRulesSpaceUnit();
+    	
+
+    	ArrayList<Rule> heavyS=RulesSpaceUnit.get("Heavy"); 
+    	ArrayList<Rule> lightS=RulesSpaceUnit.get("Light"); 
+    	ArrayList<Rule> rangedS=RulesSpaceUnit.get("Ranged"); 
+		
+    	
+    	aux.orderInReverseArraylist(heavyS);
+    	aux.orderInReverseArraylist(lightS);
+    	aux.orderInReverseArraylist(rangedS);
+//    	
+    	System.out.println("PrintingAfter ");
+
+		for(int j=0; j<heavyS.size();j++)
+		{
+			Rule rule=RulesSpaceUnit.get("Heavy").get(j);
+			System.out.println("Final Rule Heavy "+heavyS.get(j).getRule_id()+" "+heavyS.get(j).getRule_condition()+" "+heavyS.get(j).getRule_action()+" "+heavyS.get(j).getRule_paramether()+" "+heavyS.get(j).getWeight());
+		}
+		for(int j=0; j<lightS.size();j++)
+		{
+			Rule rule=RulesSpaceUnit.get("Light").get(j);
+			System.out.println("Final Rule Light"+lightS.get(j).getRule_id()+" "+lightS.get(j).getRule_condition()+" "+lightS.get(j).getRule_action()+" "+lightS.get(j).getRule_paramether()+" "+lightS.get(j).getWeight());
+		}
+
+	    scripts = new HashMap<>();
+	     {
+	        List<UnitScriptSingle> l = new ArrayList<>();
+	        l.add(new UnitScriptSingle(heavyS.get(0)));
+	        l.add(new UnitScriptSingle(heavyS.get(1)));
+	        l.add(new UnitScriptSingle(heavyS.get(2)));
+	        scripts.put(utt.getUnitType("Heavy"),l);
+	     }
+	     {
+	        List<UnitScriptSingle> l = new ArrayList<>();
+	        l.add(new UnitScriptSingle(lightS.get(0)));
+	        l.add(new UnitScriptSingle(lightS.get(1)));
+	        l.add(new UnitScriptSingle(lightS.get(2)));
+	        scripts.put(utt.getUnitType("Light"),l);
+	      }
+	      {
+	        List<UnitScriptSingle> l = new ArrayList<>();
+	        l.add(new UnitScriptSingle(rangedS.get(0)));
+	        l.add(new UnitScriptSingle(rangedS.get(1)));
+	        l.add(new UnitScriptSingle(rangedS.get(2)));
+	        scripts.put(utt.getUnitType("Ranged"),l);
+	      }
+			
         //this.scripts.add(new POWorkerRush(utt));
-        this.scripts.add(new POHeavyRush(utt));
-        this.scripts.add(new POLightRush(utt));
-        this.scripts.add(new PORangedRush(utt));
+//        this.scripts.put(utt.getUnitType("Heavy"), arg1)
+//        this.scripts.add(new POLightRush(utt));
+//        this.scripts.add(new PORangedRush(utt));
         //this.scripts.add(new EconomyMilitaryRush(utt));
         
         //this.scripts.add(new POHeavyRush(utt, new FloodFillPathFinding()));
@@ -94,6 +164,22 @@ public class PGSmRTS extends AIWithComputationBudget implements InterruptibleAI 
     @Override
     public PlayerAction getAction(int player, GameState gs) throws Exception {
         if (gs.canExecuteAnyAction(player)) {
+
+            playerUnits = new ArrayList<>();
+            enemyUnits = new ArrayList<>();
+            for(Unit u:gs.getUnits()) {
+                if (u.getPlayer()==player) playerUnits.add(u);
+                else if (u.getPlayer()>=0) enemyUnits.add(u);
+            }
+            int n1 = playerUnits.size();
+            int n2 = enemyUnits.size();
+            
+            UnitScript playerScripts[] = new UnitScript[n1];
+            UnitScript enemyScripts[] = new UnitScript[n2];
+        	
+            for(int i = 0;i<n1;i++) playerScripts[i] = defaultScript(playerUnits.get(i), gs);
+            for(int i = 0;i<n2;i++) enemyScripts[i] = defaultScript(enemyUnits.get(i), gs);
+            
             startNewComputation(player, gs);
             return getBestActionSoFar();
         } else {
@@ -106,8 +192,10 @@ public class PGSmRTS extends AIWithComputationBudget implements InterruptibleAI 
     public PlayerAction getBestActionSoFar() throws Exception {
 
         //pego o melhor script do portfolio para ser a semente
-        AI seedPlayer = getSeedPlayer(playerForThisComputation);
-        AI seedEnemy = getSeedPlayer(1 - playerForThisComputation);
+        //AI seedPlayer = getSeedPlayer(playerForThisComputation);
+        //AI seedEnemy = getSeedPlayer(1 - playerForThisComputation);
+        AI seedPlayer = new UnitScriptsAI(playerScripts, playerUnits, scripts,DS);
+        AI seedEnemy = new POLightRush(utt);
 
         defaultScript = seedPlayer;
 
@@ -121,21 +209,21 @@ public class PGSmRTS extends AIWithComputationBudget implements InterruptibleAI 
         return getFinalAction(currentScriptData);
     }
 
-    protected AI getSeedPlayer(int player) throws Exception {
-        AI seed = null;
-        double bestEval = -9999;
-        AI enemyAI = new POLightRush(utt);
-        //vou iterar para todos os scripts do portfolio
-        for (AI script : scripts) {
-            double tEval = eval(player, gs_to_start_from, script, enemyAI);
-            if (tEval > bestEval) {
-                bestEval = tEval;
-                seed = script;
-            }
-        }
-
-        return seed;
-    }
+//    protected AI getSeedPlayer(int player) throws Exception {
+//    AI seed = null;
+//    double bestEval = -9999;
+//    AI enemyAI = new POLightRush(utt);
+//    //vou iterar para todos os scripts do portfolio
+//    for (AI script : scripts) {
+//        double tEval = eval(player, gs_to_start_from, script, enemyAI);
+//        if (tEval > bestEval) {
+//            bestEval = tEval;
+//            seed = script;
+//        }
+//    }
+//
+//    return seed;
+//    }
 
     /*
     * Executa um playout de tamanho igual ao @LOOKAHEAD e retorna o valor
@@ -198,7 +286,7 @@ public class PGSmRTS extends AIWithComputationBudget implements InterruptibleAI 
 
     @Override
     public AI clone() {
-        return new PGSmRTS(TIME_BUDGET, ITERATIONS_BUDGET, LOOKAHEAD, I, R, evaluation, utt, pf);
+        return new DSPGSmRTS(TIME_BUDGET, ITERATIONS_BUDGET, LOOKAHEAD, I, R, evaluation, utt, pf,DS);
     }
 
     @Override
@@ -293,13 +381,17 @@ public class PGSmRTS extends AIWithComputationBudget implements InterruptibleAI 
         //controle pelo número de iterações
         for (int i = 0; i < I; i++) {
             //fazer o improve de cada unidade
-            for (Unit unit : unitsPlayer) {
+        	for(int j = 0;j<unitsPlayer.size();j++) {
+        		Unit unit = unitsPlayer.get(j);
                 //inserir controle de tempo
                 if (System.currentTimeMillis() >= (start_time + (TIME_BUDGET - 10))) {
                     return;
                 }
                 //iterar sobre cada script do portfolio
-                for (AI ai : scripts) {
+                for (int k=0; k<sizePortfolio;k++) {
+                	UnitScriptSingle candidate = scripts.get(unit.getType()).get(k);
+                	playerScripts[j]=candidate;
+                	AI ai = new UnitScriptsAI(playerScripts, playerUnits, scripts,DS);
                     currentScriptData.setUnitScript(unit, ai);
                     double scoreTemp = eval(player, gs_to_start_from, currentScriptData, seedEnemy);
 
@@ -341,6 +433,11 @@ public class PGSmRTS extends AIWithComputationBudget implements InterruptibleAI 
         }
 
         return pAction;
+    }
+    public UnitScript defaultScript(Unit u, GameState gs) {
+        // the first script added per type is considered the default:
+        List<UnitScriptSingle> l = scripts.get(u.getType());
+        return l.get(0).instantiate(u, gs,DS);
     }
 
 }
