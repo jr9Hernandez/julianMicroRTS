@@ -5,6 +5,7 @@
  */
 package DSPGS_Churchill;
 
+import ai.abstraction.pathfinding.PathFinding;
 import ai.core.AI;
 import ai.core.ParameterSpecification;
 import dynamicscripting.DynamicScripting;
@@ -32,11 +33,12 @@ public class UnitScriptsAI extends AI {
     HashMap<Unit,UnitScriptSingle> scripts = new HashMap<>();
     HashMap<UnitType, List<UnitScriptSingle>> allScripts = null;
     DynamicScripting DS=null;
-    
+    PathFinding pf;
     
     public UnitScriptsAI(UnitScriptSingle a_scripts[], List<Unit> a_units,
                          HashMap<UnitType, List<UnitScriptSingle>> a_allScripts,
-                         DynamicScripting a_DS) {
+                         DynamicScripting a_DS,PathFinding a_pf) {
+    	
         scriptsInput = a_scripts;
         unitsInput = a_units;
         for(int i = 0;i<a_scripts.length;i++) {
@@ -44,6 +46,7 @@ public class UnitScriptsAI extends AI {
         }
         allScripts = a_allScripts;
         DS=a_DS;
+        pf=a_pf;
     }
     
     
@@ -61,7 +64,6 @@ public class UnitScriptsAI extends AI {
     public PlayerAction getAction(int player, GameState gs) throws Exception {
 //        System.out.println("    UnitScriptsAI.getAction " + player + ", " + gs.getTime());
         PlayerAction pa = new PlayerAction();
-        System.out.println("into");
         for(Unit u:gs.getUnits()) {
             if (u.getPlayer()==player && gs.getUnitAction(u)==null) {
                 UnitScriptSingle su = scripts.get(u);
@@ -92,7 +94,7 @@ public class UnitScriptsAI extends AI {
     
     @Override
     public AI clone() {
-        return new UnitScriptsAI(scriptsInput, unitsInput, allScripts,DS);
+        return new UnitScriptsAI(scriptsInput, unitsInput, allScripts,DS,pf);
     }
     
     

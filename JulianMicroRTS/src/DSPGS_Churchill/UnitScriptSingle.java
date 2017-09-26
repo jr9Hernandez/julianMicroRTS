@@ -9,12 +9,15 @@ import java.util.ArrayList;
 
 import ai.abstraction.AbstractAction; 
 import ai.abstraction.Attack;
+import ai.abstraction.Move;
 import ai.abstraction.pathfinding.PathFinding;
 import dynamicscripting.ConditionsScripts;
 import dynamicscripting.DynamicScripting;
 import dynamicscripting.ParametersScripts;
 import dynamicscripting.Rule;
 import dynamicscripting.UnitScript;
+import dynamicscripting.UnitScriptAttackTo;
+import dynamicscripting.UnitScriptMoveAwayTo;
 import rts.GameState;
 import rts.PlayerAction;
 import rts.UnitAction;
@@ -33,12 +36,12 @@ public class UnitScriptSingle  {
 	ConditionsScripts conditionsScripts;
 	ParametersScripts parametersScripts;
 	UnitScript s;
+	PathFinding pf;
 	
-    UnitScript attackTo;
-    UnitScript moveAwayTo;
     
-    public UnitScriptSingle(Rule a_rule) {
-        rule=rule;
+    public UnitScriptSingle(Rule a_rule, PathFinding a_pf) {
+        this.rule=a_rule;
+        this.pf=a_pf;
     }
     
     public UnitAction getAction(Unit u, GameState gs) {
@@ -60,12 +63,14 @@ public class UnitScriptSingle  {
 				u2, u)) {
 			
 			if (rule.getRule_action() == DS.getRulesSpace().getAction_attack()) {
-				s = attackTo.instantiate(u, gs, u2);
+				s=new UnitScriptAttackTo(pf);
+				s = s.instantiate(u, gs, u2);
 				unitsAssignedEnemys.add(u2);
 				
 			} else if (rule.getRule_action() == DS.getRulesSpace().getAction_moveawayof()) {
 				//System.out.println("action move Away " + rulesSelected.get(j).getRule_paramether());
-				s = moveAwayTo.instantiate(u, gs, u2);
+				s=new UnitScriptMoveAwayTo(pf);
+				s = s.instantiate(u, gs, u2);
 				
 			}	
 

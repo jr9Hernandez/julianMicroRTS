@@ -45,7 +45,6 @@ public class DSPGSmRTS extends AIWithComputationBudget implements InterruptibleA
     int I = 1;  // number of iterations for improving a given player
     int R = 0;  // number of times to improve with respect to the response fo the other player
     EvaluationFunction evaluation = null;
-    //List<AI> scripts = null;
     UnitTypeTable utt;
     PathFinding pf;
     int _startTime;
@@ -86,7 +85,6 @@ public class DSPGSmRTS extends AIWithComputationBudget implements InterruptibleA
         utt = a_utt;
         pf = a_pf;
         defaultScript = new POLightRush(a_utt);
-        //scripts = new ArrayList<>();
         
         DS=aiAux;
         scripts = new HashMap<>();
@@ -124,23 +122,23 @@ public class DSPGSmRTS extends AIWithComputationBudget implements InterruptibleA
 	    scripts = new HashMap<>();
 	     {
 	        List<UnitScriptSingle> l = new ArrayList<>();
-	        l.add(new UnitScriptSingle(heavyS.get(0)));
-	        l.add(new UnitScriptSingle(heavyS.get(1)));
-	        l.add(new UnitScriptSingle(heavyS.get(2)));
+	        l.add(new UnitScriptSingle(heavyS.get(0),pf));
+	        l.add(new UnitScriptSingle(heavyS.get(1),pf));
+	        l.add(new UnitScriptSingle(heavyS.get(2),pf));
 	        scripts.put(utt.getUnitType("Heavy"),l);
 	     }
 	     {
 	        List<UnitScriptSingle> l = new ArrayList<>();
-	        l.add(new UnitScriptSingle(lightS.get(0)));
-	        l.add(new UnitScriptSingle(lightS.get(1)));
-	        l.add(new UnitScriptSingle(lightS.get(2)));
+	        l.add(new UnitScriptSingle(lightS.get(0),pf));
+	        l.add(new UnitScriptSingle(lightS.get(1),pf));
+	        l.add(new UnitScriptSingle(lightS.get(2),pf));
 	        scripts.put(utt.getUnitType("Light"),l);
 	      }
 	      {
 	        List<UnitScriptSingle> l = new ArrayList<>();
-	        l.add(new UnitScriptSingle(rangedS.get(0)));
-	        l.add(new UnitScriptSingle(rangedS.get(1)));
-	        l.add(new UnitScriptSingle(rangedS.get(2)));
+	        l.add(new UnitScriptSingle(rangedS.get(0),pf));
+	        l.add(new UnitScriptSingle(rangedS.get(1),pf));
+	        l.add(new UnitScriptSingle(rangedS.get(2),pf));
 	        scripts.put(utt.getUnitType("Ranged"),l);
 	      }
 			
@@ -165,20 +163,20 @@ public class DSPGSmRTS extends AIWithComputationBudget implements InterruptibleA
     public PlayerAction getAction(int player, GameState gs) throws Exception {
         if (gs.canExecuteAnyAction(player)) {
 
-            playerUnits = new ArrayList<>();
-            enemyUnits = new ArrayList<>();
-            for(Unit u:gs.getUnits()) {
-                if (u.getPlayer()==player) playerUnits.add(u);
-                else if (u.getPlayer()>=0) enemyUnits.add(u);
-            }
+        	gs_to_start_from=gs;
+        	
+            playerUnits = getUnitsPlayer(playerForThisComputation);
+            enemyUnits = getUnitsPlayer(1-playerForThisComputation);
+
             int n1 = playerUnits.size();
             int n2 = enemyUnits.size();
             
-            UnitScript playerScripts[] = new UnitScript[n1];
-            UnitScript enemyScripts[] = new UnitScript[n2];
+            playerScripts = new UnitScriptSingle[n1];
+            enemyScripts = new UnitScriptSingle[n2];
         	
             for(int i = 0;i<n1;i++) playerScripts[i] = defaultScript(playerUnits.get(i), gs);
             for(int i = 0;i<n2;i++) enemyScripts[i] = defaultScript(enemyUnits.get(i), gs);
+            
             
             startNewComputation(player, gs);
             return getBestActionSoFar();
@@ -194,8 +192,8 @@ public class DSPGSmRTS extends AIWithComputationBudget implements InterruptibleA
         //pego o melhor script do portfolio para ser a semente
         //AI seedPlayer = getSeedPlayer(playerForThisComputation);
         //AI seedEnemy = getSeedPlayer(1 - playerForThisComputation);
-        AI seedPlayer = new UnitScriptsAI(playerScripts, playerUnits, scripts,DS);
-        AI seedEnemy = new POLightRush(utt);
+        AI seedPlayer = new UnitScriptsAI(playerScripts, playerUnits, scripts,DS,pf);
+        AI seedEnemy = new UnitScriptsAI(enemyScripts, enemyUnits, scripts,DS,pf);
 
         defaultScript = seedPlayer;
 
@@ -352,7 +350,6 @@ public class DSPGSmRTS extends AIWithComputationBudget implements InterruptibleA
     @Override
     public void startNewComputation(int player, GameState gs) throws Exception {
         playerForThisComputation = player;
-        gs_to_start_from = gs;
         nplayouts = 0;
         _startTime = gs.getTime();
         start_time = System.currentTimeMillis();
@@ -391,7 +388,7 @@ public class DSPGSmRTS extends AIWithComputationBudget implements InterruptibleA
                 for (int k=0; k<sizePortfolio;k++) {
                 	UnitScriptSingle candidate = scripts.get(unit.getType()).get(k);
                 	playerScripts[j]=candidate;
-                	AI ai = new UnitScriptsAI(playerScripts, playerUnits, scripts,DS);
+                	AI ai = new UnitScriptsAI(playerScripts, playerUnits, scripts,DS,pf);
                     currentScriptData.setUnitScript(unit, ai);
                     double scoreTemp = eval(player, gs_to_start_from, currentScriptData, seedEnemy);
 
@@ -420,8 +417,9 @@ public class DSPGSmRTS extends AIWithComputationBudget implements InterruptibleA
     private PlayerAction getFinalAction(UnitScriptData currentScriptData) throws Exception {
         PlayerAction pAction = new PlayerAction();
         HashMap<String, PlayerAction> actions = new HashMap<>();
-        for (AI script : scripts) {
-            actions.put(script.toString(), script.getAction(playerForThisComputation, gs_to_start_from));
+        for (Unit u : currentScriptData.getUnits()) {
+        	AI ai = currentScriptData.getAIUnit(u);
+            actions.put(ai.toString(), ai.getAction(playerForThisComputation, gs_to_start_from));
         }
         for (Unit u : currentScriptData.getUnits()) {
             AI ai = currentScriptData.getAIUnit(u);
@@ -434,10 +432,10 @@ public class DSPGSmRTS extends AIWithComputationBudget implements InterruptibleA
 
         return pAction;
     }
-    public UnitScript defaultScript(Unit u, GameState gs) {
+    public UnitScriptSingle defaultScript(Unit u, GameState gs) {
         // the first script added per type is considered the default:
         List<UnitScriptSingle> l = scripts.get(u.getType());
-        return l.get(0).instantiate(u, gs,DS);
+        return l.get(0);
     }
 
 }

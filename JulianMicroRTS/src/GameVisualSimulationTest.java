@@ -20,6 +20,7 @@ import java.io.OutputStreamWriter;
 import javax.swing.JFrame;
 
 import DSPGSAI.DSPGSAI;
+import DSPGS_Churchill.DSPGSmRTS;
 import PGS_Churchill.PGSmRTS;
 import dynamicscripting.DynamicScripting;
 import rts.GameState;
@@ -83,7 +84,8 @@ public class GameVisualSimulationTest {
         aiAux.getAction(1, gs);
         //AI ai2 = new PGSAI(utt);
         //AI ai2 = new DSPGSAI(utt,aiAux);
-        AI ai2 = new PGSmRTS(utt);
+        //AI ai2 = new PGSmRTS(utt);
+        AI ai2 = new DSPGSmRTS(utt,aiAux);
         
         long nextTimeToUpdate = System.currentTimeMillis() + PERIOD;
         do{
