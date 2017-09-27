@@ -30,7 +30,7 @@ public class UnitScriptsAI extends AI {
 
 	UnitScriptSingle scriptsInput[];
 	List<Unit> unitsInput;
-	HashMap<Unit, UnitScriptSingle> scripts = new HashMap<>();
+	HashMap<Long, UnitScriptSingle> scripts = new HashMap<>();
 	HashMap<UnitType, List<UnitScriptSingle>> allScripts = null;
 	DynamicScripting DS = null;
 	PathFinding pf;
@@ -41,7 +41,7 @@ public class UnitScriptsAI extends AI {
 		scriptsInput = a_scripts;
 		unitsInput = a_units;
 		for (int i = 0; i < a_scripts.length; i++) {
-			scripts.put(a_units.get(i), a_scripts[i]);
+			scripts.put(a_units.get(i).getID(), a_scripts[i]);
 		}
 		allScripts = a_allScripts;
 		DS = a_DS;
@@ -64,7 +64,7 @@ public class UnitScriptsAI extends AI {
 		PlayerAction pa = new PlayerAction();
 		for (Unit u : gs.getUnits()) {
 			if (u.getPlayer() == player && gs.getUnitAction(u) == null) {
-				UnitScriptSingle su = scripts.get(u);
+				UnitScriptSingle su = scripts.get(u.getID());
 				UnitScript s = null;
 				if (su != null) {
 					s = su.instantiate(u, gs, DS);
