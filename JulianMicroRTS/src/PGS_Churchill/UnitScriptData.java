@@ -59,7 +59,7 @@ public class UnitScriptData {
         for (AI ai : _unitScriptMap.values()) {
             actions.put(ai, ai.getAction(player, gs2));
         }
-        //compÃµe o vetor de aÃ§Ãµes baseado nos scripts
+        //compõe o vetor de ações baseado nos scripts
         PlayerAction temp;
         for (Unit u : gs2.getUnits()) {
             if (u.getPlayer() == player) {
