@@ -35,7 +35,7 @@ public class UnitScriptSingle  {
     Rule rule=null;
 	ConditionsScripts conditionsScripts;
 	ParametersScripts parametersScripts;
-	UnitScript s;
+	UnitScript s=null;
 	PathFinding pf;
 	
     
@@ -44,13 +44,6 @@ public class UnitScriptSingle  {
         this.pf=a_pf;
     }
     
-    public UnitAction getAction(Unit u, GameState gs) {
-        if (action.completed(gs)) {
-            return null;
-        } else {
-            return action.execute(gs);
-        }
-    }
     
     public UnitScript instantiate(Unit u, GameState gs, DynamicScripting DS) {
 
