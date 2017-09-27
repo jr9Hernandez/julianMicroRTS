@@ -5,6 +5,7 @@
  */
 
 package DSPGS_Churchill;
+
 import ai.abstraction.partialobservability.POHeavyRush;
 import ai.abstraction.partialobservability.POLightRush;
 import ai.abstraction.partialobservability.PORangedRush;
@@ -41,401 +42,404 @@ import ai.abstraction.pathfinding.FloodFillPathFinding;
  */
 public class DSPGSmRTS extends AIWithComputationBudget implements InterruptibleAI {
 
-    int LOOKAHEAD = 200;
-    int I = 1;  // number of iterations for improving a given player
-    int R = 0;  // number of times to improve with respect to the response fo the other player
-    EvaluationFunction evaluation = null;
-    UnitTypeTable utt;
-    PathFinding pf;
-    int _startTime;
+	int LOOKAHEAD = 200;
+	int I = 1; // number of iterations for improving a given player
+	int R = 0; // number of times to improve with respect to the response fo the other player
+	EvaluationFunction evaluation = null;
+	UnitTypeTable utt;
+	PathFinding pf;
+	int _startTime;
 
-    AI defaultScript = null;
+	AI defaultScript = null;
 
-    long start_time = 0;
-    int nplayouts = 0;
+	long start_time = 0;
+	int nplayouts = 0;
 
-    GameState gs_to_start_from = null;
-    int playerForThisComputation;
-    
-    DynamicScripting DS=null;
-    AuxMethods aux=new AuxMethods();
-    HashMap<UnitType, List<UnitScriptSingle>> scripts = null;
-    int sizePortfolio=2;
-    UnitScriptSingle playerScripts[];
-    UnitScriptSingle enemyScripts[];
-    List<Unit> playerUnits = new ArrayList<>();
-    List<Unit> enemyUnits = new ArrayList<>();
+	GameState gs_to_start_from = null;
+	int playerForThisComputation;
 
-    public DSPGSmRTS(UnitTypeTable utt, DynamicScripting aiAux) {
-        this(100, -1, 200, 1, 1,
-                new SimpleSqrtEvaluationFunction3(),
-                //new SimpleSqrtEvaluationFunction2(),
-                //new LanchesterEvaluationFunction(),
-                utt,
-                new AStarPathFinding(), aiAux);
-    }
+	DynamicScripting DS = null;
+	AuxMethods aux = new AuxMethods();
+	HashMap<UnitType, List<UnitScriptSingle>> scripts = null;
+	int sizePortfolio = 2;
+	UnitScriptSingle playerScripts[];
+	UnitScriptSingle enemyScripts[];
+	List<Unit> playerUnits = new ArrayList<>();
+	List<Unit> enemyUnits = new ArrayList<>();
 
-    public DSPGSmRTS(int time, int max_playouts, int la, int a_I, int a_R, EvaluationFunction e, UnitTypeTable a_utt, PathFinding a_pf, DynamicScripting aiAux) {
-        super(time, max_playouts);
+	public DSPGSmRTS(UnitTypeTable utt, DynamicScripting aiAux) {
+		this(100, -1, 200, 1, 1, new SimpleSqrtEvaluationFunction3(),
+				// new SimpleSqrtEvaluationFunction2(),
+				// new LanchesterEvaluationFunction(),
+				utt, new AStarPathFinding(), aiAux);
+	}
 
-        LOOKAHEAD = la;
-        I = a_I;
-        R = a_R;
-        evaluation = e;
-        utt = a_utt;
-        pf = a_pf;
-        defaultScript = new POLightRush(a_utt);
-        
-        DS=aiAux;
-        scripts = new HashMap<>();
-        buildPortfolio();
-    }
+	public DSPGSmRTS(int time, int max_playouts, int la, int a_I, int a_R, EvaluationFunction e, UnitTypeTable a_utt,
+			PathFinding a_pf, DynamicScripting aiAux) {
+		super(time, max_playouts);
 
-    protected void buildPortfolio() {
-    	
-        
-    	HashMap<String, ArrayList<Rule>> RulesSpaceUnit=DS.getRulesSpaceUnit();
-    	
+		LOOKAHEAD = la;
+		I = a_I;
+		R = a_R;
+		evaluation = e;
+		utt = a_utt;
+		pf = a_pf;
+		defaultScript = new POLightRush(a_utt);
 
-    	ArrayList<Rule> heavyS=RulesSpaceUnit.get("Heavy"); 
-    	ArrayList<Rule> lightS=RulesSpaceUnit.get("Light"); 
-    	ArrayList<Rule> rangedS=RulesSpaceUnit.get("Ranged"); 
-		
-    	
-    	aux.orderInReverseArraylist(heavyS);
-    	aux.orderInReverseArraylist(lightS);
-    	aux.orderInReverseArraylist(rangedS);
-//    	
-    	System.out.println("PrintingAfter ");
+		DS = aiAux;
+		scripts = new HashMap<>();
+		buildPortfolio();
+	}
 
-		for(int j=0; j<heavyS.size();j++)
-		{
-			Rule rule=RulesSpaceUnit.get("Heavy").get(j);
-			System.out.println("Final Rule Heavy "+heavyS.get(j).getRule_id()+" "+heavyS.get(j).getRule_condition()+" "+heavyS.get(j).getRule_action()+" "+heavyS.get(j).getRule_paramether()+" "+heavyS.get(j).getWeight());
+	protected void buildPortfolio() {
+
+		HashMap<String, ArrayList<Rule>> RulesSpaceUnit = DS.getRulesSpaceUnit();
+
+		ArrayList<Rule> heavyS = RulesSpaceUnit.get("Heavy");
+		ArrayList<Rule> lightS = RulesSpaceUnit.get("Light");
+		ArrayList<Rule> rangedS = RulesSpaceUnit.get("Ranged");
+
+		aux.orderInReverseArraylist(heavyS);
+		aux.orderInReverseArraylist(lightS);
+		aux.orderInReverseArraylist(rangedS);
+		//
+		System.out.println("PrintingAfter ");
+
+		for (int j = 0; j < heavyS.size(); j++) {
+			Rule rule = RulesSpaceUnit.get("Heavy").get(j);
+			System.out.println("Final Rule Heavy " + heavyS.get(j).getRule_id() + " "
+					+ heavyS.get(j).getRule_condition() + " " + heavyS.get(j).getRule_action() + " "
+					+ heavyS.get(j).getRule_paramether() + " " + heavyS.get(j).getWeight());
 		}
-		for(int j=0; j<lightS.size();j++)
-		{
-			Rule rule=RulesSpaceUnit.get("Light").get(j);
-			System.out.println("Final Rule Light"+lightS.get(j).getRule_id()+" "+lightS.get(j).getRule_condition()+" "+lightS.get(j).getRule_action()+" "+lightS.get(j).getRule_paramether()+" "+lightS.get(j).getWeight());
+		for (int j = 0; j < lightS.size(); j++) {
+			Rule rule = RulesSpaceUnit.get("Light").get(j);
+			System.out.println("Final Rule Light" + lightS.get(j).getRule_id() + " " + lightS.get(j).getRule_condition()
+					+ " " + lightS.get(j).getRule_action() + " " + lightS.get(j).getRule_paramether() + " "
+					+ lightS.get(j).getWeight());
 		}
 
-	    scripts = new HashMap<>();
-	     {
-	        List<UnitScriptSingle> l = new ArrayList<>();
-	        l.add(new UnitScriptSingle(heavyS.get(0),pf));
-	        l.add(new UnitScriptSingle(heavyS.get(1),pf));
-	        l.add(new UnitScriptSingle(heavyS.get(2),pf));
-	        scripts.put(utt.getUnitType("Heavy"),l);
-	     }
-	     {
-	        List<UnitScriptSingle> l = new ArrayList<>();
-	        l.add(new UnitScriptSingle(lightS.get(0),pf));
-	        l.add(new UnitScriptSingle(lightS.get(1),pf));
-	        l.add(new UnitScriptSingle(lightS.get(2),pf));
-	        scripts.put(utt.getUnitType("Light"),l);
-	      }
-	      {
-	        List<UnitScriptSingle> l = new ArrayList<>();
-	        l.add(new UnitScriptSingle(rangedS.get(0),pf));
-	        l.add(new UnitScriptSingle(rangedS.get(1),pf));
-	        l.add(new UnitScriptSingle(rangedS.get(2),pf));
-	        scripts.put(utt.getUnitType("Ranged"),l);
-	      }
-			
-        //this.scripts.add(new POWorkerRush(utt));
-//        this.scripts.put(utt.getUnitType("Heavy"), arg1)
-//        this.scripts.add(new POLightRush(utt));
-//        this.scripts.add(new PORangedRush(utt));
-        //this.scripts.add(new EconomyMilitaryRush(utt));
-        
-        //this.scripts.add(new POHeavyRush(utt, new FloodFillPathFinding()));
-        //this.scripts.add(new POLightRush(utt, new FloodFillPathFinding()));
-        //this.scripts.add(new PORangedRush(utt, new FloodFillPathFinding()));
+		scripts = new HashMap<>();
+		{
+			List<UnitScriptSingle> l = new ArrayList<>();
+			l.add(new UnitScriptSingle(heavyS.get(0), pf));
+			l.add(new UnitScriptSingle(heavyS.get(1), pf));
+			l.add(new UnitScriptSingle(heavyS.get(2), pf));
+			scripts.put(utt.getUnitType("Heavy"), l);
+		}
+		{
+			List<UnitScriptSingle> l = new ArrayList<>();
+			l.add(new UnitScriptSingle(lightS.get(0), pf));
+			l.add(new UnitScriptSingle(lightS.get(1), pf));
+			l.add(new UnitScriptSingle(lightS.get(2), pf));
+			scripts.put(utt.getUnitType("Light"), l);
+		}
+		{
+			List<UnitScriptSingle> l = new ArrayList<>();
+			l.add(new UnitScriptSingle(rangedS.get(0), pf));
+			l.add(new UnitScriptSingle(rangedS.get(1), pf));
+			l.add(new UnitScriptSingle(rangedS.get(2), pf));
+			scripts.put(utt.getUnitType("Ranged"), l);
+		}
 
-    }
+		// this.scripts.add(new POWorkerRush(utt));
+		// this.scripts.put(utt.getUnitType("Heavy"), arg1)
+		// this.scripts.add(new POLightRush(utt));
+		// this.scripts.add(new PORangedRush(utt));
+		// this.scripts.add(new EconomyMilitaryRush(utt));
 
-    @Override
-    public void reset() {
+		// this.scripts.add(new POHeavyRush(utt, new FloodFillPathFinding()));
+		// this.scripts.add(new POLightRush(utt, new FloodFillPathFinding()));
+		// this.scripts.add(new PORangedRush(utt, new FloodFillPathFinding()));
 
-    }
+	}
 
-    @Override
-    public PlayerAction getAction(int player, GameState gs) throws Exception {
-        if (gs.canExecuteAnyAction(player)) {
+	@Override
+	public void reset() {
 
-        	gs_to_start_from=gs;
-        	
-            playerUnits = getUnitsPlayer(playerForThisComputation);
-            enemyUnits = getUnitsPlayer(1-playerForThisComputation);
+	}
 
-            int n1 = playerUnits.size();
-            int n2 = enemyUnits.size();
-            
-            playerScripts = new UnitScriptSingle[n1];
-            enemyScripts = new UnitScriptSingle[n2];
-        	
-            for(int i = 0;i<n1;i++) playerScripts[i] = defaultScript(playerUnits.get(i), gs);
-            for(int i = 0;i<n2;i++) enemyScripts[i] = defaultScript(enemyUnits.get(i), gs);
-            
-            
-            startNewComputation(player, gs);
-            return getBestActionSoFar();
-        } else {
-            return new PlayerAction();
-        }
+	@Override
+	public PlayerAction getAction(int player, GameState gs) throws Exception {
+		if (gs.canExecuteAnyAction(player)) {
 
-    }
+			gs_to_start_from = gs;
 
-    @Override
-    public PlayerAction getBestActionSoFar() throws Exception {
+			playerUnits = getUnitsPlayer(playerForThisComputation);
+			enemyUnits = getUnitsPlayer(1 - playerForThisComputation);
 
-        //pego o melhor script do portfolio para ser a semente
-        //AI seedPlayer = getSeedPlayer(playerForThisComputation);
-        //AI seedEnemy = getSeedPlayer(1 - playerForThisComputation);
-        AI seedPlayer = new UnitScriptsAI(playerScripts, playerUnits, scripts,DS,pf);
-        AI seedEnemy = new UnitScriptsAI(enemyScripts, enemyUnits, scripts,DS,pf);
+			int n1 = playerUnits.size();
+			int n2 = enemyUnits.size();
 
-        defaultScript = seedPlayer;
+			playerScripts = new UnitScriptSingle[n1];
+			enemyScripts = new UnitScriptSingle[n2];
 
-        UnitScriptData currentScriptData = new UnitScriptData(playerForThisComputation);
-        currentScriptData.setSeedUnits(seedPlayer);
-        setAllScripts(playerForThisComputation, currentScriptData, seedPlayer);
-        if( (System.currentTimeMillis()-start_time ) < TIME_BUDGET){
-            doPortfolioSearch(playerForThisComputation, currentScriptData, seedEnemy);
-        }
+			for (int i = 0; i < n1; i++)
+				playerScripts[i] = defaultScript(playerUnits.get(i), gs);
+			for (int i = 0; i < n2; i++)
+				enemyScripts[i] = defaultScript(enemyUnits.get(i), gs);
 
-        return getFinalAction(currentScriptData);
-    }
+			startNewComputation(player, gs);
+			return getBestActionSoFar();
+		} else {
+			return new PlayerAction();
+		}
 
-//    protected AI getSeedPlayer(int player) throws Exception {
-//    AI seed = null;
-//    double bestEval = -9999;
-//    AI enemyAI = new POLightRush(utt);
-//    //vou iterar para todos os scripts do portfolio
-//    for (AI script : scripts) {
-//        double tEval = eval(player, gs_to_start_from, script, enemyAI);
-//        if (tEval > bestEval) {
-//            bestEval = tEval;
-//            seed = script;
-//        }
-//    }
-//
-//    return seed;
-//    }
+	}
 
-    /*
-    * Executa um playout de tamanho igual ao @LOOKAHEAD e retorna o valor
-     */
-    public double eval(int player, GameState gs, AI aiPlayer, AI aiEnemy) throws Exception {
-        AI ai1 = aiPlayer.clone();
-        AI ai2 = aiEnemy.clone();
+	@Override
+	public PlayerAction getBestActionSoFar() throws Exception {
 
-        GameState gs2 = gs.clone();
-        ai1.reset();
-        ai2.reset();
-        int timeLimit = gs2.getTime() + LOOKAHEAD;
-        boolean gameover = false;
-        while (!gameover && gs2.getTime() < timeLimit) {
-            if (gs2.isComplete()) {
-                gameover = gs2.cycle();
-            } else {
-                gs2.issue(ai1.getAction(player, gs2));
-                gs2.issue(ai2.getAction(1 - player, gs2));
-            }
-        }
-        double e = evaluation.evaluate(player, 1 - player, gs2);
+		// pego o melhor script do portfolio para ser a semente
+		// AI seedPlayer = getSeedPlayer(playerForThisComputation);
+		// AI seedEnemy = getSeedPlayer(1 - playerForThisComputation);
+		AI seedPlayer = new UnitScriptsAI(playerScripts, playerUnits, scripts, DS, pf);
+		AI seedEnemy = new UnitScriptsAI(enemyScripts, enemyUnits, scripts, DS, pf);
 
-        return e;
-    }
+		defaultScript = seedPlayer;
 
-    /**
-     * Realiza um playout (Dave playout) para calcular o improve baseado nos
-     * scripts existentes.
-     *
-     * @param player
-     * @param gs
-     * @param uScriptPlayer
-     * @param aiEnemy
-     * @return a avaliação para ser utilizada como base.
-     * @throws Exception
-     */
-    public double eval(int player, GameState gs, UnitScriptData uScriptPlayer, AI aiEnemy) throws Exception {
-        //AI ai1 = defaultScript.clone();
-        AI ai2 = aiEnemy.clone();
+		UnitScriptData currentScriptData = new UnitScriptData(playerForThisComputation);
+		currentScriptData.setSeedUnits(seedPlayer);
+		setAllScripts(playerForThisComputation, currentScriptData, seedPlayer);
+		if ((System.currentTimeMillis() - start_time) < TIME_BUDGET) {
+			doPortfolioSearch(playerForThisComputation, currentScriptData, seedEnemy);
+		}
 
-        GameState gs2 = gs.clone();
-        //ai1.reset();
-        ai2.reset();
-        int timeLimit = gs2.getTime() + LOOKAHEAD;
-        boolean gameover = false;
-        while (!gameover && gs2.getTime() < timeLimit) {
-            if (gs2.isComplete()) {
-                gameover = gs2.cycle();
-            } else {
-                //gs2.issue(ai1.getAction(player, gs2));
-                gs2.issue(uScriptPlayer.getAction(player, gs2));
-                //
-                gs2.issue(ai2.getAction(1 - player, gs2));
-            }
-        }
+		return getFinalAction(currentScriptData);
+	}
 
-        return evaluation.evaluate(player, 1 - player, gs2);
-    }
+	// protected AI getSeedPlayer(int player) throws Exception {
+	// AI seed = null;
+	// double bestEval = -9999;
+	// AI enemyAI = new POLightRush(utt);
+	// //vou iterar para todos os scripts do portfolio
+	// for (AI script : scripts) {
+	// double tEval = eval(player, gs_to_start_from, script, enemyAI);
+	// if (tEval > bestEval) {
+	// bestEval = tEval;
+	// seed = script;
+	// }
+	// }
+	//
+	// return seed;
+	// }
 
-    @Override
-    public AI clone() {
-        return new DSPGSmRTS(TIME_BUDGET, ITERATIONS_BUDGET, LOOKAHEAD, I, R, evaluation, utt, pf,DS);
-    }
+	/*
+	 * Executa um playout de tamanho igual ao @LOOKAHEAD e retorna o valor
+	 */
+	public double eval(int player, GameState gs, AI aiPlayer, AI aiEnemy) throws Exception {
+		AI ai1 = aiPlayer.clone();
+		AI ai2 = aiEnemy.clone();
 
-    @Override
-    public List<ParameterSpecification> getParameters() {
-        List<ParameterSpecification> parameters = new ArrayList<>();
+		GameState gs2 = gs.clone();
+		ai1.reset();
+		ai2.reset();
+		int timeLimit = gs2.getTime() + LOOKAHEAD;
+		boolean gameover = false;
+		while (!gameover && gs2.getTime() < timeLimit) {
+			if (gs2.isComplete()) {
+				gameover = gs2.cycle();
+			} else {
+				gs2.issue(ai1.getAction(player, gs2));
+				gs2.issue(ai2.getAction(1 - player, gs2));
+			}
+		}
+		double e = evaluation.evaluate(player, 1 - player, gs2);
 
-        parameters.add(new ParameterSpecification("TimeBudget", int.class, 100));
-        parameters.add(new ParameterSpecification("IterationsBudget", int.class, -1));
-        parameters.add(new ParameterSpecification("PlayoutLookahead", int.class, 100));
-        parameters.add(new ParameterSpecification("I", int.class, 1));
-        parameters.add(new ParameterSpecification("R", int.class, 1));
-        parameters.add(new ParameterSpecification("EvaluationFunction", EvaluationFunction.class, new SimpleSqrtEvaluationFunction3()));
-        parameters.add(new ParameterSpecification("PathFinding", PathFinding.class, new AStarPathFinding()));
+		return e;
+	}
 
-        return parameters;
-    }
+	/**
+	 * Realiza um playout (Dave playout) para calcular o improve baseado nos scripts
+	 * existentes.
+	 *
+	 * @param player
+	 * @param gs
+	 * @param uScriptPlayer
+	 * @param aiEnemy
+	 * @return a avaliação para ser utilizada como base.
+	 * @throws Exception
+	 */
+	public double eval(int player, GameState gs, UnitScriptData uScriptPlayer, AI aiEnemy) throws Exception {
+		// AI ai1 = defaultScript.clone();
+		AI ai2 = aiEnemy.clone();
 
-    @Override
-    public String toString() {
-        return getClass().getSimpleName() + "(" + TIME_BUDGET + ", " + ITERATIONS_BUDGET + ", " + LOOKAHEAD + ", " + I + ", " + R + ", " + evaluation + ", " + pf + ")";
-    }
+		GameState gs2 = gs.clone();
+		// ai1.reset();
+		ai2.reset();
+		int timeLimit = gs2.getTime() + LOOKAHEAD;
+		boolean gameover = false;
+		while (!gameover && gs2.getTime() < timeLimit) {
+			if (gs2.isComplete()) {
+				gameover = gs2.cycle();
+			} else {
+				// gs2.issue(ai1.getAction(player, gs2));
+				gs2.issue(uScriptPlayer.getAction(player, gs2));
+				//
+				gs2.issue(ai2.getAction(1 - player, gs2));
+			}
+		}
 
-    public int getPlayoutLookahead() {
-        return LOOKAHEAD;
-    }
+		return evaluation.evaluate(player, 1 - player, gs2);
+	}
 
-    public void setPlayoutLookahead(int a_pola) {
-        LOOKAHEAD = a_pola;
-    }
+	@Override
+	public AI clone() {
+		return new DSPGSmRTS(TIME_BUDGET, ITERATIONS_BUDGET, LOOKAHEAD, I, R, evaluation, utt, pf, DS);
+	}
 
-    public int getI() {
-        return I;
-    }
+	@Override
+	public List<ParameterSpecification> getParameters() {
+		List<ParameterSpecification> parameters = new ArrayList<>();
 
-    public void setI(int a) {
-        I = a;
-    }
+		parameters.add(new ParameterSpecification("TimeBudget", int.class, 100));
+		parameters.add(new ParameterSpecification("IterationsBudget", int.class, -1));
+		parameters.add(new ParameterSpecification("PlayoutLookahead", int.class, 100));
+		parameters.add(new ParameterSpecification("I", int.class, 1));
+		parameters.add(new ParameterSpecification("R", int.class, 1));
+		parameters.add(new ParameterSpecification("EvaluationFunction", EvaluationFunction.class,
+				new SimpleSqrtEvaluationFunction3()));
+		parameters.add(new ParameterSpecification("PathFinding", PathFinding.class, new AStarPathFinding()));
 
-    public int getR() {
-        return R;
-    }
+		return parameters;
+	}
 
-    public void setR(int a) {
-        R = a;
-    }
+	@Override
+	public String toString() {
+		return getClass().getSimpleName() + "(" + TIME_BUDGET + ", " + ITERATIONS_BUDGET + ", " + LOOKAHEAD + ", " + I
+				+ ", " + R + ", " + evaluation + ", " + pf + ")";
+	}
 
-    public EvaluationFunction getEvaluationFunction() {
-        return evaluation;
-    }
+	public int getPlayoutLookahead() {
+		return LOOKAHEAD;
+	}
 
-    public void setEvaluationFunction(EvaluationFunction a_ef) {
-        evaluation = a_ef;
-    }
+	public void setPlayoutLookahead(int a_pola) {
+		LOOKAHEAD = a_pola;
+	}
 
-    public PathFinding getPathFinding() {
-        return pf;
-    }
+	public int getI() {
+		return I;
+	}
 
-    public void setPathFinding(PathFinding a_pf) {
-        pf = a_pf;
-    }
+	public void setI(int a) {
+		I = a;
+	}
 
-    @Override
-    public void startNewComputation(int player, GameState gs) throws Exception {
-        playerForThisComputation = player;
-        nplayouts = 0;
-        _startTime = gs.getTime();
-        start_time = System.currentTimeMillis();
-    }
+	public int getR() {
+		return R;
+	}
 
-    @Override
-    public void computeDuringOneGameFrame() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+	public void setR(int a) {
+		R = a;
+	}
 
-    private void setAllScripts(int playerForThisComputation, UnitScriptData currentScriptData, AI seedPlayer) {
-        currentScriptData.reset();
-        for (Unit u : gs_to_start_from.getUnits()) {
-            if (u.getPlayer() == playerForThisComputation) {
-                currentScriptData.setUnitScript(u, seedPlayer);
-            }
-        }
-    }
+	public EvaluationFunction getEvaluationFunction() {
+		return evaluation;
+	}
 
-    private void doPortfolioSearch(int player, UnitScriptData currentScriptData, AI seedEnemy) throws Exception {
-        int enemy = 1 - player;
+	public void setEvaluationFunction(EvaluationFunction a_ef) {
+		evaluation = a_ef;
+	}
 
-        UnitScriptData bestScriptData = currentScriptData.clone();
-        double bestScore = eval(player, gs_to_start_from, bestScriptData, seedEnemy);
-        ArrayList<Unit> unitsPlayer = getUnitsPlayer(player);
-        //controle pelo número de iterações
-        for (int i = 0; i < I; i++) {
-            //fazer o improve de cada unidade
-        	for(int j = 0;j<unitsPlayer.size();j++) {
-        		Unit unit = unitsPlayer.get(j);
-                //inserir controle de tempo
-                if (System.currentTimeMillis() >= (start_time + (TIME_BUDGET - 10))) {
-                    return;
-                }
-                //iterar sobre cada script do portfolio
-                for (int k=0; k<sizePortfolio;k++) {
-                	UnitScriptSingle candidate = scripts.get(unit.getType()).get(k);
-                	playerScripts[j]=candidate;
-                	AI ai = new UnitScriptsAI(playerScripts, playerUnits, scripts,DS,pf);
-                    currentScriptData.setUnitScript(unit, ai);
-                    double scoreTemp = eval(player, gs_to_start_from, currentScriptData, seedEnemy);
+	public PathFinding getPathFinding() {
+		return pf;
+	}
 
-                    if (scoreTemp > bestScore) {
-                        bestScriptData = currentScriptData.clone();
-                        bestScore = scoreTemp;
-                    }
-                }
-                //seto o melhor vetor para ser usado em futuras simulações
-                currentScriptData = bestScriptData.clone();
-            }
-        }
-    }
+	public void setPathFinding(PathFinding a_pf) {
+		pf = a_pf;
+	}
 
-    private ArrayList<Unit> getUnitsPlayer(int player) {
-        ArrayList<Unit> unitsPlayer = new ArrayList<>();
-        for (Unit u : gs_to_start_from.getUnits()) {
-            if (u.getPlayer() == player) {
-                unitsPlayer.add(u);
-            }
-        }
+	@Override
+	public void startNewComputation(int player, GameState gs) throws Exception {
+		playerForThisComputation = player;
+		nplayouts = 0;
+		_startTime = gs.getTime();
+		start_time = System.currentTimeMillis();
+	}
 
-        return unitsPlayer;
-    }
+	@Override
+	public void computeDuringOneGameFrame() throws Exception {
+		throw new UnsupportedOperationException("Not supported yet."); // To change body of generated methods, choose
+																		// Tools | Templates.
+	}
 
-    private PlayerAction getFinalAction(UnitScriptData currentScriptData) throws Exception {
-        PlayerAction pAction = new PlayerAction();
-        HashMap<String, PlayerAction> actions = new HashMap<>();
-        for (Unit u : currentScriptData.getUnits()) {
-        	AI ai = currentScriptData.getAIUnit(u);
-            actions.put(ai.toString(), ai.getAction(playerForThisComputation, gs_to_start_from));
-        }
-        for (Unit u : currentScriptData.getUnits()) {
-            AI ai = currentScriptData.getAIUnit(u);
+	private void setAllScripts(int playerForThisComputation, UnitScriptData currentScriptData, AI seedPlayer) {
+		currentScriptData.reset();
+		for (Unit u : gs_to_start_from.getUnits()) {
+			if (u.getPlayer() == playerForThisComputation) {
+				currentScriptData.setUnitScript(u, seedPlayer);
+			}
+		}
+	}
 
-            UnitAction unt = actions.get(ai.toString()).getAction(u);
-            if (unt != null) {
-                pAction.addUnitAction(u, unt);
-            }
-        }
+	private void doPortfolioSearch(int player, UnitScriptData currentScriptData, AI seedEnemy) throws Exception {
+		int enemy = 1 - player;
 
-        return pAction;
-    }
-    public UnitScriptSingle defaultScript(Unit u, GameState gs) {
-        // the first script added per type is considered the default:
-        List<UnitScriptSingle> l = scripts.get(u.getType());
-        return l.get(0);
-    }
+		UnitScriptData bestScriptData = currentScriptData.clone();
+		double bestScore = eval(player, gs_to_start_from, bestScriptData, seedEnemy);
+		ArrayList<Unit> unitsPlayer = getUnitsPlayer(player);
+		// controle pelo número de iterações
+		for (int i = 0; i < I; i++) {
+			// fazer o improve de cada unidade
+			for (int j = 0; j < unitsPlayer.size(); j++) {
+				Unit unit = unitsPlayer.get(j);
+				// inserir controle de tempo
+				if (System.currentTimeMillis() >= (start_time + (TIME_BUDGET - 10))) {
+					return;
+				}
+				// iterar sobre cada script do portfolio
+				for (int k = 0; k < sizePortfolio; k++) {
+					UnitScriptSingle candidate = scripts.get(unit.getType()).get(k);
+					playerScripts[j] = candidate;
+					AI ai = new UnitScriptsAI(playerScripts, playerUnits, scripts, DS, pf);
+					currentScriptData.setUnitScript(unit, ai);
+					double scoreTemp = eval(player, gs_to_start_from, currentScriptData, seedEnemy);
+
+					if (scoreTemp > bestScore) {
+						bestScriptData = currentScriptData.clone();
+						bestScore = scoreTemp;
+					}
+				}
+				// seto o melhor vetor para ser usado em futuras simulações
+				currentScriptData = bestScriptData.clone();
+			}
+		}
+	}
+
+	private ArrayList<Unit> getUnitsPlayer(int player) {
+		ArrayList<Unit> unitsPlayer = new ArrayList<>();
+		for (Unit u : gs_to_start_from.getUnits()) {
+			if (u.getPlayer() == player) {
+				unitsPlayer.add(u);
+			}
+		}
+
+		return unitsPlayer;
+	}
+
+	private PlayerAction getFinalAction(UnitScriptData currentScriptData) throws Exception {
+		PlayerAction pAction = new PlayerAction();
+		HashMap<String, PlayerAction> actions = new HashMap<>();
+		for (Unit u : currentScriptData.getUnits()) {
+			AI ai = currentScriptData.getAIUnit(u);
+			actions.put(ai.toString(), ai.getAction(playerForThisComputation, gs_to_start_from));
+		}
+		for (Unit u : currentScriptData.getUnits()) {
+			AI ai = currentScriptData.getAIUnit(u);
+
+			UnitAction unt = actions.get(ai.toString()).getAction(u);
+			if (unt != null) {
+				pAction.addUnitAction(u, unt);
+			}
+		}
+
+		return pAction;
+	}
+
+	public UnitScriptSingle defaultScript(Unit u, GameState gs) {
+		// the first script added per type is considered the default:
+		List<UnitScriptSingle> l = scripts.get(u.getType());
+		return l.get(0);
+	}
 
 }
