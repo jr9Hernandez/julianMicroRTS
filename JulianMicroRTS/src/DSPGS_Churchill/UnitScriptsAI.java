@@ -62,12 +62,13 @@ public class UnitScriptsAI extends AI {
 		// System.out.println(" UnitScriptsAI.getAction " + player + ", " +
 		// gs.getTime());
 		PlayerAction pa = new PlayerAction();
+		ArrayList<Unit> unitsAssignedEnemys=new ArrayList<Unit>(); 	
 		for (Unit u : gs.getUnits()) {
 			if (u.getPlayer() == player && gs.getUnitAction(u) == null) {
 				UnitScriptSingle su = scripts.get(u.getID());
 				UnitScript s = null;
 				if (su != null) {
-					s = su.instantiate(u, gs, DS);
+					s = su.instantiate(u, gs, DS,unitsAssignedEnemys);
 				}
 				UnitAction ua = null;
 				if (s == null) {

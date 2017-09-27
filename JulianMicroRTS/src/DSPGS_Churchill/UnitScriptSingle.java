@@ -45,11 +45,10 @@ public class UnitScriptSingle  {
     }
     
     
-    public UnitScript instantiate(Unit u, GameState gs, DynamicScripting DS) {
+    public UnitScript instantiate(Unit u, GameState gs, DynamicScripting DS, ArrayList<Unit> unitsAssignedEnemys) {
 
     	parametersScripts = new ParametersScripts(DS.getRulesSpace());
-		conditionsScripts = new ConditionsScripts(DS.getRulesSpace(), parametersScripts, gs);
-        ArrayList<Unit> unitsAssignedEnemys=new ArrayList<Unit>(); 	
+		conditionsScripts = new ConditionsScripts(DS.getRulesSpace(), parametersScripts, gs);        
     	
 		Unit u2 = parametersScripts.validationParameter(u, gs,rule.getRule_paramether(),unitsAssignedEnemys);
 		if (conditionsScripts.validationCondition(rule.getRule_condition(),
