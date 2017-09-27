@@ -161,23 +161,6 @@ public class DSPGSmRTS extends AIWithComputationBudget implements InterruptibleA
 	@Override
 	public PlayerAction getAction(int player, GameState gs) throws Exception {
 		if (gs.canExecuteAnyAction(player)) {
-
-			gs_to_start_from = gs;
-
-			playerUnits = getUnitsPlayer(playerForThisComputation);
-			enemyUnits = getUnitsPlayer(1 - playerForThisComputation);
-
-			int n1 = playerUnits.size();
-			int n2 = enemyUnits.size();
-
-			playerScripts = new UnitScriptSingle[n1];
-			enemyScripts = new UnitScriptSingle[n2];
-
-			for (int i = 0; i < n1; i++)
-				playerScripts[i] = defaultScript(playerUnits.get(i), gs);
-			for (int i = 0; i < n2; i++)
-				enemyScripts[i] = defaultScript(enemyUnits.get(i), gs);
-
 			startNewComputation(player, gs);
 			return getBestActionSoFar();
 		} else {
@@ -351,10 +334,26 @@ public class DSPGSmRTS extends AIWithComputationBudget implements InterruptibleA
 
 	@Override
 	public void startNewComputation(int player, GameState gs) throws Exception {
-		playerForThisComputation = player;
-		nplayouts = 0;
-		_startTime = gs.getTime();
-		start_time = System.currentTimeMillis();
+		
+        playerForThisComputation = player;
+        gs_to_start_from = gs;
+        nplayouts = 0;
+        _startTime = gs.getTime();
+        start_time = System.currentTimeMillis();
+		
+		playerUnits = getUnitsPlayer(playerForThisComputation);
+		enemyUnits = getUnitsPlayer(1 - playerForThisComputation);
+
+		int n1 = playerUnits.size();
+		int n2 = enemyUnits.size();
+
+		playerScripts = new UnitScriptSingle[n1];
+		enemyScripts = new UnitScriptSingle[n2];
+
+		for (int i = 0; i < n1; i++)
+			playerScripts[i] = defaultScript(playerUnits.get(i), gs);
+		for (int i = 0; i < n2; i++)
+			enemyScripts[i] = defaultScript(enemyUnits.get(i), gs);
 	}
 
 	@Override
