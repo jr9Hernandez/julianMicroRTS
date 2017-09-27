@@ -58,7 +58,8 @@ public class UnitScriptSingle  {
 			if (rule.getRule_action() == DS.getRulesSpace().getAction_attack()) {
 				s=new UnitScriptAttackTo(pf);
 				s = s.instantiate(u, gs, u2);
-				unitsAssignedEnemys.add(u2);
+				if(s.getAction(u, gs)!=null)
+					unitsAssignedEnemys.add(u2);
 				
 			} else if (rule.getRule_action() == DS.getRulesSpace().getAction_moveawayof()) {
 				//System.out.println("action move Away " + rulesSelected.get(j).getRule_paramether());
