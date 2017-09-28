@@ -70,17 +70,16 @@ public class UnitScriptsAI extends AI {
 				if (su != null) {
 					s = su.instantiate(u, gs, DS,unitsAssignedEnemys);
 				}
-				UnitAction ua = null;
-				if (s == null) {
-					ua = new UnitAction(UnitAction.TYPE_NONE);
-				} else {
-					ua = s.getAction(u, gs);
-				}
-				if (ua != null) {
-					pa.addUnitAction(u, ua);
-				} else {
-					pa.addUnitAction(u, new UnitAction(UnitAction.TYPE_NONE));
-				}
+                if (s!=null) {
+                    UnitAction ua = s.getAction(u, gs);
+                    if (ua!=null) {
+                        pa.addUnitAction(u, ua);			                        
+                    } else {
+                        pa.addUnitAction(u, new UnitAction(UnitAction.TYPE_NONE));
+                    }
+                } else {
+                    pa.addUnitAction(u, new UnitAction(UnitAction.TYPE_NONE));                
+                }	
 			}
 		}
 		return pa;
