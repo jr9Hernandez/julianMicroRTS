@@ -46,7 +46,7 @@ public class GameVisualSimulationTest {
         if (enemy==1) {
         	ai1 = new RandomBiasedAI(utt);
         }else if (enemy==2) {
-        	ai1 = new WorkerRush(utt, new BFSPathFinding()); 
+        	ai1 = new WorkerRush(utt); 
         } else if (enemy==3) {
         	ai1=new LightRush(utt);
         } else if (enemy==4) {

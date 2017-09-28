@@ -389,7 +389,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 		if (enemyIA==1) {
         	ai1 = new RandomBiasedAI(m_utt);
         }else if (enemyIA==2) {
-        	ai1 = new WorkerRush(m_utt, new BFSPathFinding()); 
+        	ai1 = new WorkerRush(m_utt); 
         } else if (enemyIA==3) {
         	ai1=new LightRush(m_utt);
         } else if (enemyIA==4) {

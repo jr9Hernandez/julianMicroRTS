@@ -18,6 +18,7 @@ import ai.core.AIWithComputationBudget;
 import ai.core.InterruptibleAI;
 import ai.core.ParameterSpecification;
 import ai.evaluation.EvaluationFunction;
+import ai.evaluation.SimpleSqrtEvaluationFunction2;
 import ai.evaluation.SimpleSqrtEvaluationFunction3;
 import dynamicscripting.AuxMethods;
 import dynamicscripting.DynamicScripting;
@@ -70,7 +71,7 @@ public class DSPGSmRTS extends AIWithComputationBudget implements InterruptibleA
 
 	public DSPGSmRTS(UnitTypeTable utt, DynamicScripting aiAux) {
 		this(100, -1, 200, 1, 1, new SimpleSqrtEvaluationFunction3(),
-				// new SimpleSqrtEvaluationFunction2(),
+				 //new SimpleSqrtEvaluationFunction2(),
 				// new LanchesterEvaluationFunction(),
 				utt, new AStarPathFinding(), aiAux);
 	}
