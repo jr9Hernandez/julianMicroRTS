@@ -47,6 +47,7 @@ public class UnitScriptSingle  {
     
     public UnitScript instantiate(Unit u, GameState gs, DynamicScripting DS, ArrayList<Unit> unitsAssignedEnemys) {
 
+    	s=null;
     	parametersScripts = new ParametersScripts(DS.getRulesSpace());
 		conditionsScripts = new ConditionsScripts(DS.getRulesSpace(), parametersScripts, gs);        
     	
