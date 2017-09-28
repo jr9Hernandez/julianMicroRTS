@@ -183,7 +183,7 @@ public class DSPGSmRTS extends AIWithComputationBudget implements InterruptibleA
 		//AI seedEnemy = new UnitScriptsAI(enemyScripts, enemyUnits, scripts, DS, pf);
 		AI seedEnemy=defaultScript;
 
-		defaultScript = seedPlayer;
+		//defaultScript = seedPlayer;
 
 		UnitScriptData currentScriptData = new UnitScriptData(playerForThisComputation);
 		currentScriptData.setSeedUnits(seedPlayer);
