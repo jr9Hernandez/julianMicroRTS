@@ -6,6 +6,7 @@
 
 package DSPGS_Churchill;
 
+import ai.abstraction.WorkerRush;
 import ai.abstraction.partialobservability.POHeavyRush;
 import ai.abstraction.partialobservability.POLightRush;
 import ai.abstraction.partialobservability.PORangedRush;
@@ -61,7 +62,7 @@ public class DSPGSmRTS extends AIWithComputationBudget implements InterruptibleA
 	DynamicScripting DS = null;
 	AuxMethods aux = new AuxMethods();
 	HashMap<UnitType, List<UnitScriptSingle>> scripts = null;
-	int sizePortfolio = 2;
+	int sizePortfolio = 3;
 	HashMap<Long, UnitScriptSingle> playerScripts=null;
 	HashMap<Long, UnitScriptSingle> enemyScripts=null;
 	List<Unit> playerUnits = new ArrayList<>();
@@ -84,7 +85,7 @@ public class DSPGSmRTS extends AIWithComputationBudget implements InterruptibleA
 		evaluation = e;
 		utt = a_utt;
 		pf = a_pf;
-		defaultScript = new POLightRush(a_utt);
+		defaultScript = new WorkerRush(a_utt);
 
 		DS = aiAux;
 		scripts = new HashMap<>();
@@ -177,7 +178,8 @@ public class DSPGSmRTS extends AIWithComputationBudget implements InterruptibleA
 		// AI seedPlayer = getSeedPlayer(playerForThisComputation);
 		// AI seedEnemy = getSeedPlayer(1 - playerForThisComputation);
 		AI seedPlayer = new UnitScriptsAI(playerScripts, playerUnits, scripts, DS, pf);
-		AI seedEnemy = new UnitScriptsAI(enemyScripts, enemyUnits, scripts, DS, pf);
+		//AI seedEnemy = new UnitScriptsAI(enemyScripts, enemyUnits, scripts, DS, pf);
+		AI seedEnemy=defaultScript;
 
 		defaultScript = seedPlayer;
 
