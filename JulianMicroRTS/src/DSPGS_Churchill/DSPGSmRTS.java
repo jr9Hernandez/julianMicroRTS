@@ -62,8 +62,8 @@ public class DSPGSmRTS extends AIWithComputationBudget implements InterruptibleA
 	AuxMethods aux = new AuxMethods();
 	HashMap<UnitType, List<UnitScriptSingle>> scripts = null;
 	int sizePortfolio = 2;
-	UnitScriptSingle playerScripts[];
-	UnitScriptSingle enemyScripts[];
+	HashMap<Long, UnitScriptSingle> playerScripts=null;
+	HashMap<Long, UnitScriptSingle> enemyScripts=null;
 	List<Unit> playerUnits = new ArrayList<>();
 	List<Unit> enemyUnits = new ArrayList<>();
 
@@ -102,7 +102,8 @@ public class DSPGSmRTS extends AIWithComputationBudget implements InterruptibleA
 		aux.orderInReverseArraylist(heavyS);
 		aux.orderInReverseArraylist(lightS);
 		aux.orderInReverseArraylist(rangedS);
-		//
+		
+		//This code is just to validate how was the final rulespace for lights and heavy units
 		System.out.println("PrintingAfter ");
 
 		for (int j = 0; j < heavyS.size(); j++) {
@@ -347,13 +348,13 @@ public class DSPGSmRTS extends AIWithComputationBudget implements InterruptibleA
 		int n1 = playerUnits.size();
 		int n2 = enemyUnits.size();
 
-		playerScripts = new UnitScriptSingle[n1];
-		enemyScripts = new UnitScriptSingle[n2];
+		playerScripts = new HashMap<>();
+		enemyScripts = new HashMap<>();
 
 		for (int i = 0; i < n1; i++)
-			playerScripts[i] = defaultScript(playerUnits.get(i), gs);
+			playerScripts.put(playerUnits.get(i).getID(), defaultScript(playerUnits.get(i), gs));
 		for (int i = 0; i < n2; i++)
-			enemyScripts[i] = defaultScript(enemyUnits.get(i), gs);
+			enemyScripts.put(enemyUnits.get(i).getID(), defaultScript(enemyUnits.get(i), gs));
 	}
 
 	@Override
@@ -380,16 +381,15 @@ public class DSPGSmRTS extends AIWithComputationBudget implements InterruptibleA
 		// controle pelo número de iterações
 		for (int i = 0; i < I; i++) {
 			// fazer o improve de cada unidade
-			for (int j = 0; j < unitsPlayer.size(); j++) {
-				Unit unit = unitsPlayer.get(j);
+			for (Unit unit : unitsPlayer) {
 				// inserir controle de tempo
 				if (System.currentTimeMillis() >= (start_time + (TIME_BUDGET - 10))) {
 					return;
 				}
 				// iterar sobre cada script do portfolio
-				for (int k = 0; k < sizePortfolio; k++) {
-					UnitScriptSingle candidate = scripts.get(unit.getType()).get(k);
-					playerScripts[j] = candidate;
+				for (int j = 0; j < sizePortfolio; j++) {
+					UnitScriptSingle candidate = scripts.get(unit.getType()).get(j);
+					playerScripts.put(unit.getID(), candidate);
 					AI ai = new UnitScriptsAI(playerScripts, playerUnits, scripts, DS, pf);
 					currentScriptData.setUnitScript(unit, ai);
 					double scoreTemp = eval(player, gs_to_start_from, currentScriptData, seedEnemy);

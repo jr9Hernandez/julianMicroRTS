@@ -28,20 +28,20 @@ public class UnitScriptsAI extends AI {
 
 	public static int DEBUG = 0;
 
-	UnitScriptSingle scriptsInput[];
+	HashMap<Long, UnitScriptSingle> scriptsInput;
 	List<Unit> unitsInput;
 	HashMap<Long, UnitScriptSingle> scripts = new HashMap<>();
 	HashMap<UnitType, List<UnitScriptSingle>> allScripts = null;
 	DynamicScripting DS = null;
 	PathFinding pf;
 
-	public UnitScriptsAI(UnitScriptSingle a_scripts[], List<Unit> a_units,
+	public UnitScriptsAI(HashMap<Long, UnitScriptSingle> a_scripts, List<Unit> a_units,
 			HashMap<UnitType, List<UnitScriptSingle>> a_allScripts, DynamicScripting a_DS, PathFinding a_pf) {
 
 		scriptsInput = a_scripts;
 		unitsInput = a_units;
-		for (int i = 0; i < a_scripts.length; i++) {
-			scripts.put(a_units.get(i).getID(), a_scripts[i]);
+		for (int i = 0; i < a_scripts.size(); i++) {
+			scripts.put(a_units.get(i).getID(), a_scripts.get(a_units.get(i).getID()));
 		}
 		allScripts = a_allScripts;
 		DS = a_DS;
