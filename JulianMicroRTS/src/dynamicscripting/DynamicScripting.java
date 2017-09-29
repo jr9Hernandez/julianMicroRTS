@@ -11,6 +11,9 @@ import ai.RandomBiasedAI;
 import ai.abstraction.Attack;
 import ai.abstraction.LightRush;
 import ai.abstraction.WorkerRush;
+import ai.abstraction.partialobservability.POHeavyRush;
+import ai.abstraction.partialobservability.POLightRush;
+import ai.abstraction.partialobservability.PORangedRush;
 import ai.abstraction.pathfinding.AStarPathFinding;
 import ai.abstraction.pathfinding.BFSPathFinding;
 import ai.abstraction.pathfinding.PathFinding;
@@ -396,7 +399,13 @@ public class DynamicScripting extends AIWithComputationBudget {
         	ai1= new PGSAI(m_utt);
         } else if (enemyIA==5) {        	
         	ai1=new ABCD(m_utt);
-        } 
+        } else if (enemyIA==6) {        	
+    		ai1=new POHeavyRush(m_utt);
+    	} else if (enemyIA==7) {        	
+    		ai1=new POLightRush(m_utt);
+    	} else if (enemyIA==8) {        	
+    		ai1=new PORangedRush(m_utt);
+    	}
 		
 		List<Unit> playerUnitsg2 = aux.units1(player,gs2);
 		List<Unit> playerUnitsEnemyg2 = aux.units1(player-1,gs2);

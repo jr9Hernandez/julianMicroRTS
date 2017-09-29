@@ -8,6 +8,9 @@ import ai.core.AI;
 import ai.*;
 import ai.abstraction.LightRush;
 import ai.abstraction.WorkerRush;
+import ai.abstraction.partialobservability.POHeavyRush;
+import ai.abstraction.partialobservability.POLightRush;
+import ai.abstraction.partialobservability.PORangedRush;
 import ai.abstraction.pathfinding.BFSPathFinding;
 import ai.mcts.naivemcts.NaiveMCTS;
 import ai.minimax.ABCD.ABCD;
@@ -40,7 +43,7 @@ public class GameVisualSimulationTest {
         PhysicalGameState pgs = null;
         AI ai1=null;
         //int enemy=Integer.parseInt(args[0]);
-        int enemy=3;
+        int enemy=6;
         //pgs = PhysicalGameState.load("maps/24x24/melee24x24Mixed16.xml", utt);        
         
         if (enemy==1) {
@@ -53,7 +56,13 @@ public class GameVisualSimulationTest {
         	ai1= new PGSAI(utt);
         } else if (enemy==5) {        	
         	ai1=new ABCD(utt);
-        } 
+        } else if (enemy==6) {        	
+    		ai1=new POHeavyRush(utt);
+    	} else if (enemy==7) {        	
+    		ai1=new POLightRush(utt);
+    	} else if (enemy==8) {        	
+    		ai1=new PORangedRush(utt);
+    	}
         
         for(int i=0;i<4;i++)
         {
