@@ -6,6 +6,7 @@
 
 package DSPGS_Churchill;
 
+import ai.abstraction.LightRush;
 import ai.abstraction.WorkerRush;
 import ai.abstraction.partialobservability.POHeavyRush;
 import ai.abstraction.partialobservability.POLightRush;
@@ -21,6 +22,7 @@ import ai.evaluation.EvaluationFunction;
 import ai.evaluation.LanchesterEvaluationFunction;
 import ai.evaluation.SimpleSqrtEvaluationFunction2;
 import ai.evaluation.SimpleSqrtEvaluationFunction3;
+import ai.puppet.SingleChoiceConfigurableScript;
 import dynamicscripting.AuxMethods;
 import dynamicscripting.DynamicScripting;
 import dynamicscripting.Rule;
@@ -87,8 +89,7 @@ public class DSPGSmRTS extends AIWithComputationBudget implements InterruptibleA
 		evaluation = e;
 		utt = a_utt;
 		pf = a_pf;
-		defaultScript = new WorkerRush(a_utt);
-
+		defaultScript = new LightRush(utt);
 		DS = aiAux;
 		scripts = new HashMap<>();
 		buildPortfolio();
@@ -185,14 +186,14 @@ public class DSPGSmRTS extends AIWithComputationBudget implements InterruptibleA
 
 		//defaultScript = seedPlayer;
 
-		UnitScriptData currentScriptData = new UnitScriptData(playerForThisComputation);
-		currentScriptData.setSeedUnits(seedPlayer);
-		setAllScripts(playerForThisComputation, currentScriptData, seedPlayer);
+//		UnitScriptData currentScriptData = new UnitScriptData(playerForThisComputation);
+//		currentScriptData.setSeedUnits(seedPlayer);
+//		setAllScripts(playerForThisComputation, currentScriptData, seedPlayer);
 		if ((System.currentTimeMillis() - start_time) < TIME_BUDGET) {
-			doPortfolioSearch(playerForThisComputation, currentScriptData, seedEnemy);
+			doPortfolioSearch(playerForThisComputation, seedPlayer, seedEnemy);
 		}
 
-		return getFinalAction(currentScriptData);
+		return getFinalAction(playerUnits);
 	}
 
 	// protected AI getSeedPlayer(int player) throws Exception {
@@ -376,11 +377,9 @@ public class DSPGSmRTS extends AIWithComputationBudget implements InterruptibleA
 		}
 	}
 
-	private void doPortfolioSearch(int player, UnitScriptData currentScriptData, AI seedEnemy) throws Exception {
+	private void doPortfolioSearch(int player, AI seedPlayer, AI seedEnemy) throws Exception {
 		int enemy = 1 - player;
-
-		UnitScriptData bestScriptData = currentScriptData.clone();
-		double bestScore = eval(player, gs_to_start_from, bestScriptData, seedEnemy);
+		double bestScore = eval(player, gs_to_start_from, seedPlayer, seedEnemy);
 		ArrayList<Unit> unitsPlayer = getUnitsPlayer(player);
 		// controle pelo número de iterações
 		for (int i = 0; i < I; i++) {
@@ -391,20 +390,22 @@ public class DSPGSmRTS extends AIWithComputationBudget implements InterruptibleA
 					return;
 				}
 				// iterar sobre cada script do portfolio
+				UnitScriptSingle bestScriptSingle=null;
 				for (int j = 0; j < sizePortfolio; j++) {
-					UnitScriptSingle candidate = scripts.get(unit.getType()).get(j);
+					UnitScriptSingle candidate = scripts.get(unit.getType()).get(j);					
 					playerScripts.put(unit.getID(), candidate);
 					AI ai = new UnitScriptsAI(playerScripts, playerUnits, scripts, DS, pf);
-					currentScriptData.setUnitScript(unit, ai);
-					double scoreTemp = eval(player, gs_to_start_from, currentScriptData, seedEnemy);
+					//currentScriptData.setUnitScript(unit, ai);
+					double scoreTemp = eval(player, gs_to_start_from, ai, seedEnemy);
 
-					if (scoreTemp > bestScore) {
-						bestScriptData = currentScriptData.clone();
+					if (scoreTemp > bestScore || bestScriptSingle==null) {
+						bestScriptSingle = playerScripts.get(unit.getID());
 						bestScore = scoreTemp;
 					}
 				}
 				// seto o melhor vetor para ser usado em futuras simulações
-				currentScriptData = bestScriptData.clone();
+				//currentScriptData = bestScriptData.clone();
+				playerScripts.put(unit.getID(), bestScriptSingle);
 			}
 		}
 	}
@@ -420,17 +421,17 @@ public class DSPGSmRTS extends AIWithComputationBudget implements InterruptibleA
 		return unitsPlayer;
 	}
 
-	private PlayerAction getFinalAction(UnitScriptData currentScriptData) throws Exception {
+	private PlayerAction getFinalAction(List<Unit> playerUnits) throws Exception {
+		
+		AI ai1 = new UnitScriptsAI(playerScripts, playerUnits, scripts, DS,pf);
 		PlayerAction pAction = new PlayerAction();
 		HashMap<String, PlayerAction> actions = new HashMap<>();
-		for (Unit u : currentScriptData.getUnits()) {
-			AI ai = currentScriptData.getAIUnit(u);
-			actions.put(ai.toString(), ai.getAction(playerForThisComputation, gs_to_start_from));
-		}
-		for (Unit u : currentScriptData.getUnits()) {
-			AI ai = currentScriptData.getAIUnit(u);
 
-			UnitAction unt = actions.get(ai.toString()).getAction(u);
+		actions.put(ai1.toString(), ai1.getAction(playerForThisComputation, gs_to_start_from));
+		
+		for (Unit u : playerUnits) {
+
+			UnitAction unt = actions.get(ai1.toString()).getAction(u);
 			if (unt != null) {
 				pAction.addUnitAction(u, unt);
 			}
