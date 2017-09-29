@@ -148,7 +148,7 @@ public class ScriptGeneration {
 	{
 		//System.out.println("Rule Before! "+rulesSelectedList.get(0).getWeight());
 		int wMax=650;
-		int wMin=10;
+		int wMin=0;
 		int active=0;
 		int totalWeights=0;
 		for(int i=0;i<totalRules;i++)

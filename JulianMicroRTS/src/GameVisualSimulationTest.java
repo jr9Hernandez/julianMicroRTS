@@ -43,7 +43,7 @@ public class GameVisualSimulationTest {
         PhysicalGameState pgs = null;
         AI ai1=null;
         //int enemy=Integer.parseInt(args[0]);
-        int enemy=2;
+        int enemy=7;
         //pgs = PhysicalGameState.load("maps/24x24/melee24x24Mixed16.xml", utt);        
         
         if (enemy==1) {
@@ -94,8 +94,9 @@ public class GameVisualSimulationTest {
         //AI ai2 = new PGSAI(utt);
         //AI ai2 = new DSPGSAI(utt,aiAux);
         //AI ai2 = new PGSmRTS(utt);
-        AI ai2 = new DSPGSmRTS(utt,aiAux);
+        //AI ai2 = new DSPGSmRTS(utt,aiAux);
         //AI ai2 = new PGSmRTS(utt);
+        AI ai2=aiAux;
         
         
         long nextTimeToUpdate = System.currentTimeMillis() + PERIOD;
