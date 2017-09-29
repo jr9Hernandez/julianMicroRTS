@@ -43,13 +43,13 @@ public class GameVisualSimulationTest {
         PhysicalGameState pgs = null;
         AI ai1=null;
         //int enemy=Integer.parseInt(args[0]);
-        int enemy=6;
+        int enemy=2;
         //pgs = PhysicalGameState.load("maps/24x24/melee24x24Mixed16.xml", utt);        
         
         if (enemy==1) {
         	ai1 = new RandomBiasedAI(utt);
         }else if (enemy==2) {
-        	ai1 = new WorkerRush(utt); 
+        	ai1 = new WorkerRush(utt,new BFSPathFinding()); 
         } else if (enemy==3) {
         	ai1=new LightRush(utt);
         } else if (enemy==4) {
