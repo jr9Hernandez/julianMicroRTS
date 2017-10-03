@@ -67,9 +67,8 @@ public class UnitScriptsAI extends AI {
 			if (u.getPlayer() == player && gs.getUnitAction(u) == null) {
 				UnitScriptSingle su = scripts.get(u.getID());
 				UnitScript s = null;
-				if (su != null) {
-					s = su.instantiate(u, gs, DS,unitsAssignedEnemys);
-				}
+				s = su.instantiate(u, gs, DS,unitsAssignedEnemys);
+				
                 if (s!=null) {
                     UnitAction ua = s.getAction(u, gs);
                     if (ua!=null) {
