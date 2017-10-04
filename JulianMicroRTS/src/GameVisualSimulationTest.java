@@ -12,6 +12,7 @@ import ai.abstraction.partialobservability.POHeavyRush;
 import ai.abstraction.partialobservability.POLightRush;
 import ai.abstraction.partialobservability.PORangedRush;
 import ai.abstraction.pathfinding.BFSPathFinding;
+import ai.mcts.believestatemcts.BS3_NaiveMCTS;
 import ai.mcts.naivemcts.NaiveMCTS;
 import ai.mcts.uct.UCT;
 import ai.minimax.ABCD.ABCD;
@@ -71,6 +72,8 @@ public class GameVisualSimulationTest {
     		ai1=new MonteCarlo(utt);
     	} else if (enemy==12) {        	
     		ai1=new PuppetSearchMCTS(utt);
+    	} else if (enemy==13) {        	
+    		ai1=new NaiveMCTS(utt);
     	}
         
         for(int i=0;i<4;i++)

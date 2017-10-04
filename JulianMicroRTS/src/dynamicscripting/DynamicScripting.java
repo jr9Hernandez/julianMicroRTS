@@ -24,6 +24,7 @@ import ai.core.ParameterSpecification;
 import ai.evaluation.EvaluationFunction;
 import ai.evaluation.SimpleSqrtEvaluationFunction3;
 import ai.mcts.mlps.MLPSMCTS;
+import ai.mcts.naivemcts.NaiveMCTS;
 import ai.mcts.uct.UCT;
 import ai.minimax.ABCD.ABCD;
 import ai.montecarlo.MonteCarlo;
@@ -414,6 +415,8 @@ public class DynamicScripting extends AIWithComputationBudget {
     		ai1=new MonteCarlo(m_utt);
     	} else if (enemyIA==12) {        	
     		ai1=new PuppetSearchMCTS(m_utt);
+    	} else if (enemyIA==13) {        	
+    		ai1=new NaiveMCTS(m_utt);
     	}
 		
 		List<Unit> playerUnitsg2 = aux.units1(player,gs2);
