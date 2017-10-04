@@ -83,10 +83,13 @@ public class GameVisualSimulationTest {
             pgs = PhysicalGameState.load("maps/16x16/melee16x16Mixed12.xml", utt);
         } else if (i==3) {
             pgs = PhysicalGameState.load("maps/24x24/melee24x24Mixed16.xml", utt);
+        } else if (i==4) {
+        	pgs = PhysicalGameState.load("maps/BWDistantResources32x32Mele.xml", utt);
         }
+                        
 
         GameState gs = new GameState(pgs, utt);
-        int MAXCYCLES = 1000;
+        int MAXCYCLES = 2000;
         int PERIOD = 20;
         boolean gameover = false;
         
