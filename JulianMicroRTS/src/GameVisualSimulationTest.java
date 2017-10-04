@@ -13,6 +13,7 @@ import ai.abstraction.partialobservability.POLightRush;
 import ai.abstraction.partialobservability.PORangedRush;
 import ai.abstraction.pathfinding.BFSPathFinding;
 import ai.mcts.naivemcts.NaiveMCTS;
+import ai.mcts.uct.UCT;
 import ai.minimax.ABCD.ABCD;
 import ai.montecarlo.MonteCarlo;
 import ai.portfolio.PortfolioAI;
@@ -62,6 +63,14 @@ public class GameVisualSimulationTest {
     		ai1=new POLightRush(utt);
     	} else if (enemy==8) {        	
     		ai1=new PORangedRush(utt);
+    	} else if (enemy==9) {        	
+    		ai1=new PGSmRTS(utt);
+    	} else if (enemy==10) {        	
+    		ai1=new UCT(utt);
+    	} else if (enemy==11) {        	
+    		ai1=new MonteCarlo(utt);
+    	} else if (enemy==12) {        	
+    		ai1=new PuppetSearchMCTS(utt);
     	}
         
         for(int i=0;i<4;i++)
@@ -94,9 +103,9 @@ public class GameVisualSimulationTest {
         //AI ai2 = new PGSAI(utt);
         //AI ai2 = new DSPGSAI(utt,aiAux);
         //AI ai2 = new PGSmRTS(utt);
-        //AI ai2 = new DSPGSmRTS(utt,aiAux);
+        AI ai2 = new DSPGSmRTS(utt,aiAux);
         //AI ai2 = new PGSmRTS(utt);
-        AI ai2=aiAux;
+        //AI ai2=aiAux;
         
         
         long nextTimeToUpdate = System.currentTimeMillis() + PERIOD;

@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import PGS_Churchill.PGSmRTS;
 import ai.RandomBiasedAI;
 import ai.abstraction.Attack;
 import ai.abstraction.LightRush;
@@ -405,6 +406,14 @@ public class DynamicScripting extends AIWithComputationBudget {
     		ai1=new POLightRush(m_utt);
     	} else if (enemyIA==8) {        	
     		ai1=new PORangedRush(m_utt);
+    	} else if (enemyIA==9) {        	
+    		ai1=new PGSmRTS(m_utt);
+    	} else if (enemyIA==10) {        	
+    		ai1=new UCT(m_utt);
+    	} else if (enemyIA==11) {        	
+    		ai1=new MonteCarlo(m_utt);
+    	} else if (enemyIA==12) {        	
+    		ai1=new PuppetSearchMCTS(m_utt);
     	}
 		
 		List<Unit> playerUnitsg2 = aux.units1(player,gs2);
