@@ -153,7 +153,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 				for(int j=0; j<totalRules;j++)
 				{
 					Rule rule=RulesSpaceUnit.get(typesUnits[i]).get(j);
-					System.out.println("Final Rule "+rule.getRule_id()+" "+rule.getRule_condition()+" "+rule.getRule_action()+" "+rule.getRule_paramether()+" "+rule.getWeight());
+					System.out.println("Final Rule "+typesUnits[i]+" "+rule.getRule_id()+" "+rule.getRule_condition()+" "+rule.getRule_action()+" "+rule.getRule_paramether()+" "+rule.getWeight());
 				}
 			}
 		}

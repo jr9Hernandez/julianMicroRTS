@@ -392,11 +392,12 @@ public class DSPGSmRTS extends AIWithComputationBudget implements InterruptibleA
 				// iterar sobre cada script do portfolio
 				UnitScriptSingle bestScriptSingle=null;
 				for (int j = 0; j < sizePortfolio; j++) {
-					UnitScriptSingle candidate = scripts.get(unit.getType()).get(j);					
+					UnitScriptSingle candidate = scripts.get(unit.getType()).get(j);	
 					playerScripts.put(unit.getID(), candidate);
 					AI ai = new UnitScriptsAI(playerScripts, playerUnits, scripts, DS, pf);
 					//currentScriptData.setUnitScript(unit, ai);
 					double scoreTemp = eval(player, gs_to_start_from, ai, seedEnemy);
+					System.out.println("Candidate "+j+" "+candidate.rule.getRule_condition()+" "+candidate.rule.getRule_action()+" "+candidate.rule.getRule_paramether()+" "+scoreTemp);
 
 					if (scoreTemp > bestScore || bestScriptSingle==null) {
 						bestScriptSingle = playerScripts.get(unit.getID());
@@ -405,6 +406,7 @@ public class DSPGSmRTS extends AIWithComputationBudget implements InterruptibleA
 				}
 				// seto o melhor vetor para ser usado em futuras simulações
 				//currentScriptData = bestScriptData.clone();
+				System.out.println("Candidate "+bestScriptSingle.rule.getRule_condition()+" "+bestScriptSingle.rule.getRule_action()+" "+bestScriptSingle.rule.getRule_paramether());
 				playerScripts.put(unit.getID(), bestScriptSingle);
 			}
 		}
@@ -423,14 +425,17 @@ public class DSPGSmRTS extends AIWithComputationBudget implements InterruptibleA
 
 	private PlayerAction getFinalAction(List<Unit> playerUnits) throws Exception {
 		
+		
 		AI ai1 = new UnitScriptsAI(playerScripts, playerUnits, scripts, DS,pf);
 		PlayerAction pAction = new PlayerAction();
 		HashMap<String, PlayerAction> actions = new HashMap<>();
-
+		
 		actions.put(ai1.toString(), ai1.getAction(playerForThisComputation, gs_to_start_from));
 		
 		for (Unit u : playerUnits) {
 
+			Rule r=playerScripts.get(u.getID()).rule;
+			System.out.print("Selected "+r.getRule_condition()+" "+r.getRule_action()+" "+r.getRule_paramether());
 			UnitAction unt = actions.get(ai1.toString()).getAction(u);
 			if (unt != null) {
 				pAction.addUnitAction(u, unt);
