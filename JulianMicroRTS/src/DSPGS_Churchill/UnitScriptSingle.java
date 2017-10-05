@@ -32,7 +32,7 @@ import rts.units.UnitTypeTable;
 public class UnitScriptSingle  {
     
     AbstractAction action = null;
-    public Rule rule=null;
+    Rule rule=null;
 	ConditionsScripts conditionsScripts;
 	ParametersScripts parametersScripts;
 	UnitScript s=null;
