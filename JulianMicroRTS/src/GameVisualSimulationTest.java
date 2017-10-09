@@ -76,7 +76,7 @@ public class GameVisualSimulationTest {
     		ai1=new NaiveMCTS(utt);
     	}
         
-        for(int i=0;i<4;i++)
+        for(int i=0;i<6;i++)
         {
         if (i==0) {
             pgs = PhysicalGameState.load("maps/8x8/melee8x8Mixed4.xml", utt);
@@ -87,6 +87,8 @@ public class GameVisualSimulationTest {
         } else if (i==3) {
             pgs = PhysicalGameState.load("maps/24x24/melee24x24Mixed16.xml", utt);
         } else if (i==4) {
+        	pgs = PhysicalGameState.load("maps/24x24/melee24x24Mixed24.xml", utt);
+        }else if (i==5) {
         	pgs = PhysicalGameState.load("maps/BWDistantResources32x32Mele.xml", utt);
         }
                         
