@@ -108,19 +108,19 @@ public class DSPGSmRTS extends AIWithComputationBudget implements InterruptibleA
 		aux.orderInReverseArraylist(rangedS);
 		
 		//This code is just to validate how was the final rulespace for lights and heavy units
-		System.out.println("PrintingAfter ");
+		//System.out.println("PrintingAfter ");
 
 		for (int j = 0; j < heavyS.size(); j++) {
 			Rule rule = RulesSpaceUnit.get("Heavy").get(j);
-			System.out.println("Final Rule Heavy " + heavyS.get(j).getRule_id() + " "
-					+ heavyS.get(j).getRule_condition() + " " + heavyS.get(j).getRule_action() + " "
-					+ heavyS.get(j).getRule_paramether() + " " + heavyS.get(j).getWeight());
+//			System.out.println("Final Rule Heavy " + heavyS.get(j).getRule_id() + " "
+//					+ heavyS.get(j).getRule_condition() + " " + heavyS.get(j).getRule_action() + " "
+//					+ heavyS.get(j).getRule_paramether() + " " + heavyS.get(j).getWeight());
 		}
 		for (int j = 0; j < lightS.size(); j++) {
 			Rule rule = RulesSpaceUnit.get("Light").get(j);
-			System.out.println("Final Rule Light" + lightS.get(j).getRule_id() + " " + lightS.get(j).getRule_condition()
-					+ " " + lightS.get(j).getRule_action() + " " + lightS.get(j).getRule_paramether() + " "
-					+ lightS.get(j).getWeight());
+//			System.out.println("Final Rule Light" + lightS.get(j).getRule_id() + " " + lightS.get(j).getRule_condition()
+//					+ " " + lightS.get(j).getRule_action() + " " + lightS.get(j).getRule_paramether() + " "
+//					+ lightS.get(j).getWeight());
 		}
 
 		scripts = new HashMap<>();
@@ -383,7 +383,7 @@ public class DSPGSmRTS extends AIWithComputationBudget implements InterruptibleA
 		ArrayList<Unit> unitsPlayer = getUnitsPlayer(player);
 		// controle pelo número de iterações
 		for (int i = 0; i < I; i++) {
-			System.out.println("Iteration number "+i);
+			//System.out.println("Iteration number "+i);
 			// fazer o improve de cada unidade
 			for (Unit unit : unitsPlayer) {
 				// inserir controle de tempo
@@ -398,7 +398,7 @@ public class DSPGSmRTS extends AIWithComputationBudget implements InterruptibleA
 					AI ai = new UnitScriptsAI(playerScripts, playerUnits, scripts, DS, pf);
 					//currentScriptData.setUnitScript(unit, ai);
 					double scoreTemp = eval(player, gs_to_start_from, ai, seedEnemy);
-					System.out.println("Candidate "+j+" "+candidate.rule.getRule_condition()+" "+candidate.rule.getRule_action()+" "+candidate.rule.getRule_paramether()+" "+scoreTemp);
+					//System.out.println("Candidate "+j+" "+candidate.rule.getRule_condition()+" "+candidate.rule.getRule_action()+" "+candidate.rule.getRule_paramether()+" "+scoreTemp);
 
 					if (scoreTemp > bestScore || bestScriptSingle==null) {
 						bestScriptSingle = playerScripts.get(unit.getID());
@@ -407,7 +407,7 @@ public class DSPGSmRTS extends AIWithComputationBudget implements InterruptibleA
 				}
 				// seto o melhor vetor para ser usado em futuras simulações
 				//currentScriptData = bestScriptData.clone();
-				System.out.println("Candidate "+bestScriptSingle.rule.getRule_condition()+" "+bestScriptSingle.rule.getRule_action()+" "+bestScriptSingle.rule.getRule_paramether());
+				//System.out.println("Candidate "+bestScriptSingle.rule.getRule_condition()+" "+bestScriptSingle.rule.getRule_action()+" "+bestScriptSingle.rule.getRule_paramether());
 				playerScripts.put(unit.getID(), bestScriptSingle);
 			}
 		}
@@ -436,7 +436,7 @@ public class DSPGSmRTS extends AIWithComputationBudget implements InterruptibleA
 		for (Unit u : playerUnits) {
 
 			Rule r=playerScripts.get(u.getID()).rule;
-			System.out.print("Selected "+r.getRule_condition()+" "+r.getRule_action()+" "+r.getRule_paramether());
+			//System.out.print("Selected "+r.getRule_condition()+" "+r.getRule_action()+" "+r.getRule_paramether());
 			UnitAction unt = actions.get(ai1.toString()).getAction(u);
 			if (unt != null) {
 				pAction.addUnitAction(u, unt);

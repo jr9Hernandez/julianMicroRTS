@@ -145,7 +145,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 			}
 			firstExecution=true;
 			isPlayout=false;
-			System.out.print(roundConvergenceWin+" "+roundConvergenceDraw+" , ");
+			//System.out.print(roundConvergenceWin+" "+roundConvergenceDraw+" , ");
 			
 			//here Im printing the current dataRules Space
 			for (int i = 0; i < numTypesUnits; i++) {
@@ -153,7 +153,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 				for(int j=0; j<totalRules;j++)
 				{
 					Rule rule=RulesSpaceUnit.get(typesUnits[i]).get(j);
-					System.out.println("Final Rule "+typesUnits[i]+" "+rule.getRule_id()+" "+rule.getRule_condition()+" "+rule.getRule_action()+" "+rule.getRule_paramether()+" "+rule.getWeight());
+					//System.out.println("Final Rule "+typesUnits[i]+" "+rule.getRule_id()+" "+rule.getRule_condition()+" "+rule.getRule_action()+" "+rule.getRule_paramether()+" "+rule.getWeight());
 				}
 			}
 		}
@@ -270,7 +270,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 			for (int i = 0; i < maxUnits.length; i++) {
 				for(int j=0;j<RulesSelectedUnit.get(i).size();j++)
 				{
-				System.out.println("Rule selected "+i+" "+RulesSelectedUnit.get(i).get(j).getRule_condition()+RulesSelectedUnit.get(i).get(j).getRule_action()+RulesSelectedUnit.get(i).get(j).getRule_paramether());
+				//System.out.println("Rule selected "+i+" "+RulesSelectedUnit.get(i).get(j).getRule_condition()+RulesSelectedUnit.get(i).get(j).getRule_action()+RulesSelectedUnit.get(i).get(j).getRule_paramether());
 				}
 				
 			}
@@ -296,14 +296,14 @@ public class DynamicScripting extends AIWithComputationBudget {
 				for(int j=0; j<totalRules;j++)
 				{
 					Rule rule=RulesSpaceUnit.get(typesUnits[i]).get(j);
-					System.out.println("Final Rule "+rule.getRule_id()+" "+rule.getRule_condition()+" "+rule.getRule_action()+" "+rule.getRule_paramether()+" "+rule.getWeight());
+					//System.out.println("Final Rule "+rule.getRule_id()+" "+rule.getRule_condition()+" "+rule.getRule_action()+" "+rule.getRule_paramether()+" "+rule.getWeight());
 				}
 			}
 			
 			for (int i = 0; i < maxUnits.length; i++) {
 				for(int j=0;j<RulesSelectedUnit.get(i).size();j++)
 				{
-				System.out.println("Rule selected "+i+" "+RulesSelectedUnit.get(i).get(j).getRule_condition()+RulesSelectedUnit.get(i).get(j).getRule_action()+RulesSelectedUnit.get(i).get(j).getRule_paramether());
+				//System.out.println("Rule selected "+i+" "+RulesSelectedUnit.get(i).get(j).getRule_condition()+RulesSelectedUnit.get(i).get(j).getRule_action()+RulesSelectedUnit.get(i).get(j).getRule_paramether());
 				}
 				
 			}
@@ -448,7 +448,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 		double globalEvaluation = evaluation.evaluate(player, 1 - player, gs2);
 		globalEvaluation=aux.NormalizeInRangue(globalEvaluation,2,0.5);
 		
-		System.out.println(" done: " + gs2.winner());
+		//System.out.println(" done: " + gs2.winner());
 		
 		if(gs2.winner()==player ) 
 		{
