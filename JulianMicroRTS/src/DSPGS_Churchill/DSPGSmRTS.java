@@ -73,9 +73,9 @@ public class DSPGSmRTS extends AIWithComputationBudget implements InterruptibleA
 	List<Unit> enemyUnits = new ArrayList<>();
 
 	public DSPGSmRTS(UnitTypeTable utt, DynamicScripting aiAux) {
-		this(100, -1, 400, 2, 1, //new SimpleSqrtEvaluationFunction3(),
+		this(100, -1, 500, 2, 1, new SimpleSqrtEvaluationFunction3(),
 				// new SimpleSqrtEvaluationFunction2(),
-				 new LanchesterEvaluationFunction(),
+				 //new LanchesterEvaluationFunction(),
 				utt, new AStarPathFinding(), aiAux);
 	}
 
