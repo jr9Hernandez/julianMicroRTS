@@ -41,11 +41,14 @@ import util.XMLWriter;
 public class GameVisualSimulationTest {
     public static void main(String args[]) throws Exception {
     	
+    	for(int it=0;it<10;it++)
+    	{
+    	
         UnitTypeTable utt = new UnitTypeTable();
         PhysicalGameState pgs = null;
         AI ai1=null;
-        //int enemy=Integer.parseInt(args[0]);
-        int enemy=7;
+        int enemy=Integer.parseInt(args[0]);
+        //int enemy=7;
         //pgs = PhysicalGameState.load("maps/24x24/melee24x24Mixed16.xml", utt);        
         
         if (enemy==1) {
@@ -102,7 +105,7 @@ public class GameVisualSimulationTest {
         //AI ai2 = new DynamicScripting(utt,enemy);        
         DynamicScripting aiAux = new DynamicScripting(utt,enemy);        
 
-        JFrame w = PhysicalGameStatePanel.newVisualizer(gs,640,640,false,PhysicalGameStatePanel.COLORSCHEME_BLACK);
+//        JFrame w = PhysicalGameStatePanel.newVisualizer(gs,640,640,false,PhysicalGameStatePanel.COLORSCHEME_BLACK);
 //        JFrame w = PhysicalGameStatePanel.newVisualizer(gs,640,640,false,PhysicalGameStatePanel.COLORSCHEME_WHITE);
 
         //The next line is just for my Experiments!!!
@@ -126,7 +129,7 @@ public class GameVisualSimulationTest {
 
                 // simulate:
                 gameover = gs.cycle();
-                w.repaint();
+                //w.repaint();
                 nextTimeToUpdate+=PERIOD;
             } else {
                 try {
@@ -137,8 +140,11 @@ public class GameVisualSimulationTest {
             }
         }while(!gameover && gs.getTime()<MAXCYCLES);
         
+        System.out.print(gs.winner()+" ");
         //System.out.println("Game Over");
         }
+        System.out.println("");
     }    
-        
+    
+    }
 }
