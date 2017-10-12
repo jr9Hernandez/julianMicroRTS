@@ -41,8 +41,6 @@ import util.XMLWriter;
 public class GameVisualSimulationTest {
     public static void main(String args[]) throws Exception {
     	
-    	for(int it=0;it<10;it++)
-    	{
     	
         UnitTypeTable utt = new UnitTypeTable();
         PhysicalGameState pgs = null;
@@ -144,7 +142,7 @@ public class GameVisualSimulationTest {
         //System.out.println("Game Over");
         }
         System.out.println("");
-    }    
+       
     
     }
 }
