@@ -114,9 +114,9 @@ public class DSPGSAI extends AIWithComputationBudget {
 //			}
 		
     	
-    	aux.orderInReverseArraylist(heavyS);
-    	aux.orderInReverseArraylist(lightS);
-    	aux.orderInReverseArraylist(rangedS);
+    	aux.orderInReverseArraylistRule(heavyS);
+    	aux.orderInReverseArraylistRule(lightS);
+    	aux.orderInReverseArraylistRule(rangedS);
 //    	
     	System.out.println("PrintingAfter ");
 

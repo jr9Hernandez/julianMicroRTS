@@ -103,9 +103,9 @@ public class DSPGSmRTS extends AIWithComputationBudget implements InterruptibleA
 		ArrayList<Rule> lightS = RulesSpaceUnit.get("Light");
 		ArrayList<Rule> rangedS = RulesSpaceUnit.get("Ranged");
 
-		aux.orderInReverseArraylist(heavyS);
-		aux.orderInReverseArraylist(lightS);
-		aux.orderInReverseArraylist(rangedS);
+		aux.orderInReverseArraylistRule(heavyS);
+		aux.orderInReverseArraylistRule(lightS);
+		aux.orderInReverseArraylistRule(rangedS);
 		
 		//This code is just to validate how was the final rulespace for lights and heavy units
 		//System.out.println("PrintingAfter ");

@@ -70,13 +70,23 @@ public class AuxMethods {
 		return true;
 	}
 	
-	public void orderInReverseArraylist(ArrayList<Rule> l)
+	public void orderInReverseArraylistRule(ArrayList<Rule> l)
 	{
     	Collections.sort(l, new Comparator<Rule>() {
     	    @Override
     	    public int compare(Rule o1, Rule o2) {
     	    	Integer w=new Integer(o2.getWeight()); 
     	        return w.compareTo(o1.getWeight());
+    	    }
+    	});
+	}
+	public void orderInReverseArraylistCompoundScript(ArrayList<CompoundScript> l)
+	{
+    	Collections.sort(l, new Comparator<CompoundScript>() {
+    	    @Override
+    	    public int compare(CompoundScript o1, CompoundScript o2) {
+    	    	Integer w=new Integer(o1.getGlobalValue()); 
+    	        return w.compareTo(o2.getGlobalValue());
     	    }
     	});
 	}

@@ -167,6 +167,10 @@ public class DynamicScripting extends AIWithComputationBudget {
 					//System.out.println("Final Rule "+typesUnits[i]+" "+rule.getRule_id()+" "+rule.getRule_condition()+" "+rule.getRule_action()+" "+rule.getRule_paramether()+" "+rule.getWeight());
 				}
 			}
+			for (int i = 0; i < numTypesUnits; i++) {
+				aux.orderInReverseArraylistCompoundScript(bestCompoundScript[i]);
+				System.out.println("bestCompoundScript"+i+" "+bestCompoundScript[i].size());
+			}
 		}
 		else
 		{
