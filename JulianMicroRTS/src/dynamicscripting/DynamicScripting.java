@@ -513,10 +513,14 @@ public class DynamicScripting extends AIWithComputationBudget {
 				{
 					if(typesUnits[j]==u.getType().name)
 					{
+						candidateCompoundScript=new CompoundScript(calculateAdjustment, RulesSelectedUnit.get(i));
 						if(bestCompoundScript[j].size()>0)
 						{
-							candidateCompoundScript=new CompoundScript(calculateAdjustment, RulesSelectedUnit.get(i));
 							aux.includeInBestScripts(calculateAdjustment, bestCompoundScript[j],candidateCompoundScript,bestScripts);
+						}
+						else
+						{
+							bestCompoundScript[j].add(candidateCompoundScript);
 						}
 					}
 				}

@@ -86,7 +86,7 @@ public class AuxMethods {
 		{
 			int max = bestCompoundScript.get(0).getGlobalValue();
 			CompoundScript bc=bestCompoundScript.get(0);
-			int index=-1;
+			int index=0;
 			for(int i = 0 ; i < bestCompoundScript.size(); i++)
 			{
 				if(bestCompoundScript.get(i).getGlobalValue() > max){
@@ -117,7 +117,7 @@ public class AuxMethods {
 				{
 					if(bestCompoundScript.get(i).getCompoundScript().get(j)!=candidate.getCompoundScript().get(j))
 					{
-						return false;
+						return true;
 					}
 				}
 			}
