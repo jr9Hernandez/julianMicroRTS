@@ -144,7 +144,7 @@ public class ScriptGeneration {
 	    return true;
 	}
 	
-	public void UpdateWeightsBeta(int unitId,ArrayList<Rule> rulesSelectedList, ArrayList<Rule> ruleSpaceList, double globalEvaluation, int wInit, double teamFactor, double bFactor, double cFactor, double aFactor)
+	public int UpdateWeightsBeta(int unitId,ArrayList<Rule> rulesSelectedList, ArrayList<Rule> ruleSpaceList, double globalEvaluation, int wInit, double teamFactor, double bFactor, double cFactor, double aFactor)
 	{
 		//System.out.println("Rule Before! "+rulesSelectedList.get(0).getWeight());
 		int wMax=650;
@@ -162,7 +162,7 @@ public class ScriptGeneration {
 		}
 		if(active<=0 || active>=totalRules)
 		{
-			return;
+			return -1;
 		}
 		int nonActive=totalRules-active;
 		int adjustment=calculateAdjustment(globalEvaluation,teamFactor,bFactor,cFactor,aFactor);
@@ -193,6 +193,7 @@ public class ScriptGeneration {
 		}
 		distributeRemainder(ruleSpaceList,remainder,wMax,wMin);
 		//System.out.println("Rule Right Now! "+rulesSelectedList.get(0).getWeight());
+		return adjustment;
 	}
 	
 	public void distributeRemainder(ArrayList<Rule> ruleSpaceList, int remainder,int maxWeight, int minWeight)

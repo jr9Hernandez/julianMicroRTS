@@ -80,5 +80,49 @@ public class AuxMethods {
     	    }
     	});
 	}
+	public void includeInBestScripts(int calculateAdjustment, ArrayList<CompoundScript> bestCompoundScript, CompoundScript candidate, int limitScripts)
+	{		
+		if(bestCompoundScript.size()>=limitScripts)
+		{
+			int max = bestCompoundScript.get(0).getGlobalValue();
+			CompoundScript bc=bestCompoundScript.get(0);
+			int index=-1;
+			for(int i = 0 ; i < bestCompoundScript.size(); i++)
+			{
+				if(bestCompoundScript.get(i).getGlobalValue() > max){
+					max = bestCompoundScript.get(i).getGlobalValue();
+					bc= bestCompoundScript.get(i);
+					index=i;
+				}
+			}
+			if(candidate.getGlobalValue() < max){
+				if(validateDuplicate(bestCompoundScript,candidate))
+					bestCompoundScript.set(index ,candidate);
+			}
+
+		}
+		else
+		{
+			if(validateDuplicate(bestCompoundScript,candidate))
+				bestCompoundScript.add(candidate);
+		}
+	}
+	public boolean validateDuplicate(ArrayList<CompoundScript> bestCompoundScript, CompoundScript candidate)
+	{
+		for(int i = 0 ; i < bestCompoundScript.size(); i++)
+		{
+			if(bestCompoundScript.get(i).getCompoundScript().size() == candidate.getCompoundScript().size())
+			{
+				for(int j=0; j<bestCompoundScript.get(i).getCompoundScript().size();j++)
+				{
+					if(bestCompoundScript.get(i).getCompoundScript().get(j)!=candidate.getCompoundScript().get(j))
+					{
+						return false;
+					}
+				}
+			}
+		}
+		return false;
+	}
 
 }

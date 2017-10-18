@@ -73,6 +73,11 @@ public class DynamicScripting extends AIWithComputationBudget {
 	int roundConvergenceDraw=-1;
 	int limitConvergence=8;
 	int enemyIA;
+	int totalIterationsDS=500;
+	int startCompoundScripts=300;
+	private ArrayList<CompoundScript> [] bestCompoundScript;
+	int bestScripts=30;
+	CompoundScript candidateCompoundScript;
 	
 	int numTypesUnits;
 	String [] typesUnits;
@@ -100,6 +105,12 @@ public class DynamicScripting extends AIWithComputationBudget {
 		typesUnits[2]="Heavy";
 		typesUnits[3]="Ranged";
 		
+		bestCompoundScript=new ArrayList [numTypesUnits];
+		for(int i=0;i<numTypesUnits;i++)
+		{
+			bestCompoundScript[i]=new ArrayList<CompoundScript>();
+		}
+		
 		this.enemyIA=enemyIA;
 
 	}
@@ -124,10 +135,10 @@ public class DynamicScripting extends AIWithComputationBudget {
 		if(isPlayout)
 		{
 			try {
-				for(int i=0;i<500;i++)
+				for(int i=0;i<totalIterationsDS;i++)
 				{
 					//System.out.println("New Simulation! ");
-					playout(player, gs);
+					playout(player, gs,i);
 					
 					if(convergenceWin>=limitConvergence && roundConvergenceWin==-1)
 					{
@@ -382,7 +393,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 		return pa;
 	}
 	
-	public void playout(int player, GameState gs) throws Exception {
+	public void playout(int player, GameState gs, int currentIteration) throws Exception {
 		// if (DEBUG>=1) System.out.println(" playout... " + LOOKAHEAD);
 		nplayouts++;
 		firstExecution=true;
@@ -489,11 +500,29 @@ public class DynamicScripting extends AIWithComputationBudget {
 		
 		//Here we are updating
 		ScriptGeneration actualScript = new ScriptGeneration(totalRules); 
+		int calculateAdjustment;
+		
 		for (int i = 0; i < playerUnitsg2.size(); i++) {
 //			System.out.println("New Script Updating");
 			Unit u = playerUnitsg2.get(i);
-			actualScript.UpdateWeightsBeta(i,RulesSelectedUnit.get(i), RulesSpaceUnit.get(u.getType().name), globalEvaluation ,initialWeight, teamFactor,bFactor,cFactor,aFactor[i]);
+			calculateAdjustment=actualScript.UpdateWeightsBeta(i,RulesSelectedUnit.get(i), RulesSpaceUnit.get(u.getType().name), globalEvaluation ,initialWeight, teamFactor,bFactor,cFactor,aFactor[i]);
+		
+			if(currentIteration>=startCompoundScripts)
+			{	
+				for(int j=0;j<numTypesUnits;j++)
+				{
+					if(typesUnits[j]==u.getType().name)
+					{
+						if(bestCompoundScript[j].size()>0)
+						{
+							candidateCompoundScript=new CompoundScript(calculateAdjustment, RulesSelectedUnit.get(i));
+							aux.includeInBestScripts(calculateAdjustment, bestCompoundScript[j],candidateCompoundScript,bestScripts);
+						}
+					}
+				}
+			}
 		}
+
 	}
 
 	/**
