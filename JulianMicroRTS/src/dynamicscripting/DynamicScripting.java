@@ -177,10 +177,12 @@ public class DynamicScripting extends AIWithComputationBudget {
 			for (int i = 0; i < numTypesUnits; i++) {
 				if(bestCompoundScript[i].size()>0)
 				{
-					for(int k=0;k<2;k++)
+					for(int k=0;k<3;k++)
 					{
+						System.out.println("bestCompoundScript"+i+" "+k+" "+bestCompoundScript[i].get(k).getGlobalValue());
 						for(int j=0;j<bestCompoundScript[i].get(k).getCompoundScript().size();j++)
 						{
+							
 							System.out.println("bestCompoundScript"+i+" "+k+" "+bestCompoundScript[i].get(k).getCompoundScript().get(j).getRule_condition()+" "+bestCompoundScript[i].get(k).getCompoundScript().get(j).getRule_action()+" "+bestCompoundScript[i].get(k).getCompoundScript().get(j).getRule_paramether());
 						
 						}
