@@ -7,7 +7,7 @@ import rts.units.Unit;
 
 public class ScriptGeneration {
 
-	private final int scriptSize=1;
+	private final int scriptSize=2;
 	private int maxTries=5;
 	
 	
@@ -226,8 +226,8 @@ public class ScriptGeneration {
 	public int calculateAdjustment(double globalEvaluation,double teamFactor, double bFactor, double cFactor, double aFactor)
 	{
 		double Rmax=100;
-		double Pmax=10;
-		double bValue=0.1;
+		double Pmax=70;
+		double bValue=0.3;
 		double differenceWeight;
 		
 		double fitness=(0.1)*(3*teamFactor+0*aFactor+0*bFactor+7*cFactor);

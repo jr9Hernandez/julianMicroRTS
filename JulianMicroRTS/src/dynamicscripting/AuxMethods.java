@@ -85,8 +85,8 @@ public class AuxMethods {
     	Collections.sort(l, new Comparator<CompoundScript>() {
     	    @Override
     	    public int compare(CompoundScript o1, CompoundScript o2) {
-    	    	Integer w=new Integer(o1.getGlobalValue()); 
-    	        return w.compareTo(o2.getGlobalValue());
+    	    	Integer w=new Integer(o2.getGlobalValue()); 
+    	        return w.compareTo(o1.getGlobalValue());
     	    }
     	});
 	}
@@ -94,18 +94,18 @@ public class AuxMethods {
 	{		
 		if(bestCompoundScript.size()>=limitScripts)
 		{
-			int max = bestCompoundScript.get(0).getGlobalValue();
+			int min = bestCompoundScript.get(0).getGlobalValue();
 			CompoundScript bc=bestCompoundScript.get(0);
 			int index=0;
 			for(int i = 0 ; i < bestCompoundScript.size(); i++)
 			{
-				if(bestCompoundScript.get(i).getGlobalValue() > max){
-					max = bestCompoundScript.get(i).getGlobalValue();
+				if(bestCompoundScript.get(i).getGlobalValue() < min){
+					min = bestCompoundScript.get(i).getGlobalValue();
 					bc= bestCompoundScript.get(i);
 					index=i;
 				}
 			}
-			if(candidate.getGlobalValue() < max){
+			if(candidate.getGlobalValue() > min){
 				if(validateDuplicate(bestCompoundScript,candidate))
 					bestCompoundScript.set(index ,candidate);
 			}
@@ -119,20 +119,31 @@ public class AuxMethods {
 	}
 	public boolean validateDuplicate(ArrayList<CompoundScript> bestCompoundScript, CompoundScript candidate)
 	{
+		
 		for(int i = 0 ; i < bestCompoundScript.size(); i++)
 		{
+			int different=0;
 			if(bestCompoundScript.get(i).getCompoundScript().size() == candidate.getCompoundScript().size())
 			{
 				for(int j=0; j<bestCompoundScript.get(i).getCompoundScript().size();j++)
 				{
-					if(bestCompoundScript.get(i).getCompoundScript().get(j)!=candidate.getCompoundScript().get(j))
+					if((bestCompoundScript.get(i).getCompoundScript().get(j).getRule_condition()!=candidate.getCompoundScript().get(j).getRule_condition())&&(bestCompoundScript.get(i).getCompoundScript().get(j).getRule_action()!=candidate.getCompoundScript().get(j).getRule_action())&&(bestCompoundScript.get(i).getCompoundScript().get(j).getRule_paramether()!=candidate.getCompoundScript().get(j).getRule_paramether()))
 					{
-						return true;
+						different++;
 					}
 				}
+				if(different==0)
+				{
+					return false;
+				}
+				
+			}
+			else
+			{
+				return true;
 			}
 		}
-		return false;
+		return true;
 	}
 
 }

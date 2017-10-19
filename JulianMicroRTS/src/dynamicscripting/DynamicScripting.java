@@ -164,12 +164,28 @@ public class DynamicScripting extends AIWithComputationBudget {
 				for(int j=0; j<totalRules;j++)
 				{
 					Rule rule=RulesSpaceUnit.get(typesUnits[i]).get(j);
-					//System.out.println("Final Rule "+typesUnits[i]+" "+rule.getRule_id()+" "+rule.getRule_condition()+" "+rule.getRule_action()+" "+rule.getRule_paramether()+" "+rule.getWeight());
+					System.out.println("Final Rule "+typesUnits[i]+" "+rule.getRule_id()+" "+rule.getRule_condition()+" "+rule.getRule_action()+" "+rule.getRule_paramether()+" "+rule.getWeight());
 				}
 			}
 			for (int i = 0; i < numTypesUnits; i++) {
 				aux.orderInReverseArraylistCompoundScript(bestCompoundScript[i]);
-				System.out.println("bestCompoundScript"+i+" "+bestCompoundScript[i].size());
+				if(bestCompoundScript[i].size()>0)
+				{
+					System.out.println("bestCompoundScript"+i+" "+bestCompoundScript[i].size());
+				}
+			}
+			for (int i = 0; i < numTypesUnits; i++) {
+				if(bestCompoundScript[i].size()>0)
+				{
+					for(int k=0;k<2;k++)
+					{
+						for(int j=0;j<bestCompoundScript[i].get(k).getCompoundScript().size();j++)
+						{
+							System.out.println("bestCompoundScript"+i+" "+k+" "+bestCompoundScript[i].get(k).getCompoundScript().get(j).getRule_condition()+" "+bestCompoundScript[i].get(0).getCompoundScript().get(j).getRule_action()+" "+bestCompoundScript[i].get(0).getCompoundScript().get(j).getRule_paramether());
+						
+						}
+					}
+				}
 			}
 		}
 		else
@@ -511,6 +527,8 @@ public class DynamicScripting extends AIWithComputationBudget {
 			Unit u = playerUnitsg2.get(i);
 			calculateAdjustment=actualScript.UpdateWeightsBeta(i,RulesSelectedUnit.get(i), RulesSpaceUnit.get(u.getType().name), globalEvaluation ,initialWeight, teamFactor,bFactor,cFactor,aFactor[i]);
 		
+			if(calculateAdjustment!=-1)
+			{
 			if(currentIteration>=startCompoundScripts)
 			{	
 				for(int j=0;j<numTypesUnits;j++)
@@ -528,6 +546,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 						}
 					}
 				}
+			}
 			}
 		}
 
