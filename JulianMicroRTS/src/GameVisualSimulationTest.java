@@ -45,8 +45,8 @@ public class GameVisualSimulationTest {
         UnitTypeTable utt = new UnitTypeTable();
         PhysicalGameState pgs = null;
         AI ai1=null;
-        //int enemy=Integer.parseInt(args[0]);
-        int enemy=7;
+        int enemy=Integer.parseInt(args[0]);
+        //int enemy=7;
         //pgs = PhysicalGameState.load("maps/24x24/melee24x24Mixed16.xml", utt);        
         
         if (enemy==1) {

@@ -164,14 +164,14 @@ public class DynamicScripting extends AIWithComputationBudget {
 				for(int j=0; j<totalRules;j++)
 				{
 					Rule rule=RulesSpaceUnit.get(typesUnits[i]).get(j);
-					System.out.println("Final Rule "+typesUnits[i]+" "+rule.getRule_id()+" "+rule.getRule_condition()+" "+rule.getRule_action()+" "+rule.getRule_paramether()+" "+rule.getWeight());
+					//System.out.println("Final Rule "+typesUnits[i]+" "+rule.getRule_id()+" "+rule.getRule_condition()+" "+rule.getRule_action()+" "+rule.getRule_paramether()+" "+rule.getWeight());
 				}
 			}
 			for (int i = 0; i < numTypesUnits; i++) {
 				aux.orderInReverseArraylistCompoundScript(bestCompoundScript[i]);
 				if(bestCompoundScript[i].size()>0)
 				{
-					System.out.println("bestCompoundScript"+i+" "+bestCompoundScript[i].size());
+					//System.out.println("bestCompoundScript"+i+" "+bestCompoundScript[i].size());
 				}
 			}
 			for (int i = 0; i < numTypesUnits; i++) {
@@ -179,11 +179,11 @@ public class DynamicScripting extends AIWithComputationBudget {
 				{
 					for(int k=0;k<3;k++)
 					{
-						System.out.println("bestCompoundScript"+i+" "+k+" "+bestCompoundScript[i].get(k).getGlobalValue());
+						//System.out.println("bestCompoundScript"+i+" "+k+" "+bestCompoundScript[i].get(k).getGlobalValue());
 						for(int j=0;j<bestCompoundScript[i].get(k).getCompoundScript().size();j++)
 						{
 							
-							System.out.println("bestCompoundScript"+i+" "+k+" "+bestCompoundScript[i].get(k).getCompoundScript().get(j).getRule_condition()+" "+bestCompoundScript[i].get(k).getCompoundScript().get(j).getRule_action()+" "+bestCompoundScript[i].get(k).getCompoundScript().get(j).getRule_paramether());
+							//System.out.println("bestCompoundScript"+i+" "+k+" "+bestCompoundScript[i].get(k).getCompoundScript().get(j).getRule_condition()+" "+bestCompoundScript[i].get(k).getCompoundScript().get(j).getRule_action()+" "+bestCompoundScript[i].get(k).getCompoundScript().get(j).getRule_paramether());
 						
 						}
 					}
