@@ -24,6 +24,7 @@ import ai.evaluation.SimpleSqrtEvaluationFunction2;
 import ai.evaluation.SimpleSqrtEvaluationFunction3;
 import ai.puppet.SingleChoiceConfigurableScript;
 import dynamicscripting.AuxMethods;
+import dynamicscripting.CompoundScript;
 import dynamicscripting.DynamicScripting;
 import dynamicscripting.Rule;
 import dynamicscripting.UnitScript;
@@ -97,33 +98,56 @@ public class DSPGSmRTS extends AIWithComputationBudget implements InterruptibleA
 
 	protected void buildPortfolio() {
 
-		HashMap<String, ArrayList<Rule>> RulesSpaceUnit = DS.getRulesSpaceUnit();
-
-		ArrayList<Rule> heavyS = RulesSpaceUnit.get("Heavy");
-		ArrayList<Rule> lightS = RulesSpaceUnit.get("Light");
-		ArrayList<Rule> rangedS = RulesSpaceUnit.get("Ranged");
-
-		aux.orderInReverseArraylistRule(heavyS);
-		aux.orderInReverseArraylistRule(lightS);
-		aux.orderInReverseArraylistRule(rangedS);
+		//HashMap<String, ArrayList<Rule>> RulesSpaceUnit = DS.getRulesSpaceUnit();
+		ArrayList<CompoundScript> [] bestCompoundScript=DS.getBestCompoundScript();
+		String typesUnits[]=DS.getTypesUnits();
+//		ArrayList<Rule> heavyS = RulesSpaceUnit.get("Heavy");
+//		ArrayList<Rule> lightS = RulesSpaceUnit.get("Light");
+//		ArrayList<Rule> rangedS = RulesSpaceUnit.get("Ranged");
+		
+		ArrayList<CompoundScript> workerS=null;
+		ArrayList<CompoundScript> lightS=null;
+		ArrayList<CompoundScript> heavyS=null;
+		ArrayList<CompoundScript> rangedS=null;
+		for(int i=0;i<bestCompoundScript.length;i++)
+		{
+			if(typesUnits[i].equals("Worker"))
+			{
+				workerS = bestCompoundScript[i];
+			}
+			else if(typesUnits[i].equals("Light"))
+			{
+				lightS = bestCompoundScript[i];
+			}
+			else if(typesUnits[i].equals("Heavy"))
+			{
+				heavyS = bestCompoundScript[i];
+			}	
+			else if(typesUnits[i].equals("Ranged"))
+			{
+				rangedS = bestCompoundScript[i];
+			}
+		}
+			
 		
 		//This code is just to validate how was the final rulespace for lights and heavy units
 		//System.out.println("PrintingAfter ");
 
-		for (int j = 0; j < heavyS.size(); j++) {
-			Rule rule = RulesSpaceUnit.get("Heavy").get(j);
-//			System.out.println("Final Rule Heavy " + heavyS.get(j).getRule_id() + " "
-//					+ heavyS.get(j).getRule_condition() + " " + heavyS.get(j).getRule_action() + " "
-//					+ heavyS.get(j).getRule_paramether() + " " + heavyS.get(j).getWeight());
-		}
-		for (int j = 0; j < lightS.size(); j++) {
-			Rule rule = RulesSpaceUnit.get("Light").get(j);
-//			System.out.println("Final Rule Light" + lightS.get(j).getRule_id() + " " + lightS.get(j).getRule_condition()
-//					+ " " + lightS.get(j).getRule_action() + " " + lightS.get(j).getRule_paramether() + " "
-//					+ lightS.get(j).getWeight());
-		}
+//		for (int j = 0; j < heavyS.size(); j++) {
+//			Rule rule = RulesSpaceUnit.get("Heavy").get(j);
+////			System.out.println("Final Rule Heavy " + heavyS.get(j).getRule_id() + " "
+////					+ heavyS.get(j).getRule_condition() + " " + heavyS.get(j).getRule_action() + " "
+////					+ heavyS.get(j).getRule_paramether() + " " + heavyS.get(j).getWeight());
+//		}
+//		for (int j = 0; j < lightS.size(); j++) {
+//			Rule rule = RulesSpaceUnit.get("Light").get(j);
+////			System.out.println("Final Rule Light" + lightS.get(j).getRule_id() + " " + lightS.get(j).getRule_condition()
+////					+ " " + lightS.get(j).getRule_action() + " " + lightS.get(j).getRule_paramether() + " "
+////					+ lightS.get(j).getWeight());
+//		}
 
 		scripts = new HashMap<>();
+		if(heavyS.size()>0)
 		{
 			List<UnitScriptSingle> l = new ArrayList<>();
 			l.add(new UnitScriptSingle(heavyS.get(0), pf));
@@ -131,6 +155,7 @@ public class DSPGSmRTS extends AIWithComputationBudget implements InterruptibleA
 			l.add(new UnitScriptSingle(heavyS.get(2), pf));
 			scripts.put(utt.getUnitType("Heavy"), l);
 		}
+		if(lightS.size()>0)
 		{
 			List<UnitScriptSingle> l = new ArrayList<>();
 			l.add(new UnitScriptSingle(lightS.get(0), pf));
@@ -138,6 +163,7 @@ public class DSPGSmRTS extends AIWithComputationBudget implements InterruptibleA
 			l.add(new UnitScriptSingle(lightS.get(2), pf));
 			scripts.put(utt.getUnitType("Light"), l);
 		}
+		if(rangedS.size()>0)
 		{
 			List<UnitScriptSingle> l = new ArrayList<>();
 			l.add(new UnitScriptSingle(rangedS.get(0), pf));
@@ -435,7 +461,7 @@ public class DSPGSmRTS extends AIWithComputationBudget implements InterruptibleA
 		
 		for (Unit u : playerUnits) {
 
-			Rule r=playerScripts.get(u.getID()).rule;
+			//Rule r=playerScripts.get(u.getID()).rule;
 			//System.out.print("Selected "+r.getRule_condition()+" "+r.getRule_action()+" "+r.getRule_paramether());
 			UnitAction unt = actions.get(ai1.toString()).getAction(u);
 			if (unt != null) {

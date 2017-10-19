@@ -562,6 +562,20 @@ public class DynamicScripting extends AIWithComputationBudget {
 	}
 
 	/**
+	 * @return the bestCompoundScript
+	 */
+	public ArrayList<CompoundScript>[] getBestCompoundScript() {
+		return bestCompoundScript;
+	}
+
+	/**
+	 * @return the typesUnits
+	 */
+	public String[] getTypesUnits() {
+		return typesUnits;
+	}
+
+	/**
 	 * @return the rulesSpace
 	 */
 	public RulesSpace getRulesSpace() {
