@@ -76,7 +76,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 	int totalIterationsDS=500;
 	int startCompoundScripts=300;
 	private ArrayList<CompoundScript> [] bestCompoundScript;
-	int bestScripts=30;
+	int bestScriptsLimit=30;
 	CompoundScript candidateCompoundScript;
 	
 	int numTypesUnits;
@@ -181,7 +181,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 					{
 						for(int j=0;j<bestCompoundScript[i].get(k).getCompoundScript().size();j++)
 						{
-							System.out.println("bestCompoundScript"+i+" "+k+" "+bestCompoundScript[i].get(k).getCompoundScript().get(j).getRule_condition()+" "+bestCompoundScript[i].get(0).getCompoundScript().get(j).getRule_action()+" "+bestCompoundScript[i].get(0).getCompoundScript().get(j).getRule_paramether());
+							System.out.println("bestCompoundScript"+i+" "+k+" "+bestCompoundScript[i].get(k).getCompoundScript().get(j).getRule_condition()+" "+bestCompoundScript[i].get(k).getCompoundScript().get(j).getRule_action()+" "+bestCompoundScript[i].get(k).getCompoundScript().get(j).getRule_paramether());
 						
 						}
 					}
@@ -538,7 +538,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 						candidateCompoundScript=new CompoundScript(calculateAdjustment, RulesSelectedUnit.get(i));
 						if(bestCompoundScript[j].size()>0)
 						{
-							aux.includeInBestScripts(calculateAdjustment, bestCompoundScript[j],candidateCompoundScript,bestScripts);
+							aux.includeInBestScripts(calculateAdjustment, bestCompoundScript[j],candidateCompoundScript,bestScriptsLimit);
 						}
 						else
 						{
