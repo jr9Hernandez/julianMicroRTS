@@ -127,7 +127,7 @@ public class AuxMethods {
 			{
 				for(int j=0; j<bestCompoundScript.get(i).getCompoundScript().size();j++)
 				{
-					if((bestCompoundScript.get(i).getCompoundScript().get(j).getRule_condition()!=candidate.getCompoundScript().get(j).getRule_condition())&&(bestCompoundScript.get(i).getCompoundScript().get(j).getRule_action()!=candidate.getCompoundScript().get(j).getRule_action())&&(bestCompoundScript.get(i).getCompoundScript().get(j).getRule_paramether()!=candidate.getCompoundScript().get(j).getRule_paramether()))
+					if((bestCompoundScript.get(i).getCompoundScript().get(j).getRule_condition()!=candidate.getCompoundScript().get(j).getRule_condition())||(bestCompoundScript.get(i).getCompoundScript().get(j).getRule_action()!=candidate.getCompoundScript().get(j).getRule_action())||(bestCompoundScript.get(i).getCompoundScript().get(j).getRule_paramether()!=candidate.getCompoundScript().get(j).getRule_paramether()))
 					{
 						different++;
 					}
