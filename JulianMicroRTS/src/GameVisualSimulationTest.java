@@ -38,7 +38,7 @@ import util.XMLWriter;
  *
  * @author santi
  */
-public class GameVisualSimulationTest {
+public class GameVisualSimulationTest { 
     public static void main(String args[]) throws Exception {
     	
     	
