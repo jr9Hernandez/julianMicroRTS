@@ -75,7 +75,7 @@ public class GameVisualSimulationTest {
     		ai1=new PuppetSearchMCTS(utt);
     	} else if (enemy==13) {        	
     		ai1=new NaiveMCTS(utt);
-    	}
+    	} 
         
         for(int i=0;i<6;i++)
         {

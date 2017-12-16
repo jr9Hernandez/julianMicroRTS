@@ -5,6 +5,7 @@
  */
 package PGS_Churchill;
 
+
 import ai.core.AI;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,7 +60,7 @@ public class UnitScriptData {
         for (AI ai : _unitScriptMap.values()) {
             actions.put(ai, ai.getAction(player, gs2));
         }
-        //compõe o vetor de ações baseado nos scripts
+        //compÃµe o vetor de aÃ§Ãµes baseado nos scripts
         PlayerAction temp;
         for (Unit u : gs2.getUnits()) {
             if (u.getPlayer() == player) {

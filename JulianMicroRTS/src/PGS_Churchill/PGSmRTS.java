@@ -25,6 +25,8 @@ import rts.PlayerAction;
 import rts.UnitAction;
 import rts.units.Unit;
 import rts.units.UnitTypeTable;
+//import PVAI.EconomyRush;
+//import PVAI.EconomyMilitaryRush;
 import ai.abstraction.pathfinding.FloodFillPathFinding;
 
 /**
@@ -49,6 +51,7 @@ public class PGSmRTS extends AIWithComputationBudget implements InterruptibleAI 
 
     GameState gs_to_start_from = null;
     int playerForThisComputation;
+    
 
     public PGSmRTS(UnitTypeTable utt) {
         this(100, -1, 200, 1, 1,
@@ -90,10 +93,17 @@ public class PGSmRTS extends AIWithComputationBudget implements InterruptibleAI 
     public void reset() {
 
     }
+    
+    protected void evalPortfolio(int heightMap){
+        if(heightMap <= 16 && !portfolioHasWorkerRush()){
+            this.scripts.add(new POWorkerRush(utt));
+        }
+    }
 
     @Override
     public PlayerAction getAction(int player, GameState gs) throws Exception {
         if (gs.canExecuteAnyAction(player)) {
+            evalPortfolio(gs.getPhysicalGameState().getHeight());
             startNewComputation(player, gs);
             return getBestActionSoFar();
         } else {
@@ -170,7 +180,7 @@ public class PGSmRTS extends AIWithComputationBudget implements InterruptibleAI 
      * @param gs
      * @param uScriptPlayer
      * @param aiEnemy
-     * @return a avaliação para ser utilizada como base.
+     * @return a avaliaÃ§Ã£o para ser utilizada como base.
      * @throws Exception
      */
     public double eval(int player, GameState gs, UnitScriptData uScriptPlayer, AI aiEnemy) throws Exception {
@@ -290,7 +300,7 @@ public class PGSmRTS extends AIWithComputationBudget implements InterruptibleAI 
         UnitScriptData bestScriptData = currentScriptData.clone();
         double bestScore = eval(player, gs_to_start_from, bestScriptData, seedEnemy);
         ArrayList<Unit> unitsPlayer = getUnitsPlayer(player);
-        //controle pelo número de iterações
+        //controle pelo nÃºmero de iteraÃ§Ãµes
         for (int i = 0; i < I; i++) {
             //fazer o improve de cada unidade
             for (Unit unit : unitsPlayer) {
@@ -308,7 +318,7 @@ public class PGSmRTS extends AIWithComputationBudget implements InterruptibleAI 
                         bestScore = scoreTemp;
                     }
                 }
-                //seto o melhor vetor para ser usado em futuras simulações
+                //seto o melhor vetor para ser usado em futuras simulaÃ§Ãµes
                 currentScriptData = bestScriptData.clone();
             }
         }
@@ -341,6 +351,15 @@ public class PGSmRTS extends AIWithComputationBudget implements InterruptibleAI 
         }
 
         return pAction;
+    }
+
+    private boolean portfolioHasWorkerRush() {
+        for (AI script : scripts) {
+            if(script.toString().contains("POWorkerRush")){
+                return true;
+            }
+        }
+        return false;
     }
 
 }
