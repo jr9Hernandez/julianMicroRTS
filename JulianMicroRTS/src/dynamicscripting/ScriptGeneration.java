@@ -227,7 +227,7 @@ public class ScriptGeneration {
 	{
 		double Rmax=100;
 		double Pmax=30;
-		double bValue=0.25;
+		double bValue=0.3;
 		double differenceWeight;
 		
 		double fitness=(0.1)*(3*teamFactor+0*aFactor+0*bFactor+7*cFactor);
