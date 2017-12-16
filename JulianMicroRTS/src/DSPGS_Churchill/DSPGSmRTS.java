@@ -67,6 +67,7 @@ public class DSPGSmRTS extends AIWithComputationBudget implements InterruptibleA
 	DynamicScripting DS = null;
 	AuxMethods aux = new AuxMethods();
 	HashMap<UnitType, List<UnitScriptSingle>> scripts = null;
+	List<AI> scriptsOponent = null;
 	int sizePortfolio = 3;
 	HashMap<Long, UnitScriptSingle> playerScripts=null;
 	HashMap<Long, UnitScriptSingle> enemyScripts=null;
@@ -74,7 +75,7 @@ public class DSPGSmRTS extends AIWithComputationBudget implements InterruptibleA
 	List<Unit> enemyUnits = new ArrayList<>();
 
 	public DSPGSmRTS(UnitTypeTable utt, DynamicScripting aiAux) {
-		this(100, -1, 200, 10, 1, new SimpleSqrtEvaluationFunction3(),
+		this(100, -1, 200, 1, 1, new SimpleSqrtEvaluationFunction3(),
 				// new SimpleSqrtEvaluationFunction2(),
 				 //new LanchesterEvaluationFunction(),
 				utt, new AStarPathFinding(), aiAux);
@@ -90,9 +91,10 @@ public class DSPGSmRTS extends AIWithComputationBudget implements InterruptibleA
 		evaluation = e;
 		utt = a_utt;
 		pf = a_pf;
-		defaultScript = new LightRush(utt);
+		new POLightRush(a_utt);
 		DS = aiAux;
 		scripts = new HashMap<>();
+		scriptsOponent = new ArrayList<>();
 		buildPortfolio();
 	}
 
@@ -181,6 +183,10 @@ public class DSPGSmRTS extends AIWithComputationBudget implements InterruptibleA
 		// this.scripts.add(new POHeavyRush(utt, new FloodFillPathFinding()));
 		// this.scripts.add(new POLightRush(utt, new FloodFillPathFinding()));
 		// this.scripts.add(new PORangedRush(utt, new FloodFillPathFinding()));
+		
+        this.scriptsOponent.add(new POHeavyRush(utt));
+        this.scriptsOponent.add(new POLightRush(utt));
+        this.scriptsOponent.add(new PORangedRush(utt));
 
 	}
 
@@ -188,10 +194,17 @@ public class DSPGSmRTS extends AIWithComputationBudget implements InterruptibleA
 	public void reset() {
 
 	}
+	
+    protected void evalPortfolio(int heightMap){
+        if(heightMap <= 16 && !portfolioHasWorkerRush()){
+            this.scriptsOponent.add(new POWorkerRush(utt));
+        }
+    }
 
 	@Override
 	public PlayerAction getAction(int player, GameState gs) throws Exception {
 		if (gs.canExecuteAnyAction(player)) {
+			evalPortfolio(gs.getPhysicalGameState().getHeight());
 			startNewComputation(player, gs);
 			return getBestActionSoFar();
 		} else {
@@ -208,9 +221,9 @@ public class DSPGSmRTS extends AIWithComputationBudget implements InterruptibleA
 		// AI seedEnemy = getSeedPlayer(1 - playerForThisComputation);
 		AI seedPlayer = new UnitScriptsAI(playerScripts, playerUnits, scripts, DS, pf);
 		//AI seedEnemy = new UnitScriptsAI(enemyScripts, enemyUnits, scripts, DS, pf);
-		AI seedEnemy=defaultScript;
+		AI seedEnemy= getSeedPlayer(1 - playerForThisComputation);
 
-		//defaultScript = seedPlayer;
+		defaultScript = seedPlayer;
 
 //		UnitScriptData currentScriptData = new UnitScriptData(playerForThisComputation);
 //		currentScriptData.setSeedUnits(seedPlayer);
@@ -222,21 +235,21 @@ public class DSPGSmRTS extends AIWithComputationBudget implements InterruptibleA
 		return getFinalAction(playerUnits);
 	}
 
-	// protected AI getSeedPlayer(int player) throws Exception {
-	// AI seed = null;
-	// double bestEval = -9999;
-	// AI enemyAI = new POLightRush(utt);
-	// //vou iterar para todos os scripts do portfolio
-	// for (AI script : scripts) {
-	// double tEval = eval(player, gs_to_start_from, script, enemyAI);
-	// if (tEval > bestEval) {
-	// bestEval = tEval;
-	// seed = script;
-	// }
-	// }
-	//
-	// return seed;
-	// }
+	 protected AI getSeedPlayer(int player) throws Exception {
+	 AI seed = null;
+	 double bestEval = -9999;
+	 AI enemyAI = new POLightRush(utt);
+	 //vou iterar para todos os scripts do portfolio
+	 for (AI script : scriptsOponent) {
+	 double tEval = eval(player, gs_to_start_from, script, enemyAI);
+	 if (tEval > bestEval) {
+	 bestEval = tEval;
+	 seed = script;
+	 }
+	 }
+	
+	 return seed;
+	 }
 
 	/*
 	 * Executa um playout de tamanho igual ao @LOOKAHEAD e retorna o valor
@@ -477,5 +490,14 @@ public class DSPGSmRTS extends AIWithComputationBudget implements InterruptibleA
 		List<UnitScriptSingle> l = scripts.get(u.getType());
 		return l.get(0);
 	}
+	
+    private boolean portfolioHasWorkerRush() {
+        for (AI script : scriptsOponent) {
+            if(script.toString().contains("POWorkerRush")){
+                return true;
+            }
+        }
+        return false;
+    }
 
 }
