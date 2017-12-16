@@ -11,6 +11,7 @@ import rts.PhysicalGameState;
 import rts.ResourceUsage;
 import rts.UnitAction;
 import rts.units.Unit;
+import util.XMLWriter;
 
 /**
  *
@@ -31,5 +32,11 @@ public class DoNothing extends AbstractAction  {
         
         return new UnitAction(UnitAction.TYPE_NONE);
         
-    }    
+    }
+
+	@Override
+	public void toxml(XMLWriter w) {
+		// TODO Auto-generated method stub
+		
+	}    
 }

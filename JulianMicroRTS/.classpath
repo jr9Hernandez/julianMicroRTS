@@ -2,7 +2,8 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-	<classpathentry kind="lib" path="lib/jdom.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/OriginalmRTS"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/OriginalCode"/>
+	<classpathentry kind="lib" path="/OriginalCode/lib/jdom.jar"/>
+	<classpathentry kind="lib" path="/OriginalCode/lib/minimal-json-0.9.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

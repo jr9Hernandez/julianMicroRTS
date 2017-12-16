@@ -3,6 +3,7 @@
 	<name>JulianMicroRTS</name>
 	<comment></comment>
 	<projects>
+		<project>OriginalCode</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
