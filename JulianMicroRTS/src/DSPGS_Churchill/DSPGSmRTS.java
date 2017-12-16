@@ -91,7 +91,7 @@ public class DSPGSmRTS extends AIWithComputationBudget implements InterruptibleA
 		evaluation = e;
 		utt = a_utt;
 		pf = a_pf;
-		new POLightRush(a_utt);
+		defaultScript = new POLightRush(a_utt);
 		DS = aiAux;
 		scripts = new HashMap<>();
 		scriptsOponent = new ArrayList<>();
