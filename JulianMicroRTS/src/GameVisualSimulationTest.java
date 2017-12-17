@@ -12,6 +12,7 @@ import ai.abstraction.partialobservability.POHeavyRush;
 import ai.abstraction.partialobservability.POLightRush;
 import ai.abstraction.partialobservability.PORangedRush;
 import ai.abstraction.pathfinding.BFSPathFinding;
+import ai.ahtn.AHTNAI;
 import ai.mcts.believestatemcts.BS3_NaiveMCTS;
 import ai.mcts.naivemcts.NaiveMCTS;
 import ai.mcts.uct.UCT;
@@ -46,36 +47,47 @@ public class GameVisualSimulationTest {
         PhysicalGameState pgs = null;
         AI ai1=null;
         //int enemy=Integer.parseInt(args[0]);
-        int enemy=1;
+        int enemy=9;
         //pgs = PhysicalGameState.load("maps/24x24/melee24x24Mixed16.xml", utt);        
         
         if (enemy==1) {
+        	//HAVE TO
         	ai1 = new RandomBiasedAI(utt);
         }else if (enemy==2) {
+        	//HAVE TO
         	ai1 = new WorkerRush(utt,new BFSPathFinding()); 
         } else if (enemy==3) {
+        	//HAVE TO
         	ai1=new LightRush(utt);
         } else if (enemy==4) {
         	ai1= new PGSAI(utt);
-        } else if (enemy==5) {        	
-        	ai1=new ABCD(utt);
+        } else if (enemy==5) {   
+        	ai1=new ABCD(utt);        	
         } else if (enemy==6) {        	
     		ai1=new POHeavyRush(utt);
     	} else if (enemy==7) {        	
     		ai1=new POLightRush(utt);
     	} else if (enemy==8) {        	
     		ai1=new PORangedRush(utt);
-    	} else if (enemy==9) {        	
+    	} else if (enemy==9) {   
+    		//HAVE TO
     		ai1=new PGSmRTS(utt);
-    	} else if (enemy==10) {        	
+    	} else if (enemy==10) {
     		ai1=new UCT(utt);
     	} else if (enemy==11) {        	
     		ai1=new MonteCarlo(utt);
-    	} else if (enemy==12) {        	
+    	} else if (enemy==12) {     
+    		//HAVE TO
     		ai1=new PuppetSearchMCTS(utt);
-    	} else if (enemy==13) {        	
+    	} else if (enemy==13) {    
     		ai1=new NaiveMCTS(utt);
-    	} 
+    	} else if (enemy==14) {  
+    		//HAVE TO
+    		ai1=new AHTNAI(utt);
+    	} else if (enemy==15) { 
+    		//HAVE TO
+    		ai1=new BS3_NaiveMCTS(utt);
+    	}
         
         for(int i=0;i<6;i++)
         {

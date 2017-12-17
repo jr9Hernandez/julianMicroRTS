@@ -18,11 +18,13 @@ import ai.abstraction.partialobservability.PORangedRush;
 import ai.abstraction.pathfinding.AStarPathFinding;
 import ai.abstraction.pathfinding.BFSPathFinding;
 import ai.abstraction.pathfinding.PathFinding;
+import ai.ahtn.AHTNAI;
 import ai.core.AI;
 import ai.core.AIWithComputationBudget;
 import ai.core.ParameterSpecification;
 import ai.evaluation.EvaluationFunction;
 import ai.evaluation.SimpleSqrtEvaluationFunction3;
+import ai.mcts.believestatemcts.BS3_NaiveMCTS;
 import ai.mcts.mlps.MLPSMCTS;
 import ai.mcts.naivemcts.NaiveMCTS;
 import ai.mcts.uct.UCT;
@@ -450,6 +452,10 @@ public class DynamicScripting extends AIWithComputationBudget {
     		ai1=new PuppetSearchMCTS(m_utt);
     	} else if (enemyIA==13) {        	
     		ai1=new NaiveMCTS(m_utt);
+    	} else if (enemyIA==14) {        	
+    		ai1=new AHTNAI(m_utt);
+    	} else if (enemyIA==15) {        	
+    		ai1=new BS3_NaiveMCTS(m_utt);
     	}
 		
 		List<Unit> playerUnitsg2 = aux.units1(player,gs2);
