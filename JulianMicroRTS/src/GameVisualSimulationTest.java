@@ -89,7 +89,7 @@ public class GameVisualSimulationTest {
     		ai1=new BS3_NaiveMCTS(utt);
     	}
         
-        for(int i=0;i<6;i++)
+        for(int i=0;i<3;i++)
         {
         if (i==0) {
             pgs = PhysicalGameState.load("maps/8x8/melee8x8Mixed4.xml", utt);
@@ -113,19 +113,19 @@ public class GameVisualSimulationTest {
         boolean gameover = false;
         
 
-        //AI ai2 = new DynamicScripting(utt,enemy);        
-        DynamicScripting aiAux = new DynamicScripting(utt,enemy);        
+        AI ai2 = new DynamicScripting(utt,enemy);        
+        //DynamicScripting aiAux = new DynamicScripting(utt,enemy);        
 
 //        JFrame w = PhysicalGameStatePanel.newVisualizer(gs,640,640,false,PhysicalGameStatePanel.COLORSCHEME_BLACK);
 //        JFrame w = PhysicalGameStatePanel.newVisualizer(gs,640,640,false,PhysicalGameStatePanel.COLORSCHEME_WHITE);
 
         //The next line is just for my Experiments!!!
-        //ai2.getAction(1, gs);
-        aiAux.getAction(1, gs);
+        ai2.getAction(1, gs);
+        //aiAux.getAction(1, gs);
         //AI ai2 = new PGSAI(utt);
         //AI ai2 = new DSPGSAI(utt,aiAux);
         //AI ai2 = new PGSmRTS(utt);
-        AI ai2 = new DSPGSmRTS(utt,aiAux);
+        //AI ai2 = new DSPGSmRTS(utt,aiAux);
         //AI ai2 = new PGSmRTS(utt);
         //AI ai2=aiAux;
         
