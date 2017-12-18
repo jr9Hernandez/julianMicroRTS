@@ -89,7 +89,7 @@ public class GameVisualSimulationTest {
     		ai1=new BS3_NaiveMCTS(utt);
     	}
         
-        for(int i=0;i<3;i++)
+        for(int i=0;i<4;i++)
         {
         if (i==0) {
             pgs = PhysicalGameState.load("maps/8x8/melee8x8Mixed4.xml", utt);
@@ -97,10 +97,10 @@ public class GameVisualSimulationTest {
             pgs = PhysicalGameState.load("maps/16x16/melee16x16Mixed8.xml", utt);
         } else if (i==2) {
             pgs = PhysicalGameState.load("maps/16x16/melee16x16Mixed12.xml", utt);
+        } else if (i==3) {
+            pgs = PhysicalGameState.load("maps/24x24/melee24x24Mixed16.xml", utt);
         } 
-//        else if (i==3) {
-//            pgs = PhysicalGameState.load("maps/24x24/melee24x24Mixed16.xml", utt);
-//        } else if (i==4) {
+//        else if (i==4) {
 //        	pgs = PhysicalGameState.load("maps/24x24/melee24x24Mixed24.xml", utt);
 //        }else if (i==5) {
 //        	pgs = PhysicalGameState.load("maps/BWDistantResources32x32Mele.xml", utt);
