@@ -76,7 +76,7 @@ public class DynamicScripting extends AIWithComputationBudget {
 	int limitConvergence=8;
 	int enemyIA;
 	int totalIterationsDS=200;
-	int startCompoundScripts=50;
+	int startCompoundScripts=0;
 	private ArrayList<CompoundScript> [] bestCompoundScript;
 	int bestScriptsLimit=30;
 	CompoundScript candidateCompoundScript;
