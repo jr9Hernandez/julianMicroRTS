@@ -46,7 +46,7 @@ public class GameVisualSimulationTest {
         UnitTypeTable utt = new UnitTypeTable();
         PhysicalGameState pgs = null;
         AI ai1=null;
-        int enemy=Integer.parseInt(args[0]);
+        int enemy=3;
         //int enemy=13;
         //pgs = PhysicalGameState.load("maps/24x24/melee24x24Mixed16.xml", utt);        
         
@@ -113,19 +113,19 @@ public class GameVisualSimulationTest {
         boolean gameover = false;
         
 
-        AI ai2 = new DynamicScripting(utt,enemy);        
-        //DynamicScripting aiAux = new DynamicScripting(utt,enemy);        
+        //AI ai2 = new DynamicScripting(utt,enemy);        
+        DynamicScripting aiAux = new DynamicScripting(utt,enemy);        
 
 //        JFrame w = PhysicalGameStatePanel.newVisualizer(gs,640,640,false,PhysicalGameStatePanel.COLORSCHEME_BLACK);
 //        JFrame w = PhysicalGameStatePanel.newVisualizer(gs,640,640,false,PhysicalGameStatePanel.COLORSCHEME_WHITE);
 
         //The next line is just for my Experiments!!!
-        ai2.getAction(1, gs);
-        //aiAux.getAction(1, gs);
+        //ai2.getAction(1, gs);
+        aiAux.getAction(1, gs);
         //AI ai2 = new PGSAI(utt);
         //AI ai2 = new DSPGSAI(utt,aiAux);
         //AI ai2 = new PGSmRTS(utt);
-        //AI ai2 = new DSPGSmRTS(utt,aiAux);
+        AI ai2 = new DSPGSmRTS(utt,aiAux);
         //AI ai2 = new PGSmRTS(utt);
         //AI ai2=aiAux;
         
